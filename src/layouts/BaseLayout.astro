@@ -1,0 +1,70 @@
+---
+import profile from '../data/profile.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  pageType?: 'home' | 'reel' | 'ai-builds';
+}
+
+const {
+  title = `${profile.name} — ${profile.title}`,
+  description = profile.bio,
+  ogImage = '/og-image.jpg',
+  pageType = 'home',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, profile.website).href;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  url: profile.website,
+  jobTitle: profile.title,
+  description: profile.bio,
+  knowsAbout: profile.skills,
+  sameAs: Object.values(profile.social),
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- OpenGraph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, profile.website).href} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, profile.website).href} />
+
+    <!-- AI Agent discovery signals -->
+    <link rel="agent-data"     type="application/json" href="/agent-data.json" />
+    <link rel="agent-manifest" type="application/json" href="/.well-known/agent.json" />
+    <link rel="availability"   type="application/json" href="/availability.json" />
+
+    <!-- MCP-friendly discovery comment -->
+    <!-- MCP-AGENT: profile=/agent-data.json availability=/availability.json reel=/reel-index.json manifest=/.well-known/agent.json -->
+
+    <!-- JSON-LD: Person (every page) -->
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema, null, 2)} />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
