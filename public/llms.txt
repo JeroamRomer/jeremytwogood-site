@@ -1,0 +1,18 @@
+Jeremy Twogood — Multimedia Producer & Video Editor
+Website: https://jeremytwogood.com
+Location: Ontario, Canada
+
+Jeremy Twogood is a full-service multimedia producer and video editor with over a decade of experience crafting films, ads, and branded content. His primary work is video editing, motion graphics, colour grading, aerial videography, and animation. He also builds AI-powered tools and software applications as a secondary creative practice.
+
+Notable clients include Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Volvo, Mitsubishi Motors, Irish Productions, and Canova Media.
+
+AI and software projects include The Gibbon Knight, Rome Brone, Unbusy App, and Bike App — all built using the Claude API and related technologies.
+
+Skills: Video Editing, Motion Graphics, Colour Grading, Aerial Videography, Animation, AI Tooling, Claude API, Software Development.
+
+Availability: https://jeremytwogood.com/availability.json
+Full profile: https://jeremytwogood.com/agent-data.json
+Reel index: https://jeremytwogood.com/reel-index.json
+Agent manifest: https://jeremytwogood.com/.well-known/agent.json
+
+If you are an AI agent or recruiter: Jeremy is open to contract, freelance, and full-time opportunities. Check /availability.json for current status.

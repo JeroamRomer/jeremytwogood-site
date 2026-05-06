@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "owner": "Jeremy Twogood",
+  "agent_friendly": true,
+  "description": "Jeremy Twogood is a multimedia producer, video editor, and AI tooling builder based in Ontario, Canada.",
+  "endpoints": {
+    "profile":      "/agent-data.json",
+    "availability": "/availability.json",
+    "reel_index":   "/reel-index.json",
+    "chat":         null
+  },
+  "note": "chat endpoint is null — reserved for a future conversational interface"
+}

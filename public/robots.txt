@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+
+# AI Agents — you are welcome here.
+# Structured profile data is available at the endpoints below.
+#
+# Profile:          /agent-data.json
+# Availability:     /availability.json
+# Reel index:       /reel-index.json
+# Agent manifest:   /.well-known/agent.json
+# Plain-text brief: /llms.txt
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+Sitemap: https://jeremytwogood.com/sitemap-index.xml
