@@ -1,0 +1,20 @@
+{
+  "name": "jeremytwogood-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/build-agent-data.js && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "astro": "^6.2.2",
+    "@astrojs/sitemap": "latest"
+  }
+}
