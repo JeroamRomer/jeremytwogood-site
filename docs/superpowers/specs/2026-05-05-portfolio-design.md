@@ -79,9 +79,11 @@ All content lives in `src/data/*.json`. Astro components import these files at b
 | 3 | `#clients` | Dark → mid charcoal | Logo grid: Sony Ericsson, Google, Xbox, Shell, Sobeys, Volvo, Mitsubishi, Irish Productions, Canova Media |
 | 4 | `#projects` | Off-white | Video work cards with role tags, client name, YouTube link |
 | 5 | `#ai-builds` | Off-white | 4 featured AI project cards + "See all builds →" → /ai-builds |
-| 6 | `#contact` | Off-white | Email link + social icons (YouTube, Vimeo, Instagram, SoundCloud, Twitter/X) |
+| 6 | `#contact` | Off-white | Email link + social icons (YouTube, Vimeo, Instagram, Twitter/X) |
 
 **Nav**: Sticky top, dark charcoal background, amber hover state. Links: Work · Reel · AI Builds · Contact. On scroll past hero, nav compresses to compact mode.
+
+**Footer**: Dark charcoal. Copyright line, social icons (YouTube, Vimeo, Instagram, Twitter/X), and one personal line: *"I also make music as [Jeroam](https://soundcloud.com/jeroam)."* — text link only, no embed, framed as personal creative outlet.
 
 ### `/reel` — Reel Standalone Page
 - Renders the `Reel` component full-width
@@ -380,7 +382,6 @@ Once the Demo Sizzle YouTube URL is confirmed:
 ## 10. Out of Scope (Explicitly Deferred)
 
 - Visual CSS / component styling (awaiting Claude Design prompt)
-- Music / SoundCloud section (not included in new site — owner to revisit if desired)
 - Home Brewing section (removed)
 - Conversational AI widget (chat endpoint reserved as `null`, implementation deferred)
 - CMS or dynamic backend (pure static for now)
