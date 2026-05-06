@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "reel_url": "https://youtu.be/REPLACE_ME",
+  "reel_youtube_id": "REPLACE_ME",
+  "clips": [
+    {
+      "name": "REPLACE_ME — clip name",
+      "description": "REPLACE_ME — populated via watch skill",
+      "client": "REPLACE_ME",
+      "role": "REPLACE_ME",
+      "tech_stack": [],
+      "start_timestamp": "00:00",
+      "end_timestamp": "00:00",
+      "video_url": "https://youtu.be/REPLACE_ME"
+    }
+  ]
+}

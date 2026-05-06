@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-06T02:41:06.386Z",
+  "profile": {
+    "name": "Jeremy Twogood",
+    "title": "Multimedia Producer & Video Editor",
+    "bio": "Full-service media producer and video editor based in Ontario, Canada. I help brands tell compelling stories — from concept through final cut.",
+    "location": "Ontario, Canada",
+    "email": "REPLACE_ME@email.com",
+    "website": "https://jeremytwogood.com"
+  },
+  "skills": [
+    "Video Editing",
+    "Motion Graphics",
+    "Colour Grading",
+    "Aerial Videography",
+    "Animation",
+    "AI Tooling",
+    "Claude API",
+    "Software Development"
+  ],
+  "clients": [
+    "Google",
+    "Microsoft Xbox",
+    "Shell",
+    "Sony Ericsson",
+    "Sobeys",
+    "Volvo",
+    "Mitsubishi Motors",
+    "Irish Productions",
+    "Canova Media"
+  ],
+  "projects": [
+    {
+      "id": "shell-ojibway-artist",
+      "name": "Shell Ojibway Artist Feature",
+      "client": "Shell",
+      "role": [
+        "Editor",
+        "Colour Grade"
+      ],
+      "description": "Documentary feature celebrating Ojibway artist John Williams in Sarnia, produced for Shell's cultural programming.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    },
+    {
+      "id": "xbox-forza-montreal",
+      "name": "Microsoft Xbox Ad Campaign",
+      "client": "Microsoft Xbox",
+      "role": [
+        "Aerial Videographer"
+      ],
+      "description": "Aerial videography for the Xbox One Source Forza Motorsport 5 activation campaign in Montreal.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    },
+    {
+      "id": "ns-day-of-mourning",
+      "name": "Nova Scotia Day of Mourning",
+      "client": "NS WorkSafeForLife",
+      "role": [
+        "Editor"
+      ],
+      "description": "Broadcast spot and extended cut for Nova Scotia's Day of Mourning 2022 Westray remembrance.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    },
+    {
+      "id": "resurrecting-retail",
+      "name": "Resurrecting Retail",
+      "client": "Retail Prophet",
+      "role": [
+        "Editor",
+        "Motion GFX"
+      ],
+      "description": "Trailer and event video for Retail Prophet's Resurrecting Retail book launch.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    },
+    {
+      "id": "dean-miller-fine-art",
+      "name": "Dean Miller Fine Art",
+      "client": "Dean Miller",
+      "role": [
+        "Editor"
+      ],
+      "description": "Artist profile video for fine art painter Dean Miller.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    },
+    {
+      "id": "make-a-180",
+      "name": "Make A 180 — Series Pitch",
+      "client": "Jeremy Twogood",
+      "role": [
+        "Editor",
+        "Animation"
+      ],
+      "description": "Series pitch video for Make A 180.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    },
+    {
+      "id": "fuzz-box",
+      "name": "The FUzZ Box",
+      "client": "TalkTOMyStomach",
+      "role": [
+        "Editor"
+      ],
+      "description": "Event teaser video for The FUzZ Box food event.",
+      "youtube_url": "https://youtu.be/REPLACE_ME"
+    }
+  ],
+  "ai_builds": [
+    {
+      "id": "gibbon-knight",
+      "name": "The Gibbon Knight",
+      "description": "An AI-powered agent built with the Claude API. Replace with real description.",
+      "tech_stack": [
+        "Claude API",
+        "Python"
+      ],
+      "role": "Creator",
+      "status": "in-dev",
+      "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+      "live_url": null
+    },
+    {
+      "id": "rome-brone",
+      "name": "Rome Brone",
+      "description": "A note-linking and memory system for AI-assisted workflows. Replace with real description.",
+      "tech_stack": [
+        "Claude API",
+        "Node.js"
+      ],
+      "role": "Creator",
+      "status": "live",
+      "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+      "live_url": null
+    },
+    {
+      "id": "unbusy-app",
+      "name": "Unbusy App",
+      "description": "A productivity tool designed to reduce cognitive overhead. Replace with real description.",
+      "tech_stack": [
+        "React",
+        "Node.js"
+      ],
+      "role": "Creator",
+      "status": "in-dev",
+      "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+      "live_url": null
+    },
+    {
+      "id": "bike-app",
+      "name": "Bike App",
+      "description": "A cycling companion application. Replace with real description.",
+      "tech_stack": [
+        "React Native"
+      ],
+      "role": "Creator",
+      "status": "in-dev",
+      "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+      "live_url": null
+    }
+  ],
+  "reel": {
+    "url": "https://youtu.be/REPLACE_ME",
+    "clips_count": 1,
+    "index_url": "/reel-index.json"
+  },
+  "availability_url": "https://jeremytwogood.com/availability.json",
+  "sections": [
+    {
+      "id": "hero",
+      "label": "Home",
+      "url": "/#hero"
+    },
+    {
+      "id": "reel",
+      "label": "Reel",
+      "url": "/reel"
+    },
+    {
+      "id": "clients",
+      "label": "Clients",
+      "url": "/#clients"
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "url": "/#projects"
+    },
+    {
+      "id": "ai-builds",
+      "label": "AI Builds",
+      "url": "/ai-builds"
+    },
+    {
+      "id": "contact",
+      "label": "Contact",
+      "url": "/#contact"
+    }
+  ],
+  "endpoints": {
+    "agent_data": "/agent-data.json",
+    "reel_index": "/reel-index.json",
+    "availability": "/availability.json",
+    "agent_manifest": "/.well-known/agent.json"
+  }
+}
