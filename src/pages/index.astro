@@ -1,6 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Reel from '../components/Reel.astro';
+import Clients from '../components/Clients.astro';
+import Projects from '../components/Projects.astro';
+import AIBuilds from '../components/AIBuilds.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
 ---
 <BaseLayout>
-  <p>Scaffold</p>
+  <Nav />
+  <main>
+    <Hero />
+    <Reel />
+    <Clients />
+    <Projects />
+    <AIBuilds />
+    <Contact />
+  </main>
+  <Footer />
 </BaseLayout>

@@ -1,0 +1,15 @@
+---
+import profile from '../data/profile.json';
+---
+<section id="clients" class="clients" aria-label="Notable clients">
+  <div class="clients__container">
+    <h2 class="clients__heading">Clients</h2>
+    <ul class="clients__grid" role="list" aria-label="Client list">
+      {profile.clients.map((client) => (
+        <li class="clients__item">
+          <span class="clients__name">{client}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

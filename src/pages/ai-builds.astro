@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import AIBuildsGrid from '../components/AIBuildsGrid.astro';
+import Footer from '../components/Footer.astro';
+import aiBuilds from '../data/ai-builds.json';
+import profile from '../data/profile.json';
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `AI Builds — ${profile.name}`,
+  description: 'Software and AI tools built by Jeremy Twogood.',
+  itemListElement: aiBuilds.map((build, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'SoftwareApplication',
+      name: build.name,
+      description: build.description,
+      applicationCategory: 'DeveloperApplication',
+      url: build.live_url || build.github_url,
+      author: {
+        '@type': 'Person',
+        name: profile.name,
+        url: profile.website,
+      },
+    },
+  })),
+};
+---
+<BaseLayout
+  title={`AI Builds — ${profile.name}`}
+  description="Software and AI tools built by Jeremy Twogood using the Claude API and related technologies."
+  pageType="ai-builds"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(itemListSchema, null, 2)} />
+  </Fragment>
+  <Nav />
+  <main>
+    <AIBuildsGrid />
+  </main>
+  <Footer />
+</BaseLayout>

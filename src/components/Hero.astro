@@ -1,0 +1,14 @@
+---
+import profile from '../data/profile.json';
+---
+<section id="hero" class="hero" aria-label="Introduction">
+  <div class="hero__content">
+    <h1 class="hero__name">{profile.name}</h1>
+    <p class="hero__title">{profile.title}</p>
+    <p class="hero__tagline">{profile.tagline}</p>
+    <p class="hero__bio">{profile.bio}</p>
+    <a href="/reel" class="hero__cta" aria-label="Watch Jeremy Twogood's demo reel">
+      Watch the Reel
+    </a>
+  </div>
+</section>

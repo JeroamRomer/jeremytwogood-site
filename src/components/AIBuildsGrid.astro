@@ -1,0 +1,61 @@
+---
+import aiBuilds from '../data/ai-builds.json';
+---
+<section id="ai-builds-grid" class="ai-builds-grid" aria-label="All AI and software builds">
+  <div class="ai-builds-grid__container">
+    <h1 class="ai-builds-grid__heading">AI Builds</h1>
+    <p class="ai-builds-grid__intro">
+      Every software and AI tool I have built or am building.
+      Add an entry to <code>src/data/ai-builds.json</code> to expand this list.
+    </p>
+    <ul class="ai-builds-grid__list" role="list">
+      {aiBuilds.map((build) => (
+        <li class="ai-builds-grid__card" id={`build-${build.id}`}>
+          <article aria-label={build.name}>
+            <header class="ai-builds-grid__card-header">
+              <h2 class="ai-builds-grid__card-title">{build.name}</h2>
+              <span
+                class="ai-builds-grid__status"
+                data-status={build.status}
+                aria-label={`Status: ${build.status}`}
+              >
+                {build.status === 'live' ? 'Live' : build.status === 'in-dev' ? 'In Dev' : 'Archived'}
+              </span>
+            </header>
+            <p class="ai-builds-grid__card-description">{build.description}</p>
+            <p class="ai-builds-grid__card-role">Role: {build.role}</p>
+            <ul class="ai-builds-grid__tech-list" role="list" aria-label="Tech stack">
+              {build.tech_stack.map((tech) => (
+                <li class="ai-builds-grid__tech-tag">{tech}</li>
+              ))}
+            </ul>
+            <div class="ai-builds-grid__card-links">
+              {build.github_url && (
+                <a
+                  href={build.github_url}
+                  class="ai-builds-grid__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${build.name} on GitHub (opens in new tab)`}
+                >
+                  GitHub ↗
+                </a>
+              )}
+              {build.live_url && (
+                <a
+                  href={build.live_url}
+                  class="ai-builds-grid__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${build.name} (opens in new tab)`}
+                >
+                  Live ↗
+                </a>
+              )}
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

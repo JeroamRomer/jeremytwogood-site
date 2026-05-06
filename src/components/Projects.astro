@@ -1,0 +1,36 @@
+---
+import projects from '../data/projects.json';
+---
+<section id="projects" class="projects" aria-label="Video production projects">
+  <div class="projects__container">
+    <h2 class="projects__heading">Work</h2>
+    <ul class="projects__grid" role="list">
+      {projects.map((project) => (
+        <li class="projects__card" id={`project-${project.id}`}>
+          <article aria-label={project.name}>
+            <header class="projects__card-header">
+              <h3 class="projects__card-title">{project.name}</h3>
+              <p class="projects__card-client">{project.client}</p>
+            </header>
+            <p class="projects__card-context">{project.context}</p>
+            <p class="projects__card-description">{project.description}</p>
+            <ul class="projects__role-list" role="list" aria-label="Roles">
+              {project.role.map((r) => (
+                <li class="projects__role-tag">{r}</li>
+              ))}
+            </ul>
+            <a
+              href={project.youtube_url}
+              class="projects__card-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Watch ${project.name} on YouTube (opens in new tab)`}
+            >
+              Watch on YouTube ↗
+            </a>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

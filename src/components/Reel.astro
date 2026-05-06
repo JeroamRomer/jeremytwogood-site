@@ -1,0 +1,36 @@
+---
+import reelIndex from '../data/reel-index.json';
+---
+<section id="reel" class="reel" aria-label="Demo reel">
+  <div class="reel__container">
+    <h2 class="reel__heading">Reel</h2>
+    <div class="reel__embed-wrapper">
+      <iframe
+        class="reel__embed"
+        src={`https://www.youtube.com/embed/${reelIndex.reel_youtube_id}`}
+        title="Jeremy Twogood Demo Sizzle"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+        aria-label="Demo sizzle reel — Jeremy Twogood"
+      ></iframe>
+    </div>
+    <p class="reel__link-out">
+      <a
+        href={reelIndex.reel_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Watch full reel on YouTube (opens in new tab)"
+      >
+        Watch on YouTube ↗
+      </a>
+    </p>
+  </div>
+
+  <!-- Machine-readable reel index for AI agents -->
+  <script
+    id="reel-index-data"
+    type="application/json"
+    set:html={JSON.stringify(reelIndex)}
+  />
+</section>

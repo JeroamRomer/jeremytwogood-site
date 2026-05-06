@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Reel from '../components/Reel.astro';
+import Footer from '../components/Footer.astro';
+import reelIndex from '../data/reel-index.json';
+import profile from '../data/profile.json';
+
+const videoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: 'Demo Sizzle — Twogood Productions',
+  description:
+    'Demo sizzle reel showcasing video editing, motion graphics, colour grade, and aerial work for clients including Google, Xbox, Shell, and Sobeys.',
+  contentUrl: reelIndex.reel_url,
+  embedUrl: `https://www.youtube.com/embed/${reelIndex.reel_youtube_id}`,
+  uploadDate: '2024-01-01',
+  creator: {
+    '@type': 'Person',
+    name: profile.name,
+    url: profile.website,
+  },
+};
+---
+<BaseLayout
+  title={`Reel — ${profile.name}`}
+  description="Demo sizzle reel — video editing, motion graphics, colour grade, and aerial work."
+  pageType="reel"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(videoSchema, null, 2)} />
+  </Fragment>
+  <Nav />
+  <main>
+    <Reel />
+  </main>
+  <Footer />
+</BaseLayout>

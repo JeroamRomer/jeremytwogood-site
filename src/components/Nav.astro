@@ -1,0 +1,16 @@
+---
+import profile from '../data/profile.json';
+---
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav__brand">
+    <a href="/" class="nav__logo" aria-label={`${profile.name} — Home`}>
+      <span class="nav__logo-name">{profile.name}</span>
+    </a>
+  </div>
+  <ul class="nav__links" role="list">
+    <li><a href="/#projects"  class="nav__link">Work</a></li>
+    <li><a href="/reel"       class="nav__link">Reel</a></li>
+    <li><a href="/ai-builds"  class="nav__link">AI Builds</a></li>
+    <li><a href="/#contact"   class="nav__link">Contact</a></li>
+  </ul>
+</nav>

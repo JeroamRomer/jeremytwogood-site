@@ -1,0 +1,65 @@
+---
+import aiBuilds from '../data/ai-builds.json';
+const featured = aiBuilds.filter((b) => b.featured).slice(0, 4);
+---
+<section id="ai-builds" class="ai-builds" aria-label="AI and software builds">
+  <div class="ai-builds__container">
+    <h2 class="ai-builds__heading">AI Builds</h2>
+    <p class="ai-builds__intro">
+      Software and AI tools built alongside the production work.
+    </p>
+    <ul class="ai-builds__grid" role="list">
+      {featured.map((build) => (
+        <li class="ai-builds__card" id={`build-${build.id}`}>
+          <article aria-label={build.name}>
+            <header class="ai-builds__card-header">
+              <h3 class="ai-builds__card-title">{build.name}</h3>
+              <span
+                class="ai-builds__status"
+                data-status={build.status}
+                aria-label={`Status: ${build.status}`}
+              >
+                {build.status === 'live' ? 'Live' : build.status === 'in-dev' ? 'In Dev' : 'Archived'}
+              </span>
+            </header>
+            <p class="ai-builds__card-description">{build.description}</p>
+            <ul class="ai-builds__tech-list" role="list" aria-label="Tech stack">
+              {build.tech_stack.map((tech) => (
+                <li class="ai-builds__tech-tag">{tech}</li>
+              ))}
+            </ul>
+            <div class="ai-builds__card-links">
+              {build.github_url && (
+                <a
+                  href={build.github_url}
+                  class="ai-builds__card-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${build.name} on GitHub (opens in new tab)`}
+                >
+                  GitHub ↗
+                </a>
+              )}
+              {build.live_url && (
+                <a
+                  href={build.live_url}
+                  class="ai-builds__card-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${build.name} (opens in new tab)`}
+                >
+                  Live ↗
+                </a>
+              )}
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+    <p class="ai-builds__see-all">
+      <a href="/ai-builds" class="ai-builds__see-all-link" aria-label="View all AI builds">
+        See all builds →
+      </a>
+    </p>
+  </div>
+</section>

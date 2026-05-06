@@ -1,0 +1,42 @@
+---
+import profile from '../data/profile.json';
+
+const socialLinks = [
+  { key: 'youtube',   label: 'YouTube',   href: profile.social.youtube },
+  { key: 'vimeo',     label: 'Vimeo',     href: profile.social.vimeo },
+  { key: 'instagram', label: 'Instagram', href: profile.social.instagram },
+  { key: 'twitter',   label: 'Twitter/X', href: profile.social.twitter },
+];
+---
+<section id="contact" class="contact" aria-label="Contact Jeremy Twogood">
+  <div class="contact__container">
+    <h2 class="contact__heading">Contact</h2>
+    <p class="contact__intro">
+      Open to project enquiries, collaborations, and conversations.
+    </p>
+    <a
+      href={`mailto:${profile.email}`}
+      class="contact__email"
+      aria-label={`Email Jeremy Twogood at ${profile.email}`}
+    >
+      {profile.email}
+    </a>
+    <nav class="contact__social" aria-label="Social profiles">
+      <ul class="contact__social-list" role="list">
+        {socialLinks.map(({ label, href }) => (
+          <li>
+            <a
+              href={href}
+              class="contact__social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${label} (opens in new tab)`}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</section>
