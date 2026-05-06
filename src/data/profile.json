@@ -1,0 +1,38 @@
+{
+  "name": "Jeremy Twogood",
+  "title": "Multimedia Producer & Video Editor",
+  "tagline": "Craft. Story. Technology.",
+  "bio": "Full-service media producer and video editor based in Ontario, Canada. I help brands tell compelling stories — from concept through final cut.",
+  "location": "Ontario, Canada",
+  "email": "REPLACE_ME@email.com",
+  "website": "https://jeremytwogood.com",
+  "skills": [
+    "Video Editing",
+    "Motion Graphics",
+    "Colour Grading",
+    "Aerial Videography",
+    "Animation",
+    "AI Tooling",
+    "Claude API",
+    "Software Development"
+  ],
+  "clients": [
+    "Google",
+    "Microsoft Xbox",
+    "Shell",
+    "Sony Ericsson",
+    "Sobeys",
+    "Volvo",
+    "Mitsubishi Motors",
+    "Irish Productions",
+    "Canova Media"
+  ],
+  "social": {
+    "youtube": "https://www.youtube.com/@REPLACE_ME",
+    "vimeo": "https://vimeo.com/REPLACE_ME",
+    "instagram": "https://www.instagram.com/REPLACE_ME",
+    "twitter": "https://twitter.com/REPLACE_ME",
+    "soundcloud": "https://soundcloud.com/jeroam",
+    "github": "https://github.com/JeroamRomer"
+  }
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "gibbon-knight",
+    "name": "The Gibbon Knight",
+    "description": "An AI-powered agent built with the Claude API. Replace with real description.",
+    "tech_stack": ["Claude API", "Python"],
+    "role": "Creator",
+    "status": "in-dev",
+    "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+    "live_url": null,
+    "featured": true
+  },
+  {
+    "id": "rome-brone",
+    "name": "Rome Brone",
+    "description": "A note-linking and memory system for AI-assisted workflows. Replace with real description.",
+    "tech_stack": ["Claude API", "Node.js"],
+    "role": "Creator",
+    "status": "live",
+    "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+    "live_url": null,
+    "featured": true
+  },
+  {
+    "id": "unbusy-app",
+    "name": "Unbusy App",
+    "description": "A productivity tool designed to reduce cognitive overhead. Replace with real description.",
+    "tech_stack": ["React", "Node.js"],
+    "role": "Creator",
+    "status": "in-dev",
+    "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+    "live_url": null,
+    "featured": true
+  },
+  {
+    "id": "bike-app",
+    "name": "Bike App",
+    "description": "A cycling companion application. Replace with real description.",
+    "tech_stack": ["React Native"],
+    "role": "Creator",
+    "status": "in-dev",
+    "github_url": "https://github.com/JeroamRomer/REPLACE_ME",
+    "live_url": null,
+    "featured": true
+  }
+]

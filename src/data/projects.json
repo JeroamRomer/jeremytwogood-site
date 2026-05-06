@@ -1,0 +1,79 @@
+[
+  {
+    "id": "shell-ojibway-artist",
+    "name": "Shell Ojibway Artist Feature",
+    "client": "Shell",
+    "context": "Celebrating Culture in Sarnia",
+    "role": ["Editor", "Colour Grade"],
+    "description": "Documentary feature celebrating Ojibway artist John Williams in Sarnia, produced for Shell's cultural programming.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": true
+  },
+  {
+    "id": "xbox-forza-montreal",
+    "name": "Microsoft Xbox Ad Campaign",
+    "client": "Microsoft Xbox",
+    "context": "Forza Motorsport 5 — Montreal",
+    "role": ["Aerial Videographer"],
+    "description": "Aerial videography for the Xbox One Source Forza Motorsport 5 activation campaign in Montreal.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": true
+  },
+  {
+    "id": "ns-day-of-mourning",
+    "name": "Nova Scotia Day of Mourning",
+    "client": "NS WorkSafeForLife",
+    "context": "Westray — 30 Sec Broadcast Spot & Extended Cut",
+    "role": ["Editor"],
+    "description": "Broadcast spot and extended cut for Nova Scotia's Day of Mourning 2022 Westray remembrance.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": true
+  },
+  {
+    "id": "resurrecting-retail",
+    "name": "Resurrecting Retail",
+    "client": "Retail Prophet",
+    "context": "Book Launch Event Video",
+    "role": ["Editor", "Motion GFX"],
+    "description": "Trailer and event video for Retail Prophet's Resurrecting Retail book launch.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": true
+  },
+  {
+    "id": "dean-miller-fine-art",
+    "name": "Dean Miller Fine Art",
+    "client": "Dean Miller",
+    "context": "Artist Profile",
+    "role": ["Editor"],
+    "description": "Artist profile video for fine art painter Dean Miller.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": false
+  },
+  {
+    "id": "make-a-180",
+    "name": "Make A 180 — Series Pitch",
+    "client": "Jeremy Twogood",
+    "context": "Series Pitch",
+    "role": ["Editor", "Animation"],
+    "description": "Series pitch video for Make A 180.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": false
+  },
+  {
+    "id": "fuzz-box",
+    "name": "The FUzZ Box",
+    "client": "TalkTOMyStomach",
+    "context": "Event Teaser Video",
+    "role": ["Editor"],
+    "description": "Event teaser video for The FUzZ Box food event.",
+    "youtube_url": "https://youtu.be/REPLACE_ME",
+    "youtube_id": "REPLACE_ME",
+    "featured": false
+  }
+]
