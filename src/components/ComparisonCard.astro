@@ -21,20 +21,17 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   role="img"
   aria-label={`${project.name} — ${project.type}, ${project.year}. Drag to compare colour grades.`}
 >
-  <!-- Base layer: ungraded (camera original), full width -->
-  <video class="cc-video cc-video--ungraded" src={project.ungraded_src} loop muted playsinline preload="none"></video>
-
-  <!-- Top layer: graded, clipped from left by --pct-inv -->
+  <!-- Bottom layer: graded (always full width, always visible behind) -->
   <video class="cc-video cc-video--graded" src={project.graded_src} loop muted playsinline preload="none"></video>
 
-  <!-- Slider overlay: line + handle + pills + hint -->
+  <!-- Top layer: ungraded, clips from right — drag right reveals more graded underneath -->
+  <video class="cc-video cc-video--ungraded" src={project.ungraded_src} loop muted playsinline preload="none"></video>
+
+  <!-- Slider overlay: vertical line + handle -->
   <div class="cc-slider" aria-hidden="true">
     <div class="cc-slider__line">
       <div class="cc-slider__handle">⇔</div>
-      <div class="cc-slider__pill cc-slider__pill--left">Camera Original →</div>
-      <div class="cc-slider__pill cc-slider__pill--right">← Colour Graded</div>
     </div>
-    <div class="cc-slider__hint">drag to compare</div>
   </div>
 
   <!-- Static thumbnail — sits on top, fades out on hover -->
@@ -76,10 +73,10 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     object-fit: cover;
   }
 
-  /* Graded video: clipped on left, reveals from left as --pct increases */
-  /* --pct-inv = 100 - --pct, set by JS alongside --pct */
-  .cc-video--graded {
-    clip-path: inset(0 0 0 calc(var(--pct-inv, 50) * 1%));
+  /* Ungraded sits on top, clips from right by --pct%.
+     Drag right → more right clipped → more graded (underneath) revealed. */
+  .cc-video--ungraded {
+    clip-path: inset(0 calc(var(--pct, 50) * 1%) 0 0);
   }
 
   /* ── Thumbnail (on top, fades out on hover) ── */
@@ -114,7 +111,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     opacity: 1;
   }
 
-  /* The line moves horizontally with --pct */
+  /* The line tracks --pct across the card */
   .cc-slider__line {
     position: absolute;
     top: 0;
@@ -144,47 +141,6 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     -webkit-backdrop-filter: blur(4px);
   }
 
-  /* Pills sit left/right of the line, children of .cc-slider__line */
-  .cc-slider__pill {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-family: var(--mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    white-space: nowrap;
-  }
-
-  /* Left pill: right edge flush to left of line with gap */
-  .cc-slider__pill--left {
-    right: calc(100% + 12px);
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  /* Right pill: left edge flush to right of line with gap */
-  .cc-slider__pill--right {
-    left: calc(100% + 12px);
-    color: var(--amber);
-  }
-
-  /* Drag hint — centred below handle, fixed position */
-  .cc-slider__hint {
-    position: absolute;
-    bottom: 72px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.2);
-    white-space: nowrap;
-  }
-
   /* ── Disciplines sub-line (extra meta row) ── */
   .cc-disciplines {
     font-family: var(--mono);
@@ -212,9 +168,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   let dragging = false;
 
   function setPct(pct) {
-    const clamped = Math.min(100, Math.max(0, pct));
-    card.style.setProperty('--pct', clamped);
-    card.style.setProperty('--pct-inv', 100 - clamped);
+    card.style.setProperty('--pct', Math.min(100, Math.max(0, pct)));
   }
 
   // Initialise at 50%
@@ -239,8 +193,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   card.addEventListener('pointermove', (e) => {
     if (!dragging) return;
     const rect = card.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width * 100;
-    setPct(pct);
+    setPct((e.clientX - rect.left) / rect.width * 100);
   });
 
   card.addEventListener('pointerup', () => { dragging = false; });
