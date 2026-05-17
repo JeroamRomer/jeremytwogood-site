@@ -1,36 +1,80 @@
 ---
 import projects from '../data/projects.json';
+import ComparisonCard from './ComparisonCard.astro';
+
+const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6','still-3','still-1'];
 ---
-<section id="projects" class="projects" aria-label="Video production projects">
-  <div class="projects__container">
-    <h2 class="projects__heading">Work</h2>
-    <ul class="projects__grid" role="list">
-      {projects.map((project) => (
-        <li class="projects__card" id={`project-${project.id}`}>
-          <article aria-label={project.name}>
-            <header class="projects__card-header">
-              <h3 class="projects__card-title">{project.name}</h3>
-              <p class="projects__card-client">{project.client}</p>
-            </header>
-            <p class="projects__card-context">{project.context}</p>
-            <p class="projects__card-description">{project.description}</p>
-            <ul class="projects__role-list" role="list" aria-label="Roles">
-              {project.role.map((r) => (
-                <li class="projects__role-tag">{r}</li>
-              ))}
-            </ul>
-            <a
-              href={project.youtube_url}
-              class="projects__card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Watch ${project.name} on YouTube (opens in new tab)`}
+<section id="work" class="section section--dark grain" aria-label="Selected work">
+  <div class="wrap">
+    <div class="section-head no-border">
+      <div>
+        <span class="eyebrow">Selected Work</span>
+        <h2 class="section-title">Twenty years of<br/>solutions delivered.</h2>
+      </div>
+      <span class="section-head__count">08 Projects · 2016—2026</span>
+    </div>
+
+    <div class="rainbow-rule" data-rainbow aria-hidden="true">
+      <span style="flex:8;background:#5fb3e8"></span>
+      <span style="flex:3;background:#0a0a0a"></span>
+      <span style="flex:5;background:#222a45"></span>
+      <span style="flex:4;background:#3a8a4d"></span>
+      <span style="flex:6;background:var(--amber)"></span>
+      <span style="flex:7;background:#d94a3d"></span>
+      <span style="flex:3;background:#1a2540"></span>
+      <span style="flex:9;background:#5fb3e8"></span>
+      <span style="flex:4;background:#0a0a0a"></span>
+      <span style="flex:5;background:#2f4a3a"></span>
+      <span style="flex:5;background:var(--amber)"></span>
+      <span style="flex:4;background:#f0c64a"></span>
+      <span style="flex:6;background:#d94a3d"></span>
+      <span style="flex:4;background:#6b3a6e"></span>
+      <span style="flex:7;background:#5fb3e8"></span>
+    </div>
+
+    <div class="work-grid">
+      {projects.map((project, i) => {
+        const idx = String(i + 1).padStart(2, '0');
+        const spanClass = `span-${project.span}`;
+        const stillClass = stillClasses[i] || 'still-1';
+        const hasThumbnail = !!project.thumbnail;
+        const href = project.coming_soon
+          ? '#'
+          : (project.youtube_url || project.vimeo_url || project.facebook_url || '#');
+        const label = `${project.client} — ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
+        if (project.comparison) {
+          return <ComparisonCard project={project} index={idx} />;
+        }
+        return (
+          <a
+            class={`work-card ${spanClass}`}
+            href={href}
+            target={project.coming_soon ? undefined : '_blank'}
+            rel={project.coming_soon ? undefined : 'noopener'}
+            aria-label={label}
+          >
+            <div
+              class={`work-card__still ${stillClass}`}
+              style={hasThumbnail ? `background-image:url('${project.thumbnail}');background-size:contain;background-repeat:no-repeat;background-position:center` : undefined}
             >
-              Watch on YouTube ↗
-            </a>
-          </article>
-        </li>
-      ))}
-    </ul>
+              {!hasThumbnail && (
+                <div class="work-card__placeholder">[ video still ]</div>
+              )}
+            </div>
+            <div class="work-card__veil"></div>
+            <span class="work-card__index">{idx}</span>
+            <span class="work-card__corner"></span>
+            {project.coming_soon && <span class="work-card__badge">Coming Soon</span>}
+            <div class="work-card__meta">
+              <div>
+                <div class="work-card__client">{project.name}</div>
+                <div class="work-card__type">{project.type}</div>
+              </div>
+              <div class="work-card__year">{project.year}</div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
   </div>
 </section>
