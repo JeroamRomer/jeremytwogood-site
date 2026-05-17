@@ -1,14 +1,28 @@
 ---
-import profile from '../data/profile.json';
 ---
-<section id="hero" class="hero" aria-label="Introduction">
-  <div class="hero__content">
-    <h1 class="hero__name">{profile.name}</h1>
-    <p class="hero__title">{profile.title}</p>
-    <p class="hero__tagline">{profile.tagline}</p>
-    <p class="hero__bio">{profile.bio}</p>
-    <a href="/reel" class="hero__cta" aria-label="Watch Jeremy Twogood's demo reel">
-      Watch the Reel
-    </a>
+<header id="top" class="section section--light hero">
+  <div class="wrap" style="width:100%">
+    <div class="hero__meta">
+      <span>Toronto, ON · 43.65°N</span>
+      <span class="live">Available — 2026</span>
+      <span>EST · GMT−5</span>
+    </div>
+
+    <h1>Jeremy<br />Twogood<span class="amp">.</span></h1>
+
+    <div class="hero__rule" aria-hidden="true"></div>
+
+    <p class="hero__tagline">
+      Multimedia Producer<span class="sep">·</span>Video Editor<span class="sep">·</span>AI Tooling.
+    </p>
+
+    <div class="hero__ctas">
+      <a class="btn btn--primary" href="https://www.youtube.com/watch?v=Tl1n3hu4e8I" target="_blank" rel="noopener">
+        Watch Sizzle <span class="arrow">→</span>
+      </a>
+      <a class="btn btn--ghost" href="#work">
+        View Work <span class="arrow">↓</span>
+      </a>
+    </div>
   </div>
-</section>
+</header>

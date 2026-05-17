@@ -1,0 +1,104 @@
+---
+interface Props {
+  size?: number;
+  color?: string;
+}
+const { size = 40, color = '#1a1a1a' } = Astro.props;
+
+const reelSize = Math.round(size * 0.82);
+const lw       = 3;
+const lineUp   = 4;   // px above container bottom — increase to move line up
+const strokeW    = Number((lw * 24 / reelSize).toFixed(2));
+const reelCenter = Math.round(reelSize / 2);
+const uid      = `bl-${Math.random().toString(36).slice(2, 7)}`;
+---
+<span
+  id={uid}
+  class="brand-logo"
+  style={`font-size:${size}px;color:${color};--lc:${color};--lw:${lw}px;--line-up:${lineUp}px;--reel-center:${reelCenter}px`}
+  aria-label="Twogood Productions."
+>
+  <svg
+    class="brand-logo__reel"
+    width={reelSize}
+    height={reelSize}
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width={strokeW}/>
+    <circle cx="12" cy="5"  r="2" fill="currentColor"/>
+    <circle cx="19" cy="12" r="2" fill="currentColor"/>
+    <circle cx="12" cy="19" r="2" fill="currentColor"/>
+    <circle cx="5"  cy="12" r="2" fill="currentColor"/>
+    <circle cx="12" cy="12" r="2.6" fill="var(--amber)"/>
+  </svg>
+
+  <span class="brand-logo__text">
+    <span class="seg">Two</span><span class="gap-g" style="padding:0 .14em">g</span><span class="seg">ood Productions</span><span class="dot">.</span>
+  </span>
+</span>
+
+<script define:vars={{ uid }}>
+  function measure() {
+    const logo = document.getElementById(uid);
+    if (!logo) return;
+    const gap  = logo.querySelector('.gap-g');
+    const lr   = logo.getBoundingClientRect();
+    const gr   = gap.getBoundingClientRect();
+    const w    = lr.width;
+    logo.style.setProperty('--gs', ((gr.left  - lr.left) / w * 100).toFixed(2) + '%');
+    logo.style.setProperty('--ge', ((gr.right - lr.left) / w * 100).toFixed(2) + '%');
+  }
+  document.fonts.ready.then(measure);
+  window.addEventListener('resize', measure);
+</script>
+
+<style>
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: .2em;
+    position: relative;
+    font-family: var(--display, 'Syne', sans-serif);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  /* single line element layered on top, spanning full width with gap at g */
+  .brand-logo::after {
+    content: '';
+    position: absolute;
+    bottom: var(--line-up);
+    left: 0;
+    right: 0;
+    height: var(--lw);
+    background: linear-gradient(
+      to right,
+      transparent var(--reel-center),
+      var(--lc) var(--reel-center),
+      var(--lc) var(--gs, 42%),
+      transparent var(--gs, 42%),
+      transparent var(--ge, 50%),
+      var(--lc) var(--ge, 50%)
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .brand-logo__reel {
+    flex-shrink: 0;
+    display: block;
+    transform: translateY(1.5px);
+  }
+
+  .brand-logo__text {
+    white-space: nowrap;
+  }
+
+  .dot {
+    color: var(--amber);
+  }
+</style>

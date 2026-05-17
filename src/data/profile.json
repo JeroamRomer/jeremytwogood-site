@@ -2,9 +2,13 @@
   "name": "Jeremy Twogood",
   "title": "Multimedia Producer & Video Editor",
   "tagline": "Craft. Story. Technology.",
-  "bio": "Full-service media producer and video editor based in Ontario, Canada. I help brands tell compelling stories — from concept through final cut.",
+  "bio": [
+    "Jeremy Twogood is a multimedia producer and video editor based in Toronto, with twenty years across broadcast, documentary, and corporate production.",
+    "The work spans long-form documentary, brand films for global clients, and the kind of nuanced corporate edits that demand patience and a steady hand. He produces, directs, and cuts — and increasingly builds AI tools out of genuine excitement for what's happening right now.",
+    "The throughline is craft: a sentence that lands, a cut that holds a beat longer than feels comfortable, a sound bed that disappears into the picture."
+  ],
   "location": "Ontario, Canada",
-  "email": "REPLACE_ME@email.com",
+  "email": "jtwogood@gmail.com",
   "website": "https://jeremytwogood.com",
   "skills": [
     "Video Editing",
@@ -22,17 +26,28 @@
     "Shell",
     "Sony Ericsson",
     "Sobeys",
-    "Volvo",
-    "Mitsubishi Motors",
-    "Irish Productions",
-    "Canova Media"
+    "Mirvish Productions",
+    "Canova Media",
+    "Journeyman Film Company"
   ],
   "social": {
-    "youtube": "https://www.youtube.com/@REPLACE_ME",
-    "vimeo": "https://vimeo.com/REPLACE_ME",
-    "instagram": "https://www.instagram.com/REPLACE_ME",
-    "twitter": "https://twitter.com/REPLACE_ME",
-    "soundcloud": "https://soundcloud.com/jeroam",
-    "github": "https://github.com/JeroamRomer"
-  }
+    "youtube": "https://www.youtube.com/@jtwogood",
+    "vimeo": "https://vimeo.com/jtwogood",
+    "instagram": "https://www.instagram.com/jertwo/",
+    "soundcloud": "https://soundcloud.com/j-twogood",
+    "github": "https://github.com/JeroamRomer",
+    "linkedin": "https://www.linkedin.com/in/jeremy-twogood/"
+  },
+  "tracks": [
+    { "num": "01", "title": "Eagle", "url": "https://soundcloud.com/j-twogood/eagle-beat" },
+    { "num": "02", "title": "From Time (edit)", "url": "https://soundcloud.com/j-twogood/from-time-edit" },
+    { "num": "03", "title": "11 O'Clock", "url": "https://soundcloud.com/j-twogood/11-oclock-01/s-lK77N?si=3932f8d737d9427b82b8ce31b1271cae" },
+    { "num": "04", "title": "Memories Tide", "url": "https://soundcloud.com/j-twogood/friday-night02" },
+    { "num": "05", "title": "Another Place", "url": "https://soundcloud.com/j-twogood/another-place01" },
+    { "num": "06", "title": "Dragged in Silence", "url": "https://soundcloud.com/j-twogood/cat-butt6" },
+    { "num": "07", "title": "Trouble Finds It", "url": "https://soundcloud.com/j-twogood/empack-alt07-beat/s-epxJp?si=7d2ed385be0a4d448468a9346d7889ad" },
+    { "num": "08", "title": "After You", "url": "https://soundcloud.com/j-twogood/bellwood08" },
+    { "num": "09", "title": "Held by the Unmaking", "url": "https://soundcloud.com/j-twogood/oa-samp-1" },
+    { "num": "10", "title": "SEWER FRANK", "url": "https://soundcloud.com/j-twogood/sewer-frank05" }
+  ]
 }

@@ -1,47 +1,8 @@
 ---
-import profile from '../data/profile.json';
-
-const year = new Date().getFullYear();
-const socialLinks = [
-  { label: 'YouTube',   href: profile.social.youtube },
-  { label: 'Vimeo',     href: profile.social.vimeo },
-  { label: 'Instagram', href: profile.social.instagram },
-  { label: 'Twitter/X', href: profile.social.twitter },
-];
 ---
 <footer class="footer" aria-label="Site footer">
-  <div class="footer__container">
-    <nav class="footer__social" aria-label="Social profiles">
-      <ul class="footer__social-list" role="list">
-        {socialLinks.map(({ label, href }) => (
-          <li>
-            <a
-              href={href}
-              class="footer__social-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${label} (opens in new tab)`}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-    <p class="footer__music">
-      I also make music as
-      <a
-        href={profile.social.soundcloud}
-        class="footer__music-link"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Jeroam on SoundCloud (opens in new tab)"
-      >
-        Jeroam
-      </a>.
-    </p>
-    <p class="footer__copy">
-      &copy; {year} {profile.name}. All rights reserved.
-    </p>
+  <div class="footer__inner">
+    <span>© 2026 Jeremy Twogood · Toronto</span>
+    <span>Site, edits, and code by JT · <a href="/llms.txt">llms.txt</a></span>
   </div>
 </footer>

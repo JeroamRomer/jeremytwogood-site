@@ -69,6 +69,7 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
               <div>
                 <div class="work-card__client">{project.name}</div>
                 <div class="work-card__type">{project.type}</div>
+                {project.disciplines && <div class="work-card__disciplines">{project.disciplines}</div>}
               </div>
               <div class="work-card__year">{project.year}</div>
             </div>

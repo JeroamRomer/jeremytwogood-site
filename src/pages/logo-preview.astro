@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LogoBrand from '../components/LogoBrand.astro';
+---
+<BaseLayout title="Logo Preview · Twogood Productions">
+  <main style="min-height:100vh;background:var(--light-bg);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:64px;padding:80px 40px;">
+
+    <!-- On light background -->
+    <div style="display:flex;flex-direction:column;gap:40px;align-items:center">
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--light-mute)">On Light</p>
+      <LogoBrand size={56} />
+      <LogoBrand size={40} />
+      <LogoBrand size={28} />
+    </div>
+
+    <!-- On dark background -->
+    <div style="background:var(--dark-bg);padding:64px 80px;border-radius:4px;display:flex;flex-direction:column;gap:40px;align-items:center">
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dark-mute)">On Dark</p>
+      <LogoBrand size={56} color="#e8e4dc" />
+      <LogoBrand size={40} color="#e8e4dc" />
+      <LogoBrand size={28} color="#e8e4dc" />
+    </div>
+
+  </main>
+</BaseLayout>

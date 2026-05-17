@@ -1,16 +1,88 @@
 ---
-import profile from '../data/profile.json';
 ---
-<nav class="nav" aria-label="Main navigation">
-  <div class="nav__brand">
-    <a href="/" class="nav__logo" aria-label={`${profile.name} — Home`}>
-      <span class="nav__logo-name">{profile.name}</span>
-    </a>
+<nav class="nav is-light" id="nav" aria-label="Primary">
+  <a class="nav__brand" href="#top" aria-label="Jeremy Twogood — home">
+    <span class="nav__brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--amber)">
+        <g class="reel">
+          <circle cx="12" cy="12" r="11" style="stroke: var(--dark-rule)"/>
+          <circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+          <circle cx="12" cy="5" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="19" cy="12" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="12" cy="19" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="5" cy="12" r="2" fill="currentColor" stroke="none"/>
+        </g>
+      </svg>
+    </span>
+    <span class="nav__brand-name">Jeremy Twogood<span class="dot">.</span></span>
+  </a>
+  <button class="nav__burger" id="nav-burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav__links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#builds">Builds</a>
+    <a href="#sound">Sound</a>
+    <a href="#contact">Contact</a>
   </div>
-  <ul class="nav__links" role="list">
-    <li><a href="/#projects"  class="nav__link">Work</a></li>
-    <li><a href="/reel"       class="nav__link">Reel</a></li>
-    <li><a href="/ai-builds"  class="nav__link">AI Builds</a></li>
-    <li><a href="/#contact"   class="nav__link">Contact</a></li>
-  </ul>
 </nav>
+
+<script>
+  // Nav: light/dark adaptive
+  (function(){
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var sections = document.querySelectorAll('section.section, header.section');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var isLight = e.target.classList.contains('section--light');
+          nav.classList.toggle('is-light', isLight);
+        }
+      });
+    }, { rootMargin: '-50px 0px -85% 0px', threshold: 0 });
+    sections.forEach(function(s){ io.observe(s); });
+
+    // active link
+    var links = document.querySelectorAll('.nav__links a');
+    var byHash = {};
+    links.forEach(function(a){ byHash[a.getAttribute('href')] = a; });
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var id = '#' + e.target.id;
+          links.forEach(function(a){ a.classList.remove('is-active'); });
+          if(byHash[id]) byHash[id].classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('section[id]').forEach(function(s){ io2.observe(s); });
+
+    // Burger menu
+    var burger = document.getElementById('nav-burger');
+    if(burger){
+      burger.addEventListener('click', function(){
+        var open = nav.classList.toggle('is-open');
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      nav.querySelectorAll('.nav__links a').forEach(function(a){
+        a.addEventListener('click', function(){
+          nav.classList.remove('is-open');
+          burger.setAttribute('aria-expanded','false');
+        });
+      });
+    }
+
+    // Rainbow rule: animate in when first visible
+    document.querySelectorAll('[data-rainbow]').forEach(function(r){
+      var rio = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            r.classList.add('is-on');
+            rio.unobserve(r);
+          }
+        });
+      }, { threshold: 0.4 });
+      rio.observe(r);
+    });
+  })();
+</script>

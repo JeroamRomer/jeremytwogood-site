@@ -1,0 +1,59 @@
+---
+import profile from '../data/profile.json';
+const tracks = (profile as any).tracks as { num: string; title: string; url: string }[];
+---
+<section id="sound" class="section--dark sound grain" style="padding-left:var(--gutter); padding-right:var(--gutter)" aria-label="Original music compositions">
+  <div class="wrap">
+    <div class="sound__head">
+      <div>
+        <span class="eyebrow">Sound</span>
+        <h2>Original compositions.</h2>
+      </div>
+      <p class="sound__lede">Making music is the work that feeds the work — where the ear goes when it's off the clock.</p>
+    </div>
+
+    <ul class="tracks">
+      {tracks.map((track) => (
+        <li>
+          <span class="tracks__num">{track.num}</span>
+          <a class="tracks__title" href={track.url} target="_blank" rel="noopener">{track.title}</a>
+          <span class="tracks__dur">↗</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="sound__player" id="sound-player" hidden>
+      <iframe id="sc-iframe" allow="autoplay" frameborder="no" scrolling="no" src="" title="SoundCloud player"></iframe>
+    </div>
+
+    <p class="sound__foot">
+      Full catalogue → <a href="https://soundcloud.com/j-twogood/tracks" target="_blank" rel="noopener">soundcloud.com/j-twogood</a>
+    </p>
+  </div>
+</section>
+
+<script>
+  // SoundCloud inline player
+  (function(){
+    var titles = document.querySelectorAll('.tracks__title');
+    var player = document.getElementById('sound-player');
+    var iframe = document.getElementById('sc-iframe');
+    if(!titles.length || !player || !iframe) return;
+    titles.forEach(function(a){
+      a.addEventListener('click', function(e){
+        var url = a.getAttribute('href');
+        if (!url) return;
+        // Private (share-link) tracks can't embed via the widget — open them externally instead.
+        if(/\/s-[A-Za-z0-9]+/.test(url)) return;
+        e.preventDefault();
+        var src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
+          + '&color=%23c8922a&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false';
+        (iframe as HTMLIFrameElement).src = src;
+        (player as HTMLElement).hidden = false;
+        document.querySelectorAll('.tracks li').forEach(function(li){ li.classList.remove('is-playing'); });
+        var li = a.closest('li'); if(li) li.classList.add('is-playing');
+        player.scrollIntoView({behavior:'smooth', block:'nearest'});
+      });
+    });
+  })();
+</script>

@@ -1,61 +1,70 @@
 ---
 import aiBuilds from '../data/ai-builds.json';
+
+function statusLabel(status: string) {
+  if (status === 'live') return 'Live';
+  if (status === 'internal') return 'Internal · Rome Brone';
+  if (status === 'beta') return 'Beta';
+  if (status === 'in-dev') return 'Private Beta';
+  return status;
+}
+
+function statusClass(status: string) {
+  return status === 'live' ? 'build-card__status is-live' : 'build-card__status';
+}
 ---
-<section id="ai-builds-grid" class="ai-builds-grid" aria-label="All AI and software builds">
-  <div class="ai-builds-grid__container">
-    <h1 class="ai-builds-grid__heading">AI Builds</h1>
-    <p class="ai-builds-grid__intro">
-      Every software and AI tool I have built or am building.
-      Add an entry to <code>src/data/ai-builds.json</code> to expand this list.
-    </p>
-    <ul class="ai-builds-grid__list" role="list">
-      {aiBuilds.map((build) => (
-        <li class="ai-builds-grid__card" id={`build-${build.id}`}>
-          <article aria-label={build.name}>
-            <header class="ai-builds-grid__card-header">
-              <h2 class="ai-builds-grid__card-title">{build.name}</h2>
-              <span
-                class="ai-builds-grid__status"
-                data-status={build.status}
-                aria-label={`Status: ${build.status}`}
-              >
-                {build.status === 'live' ? 'Live' : build.status === 'in-dev' ? 'In Dev' : 'Archived'}
-              </span>
-            </header>
-            <p class="ai-builds-grid__card-description">{build.description}</p>
-            <p class="ai-builds-grid__card-role">Role: {build.role}</p>
-            <ul class="ai-builds-grid__tech-list" role="list" aria-label="Tech stack">
+<section id="ai-builds-grid" class="section section--light" aria-label="All AI and software builds">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">AI Builds</span>
+        <h1 class="section-title">Every build,<br/>shipped or in progress.</h1>
+      </div>
+    </div>
+
+    <div class="builds-grid">
+      {aiBuilds.map((build, i) => {
+        const idx = String(i + 1).padStart(2, '0');
+        const hasShot = build.shot_class && build.shot_images && build.shot_images.length > 0;
+        const spanStyle = build.span === 2 ? 'grid-column:span 2' : undefined;
+        return (
+          <article class="build-card" style={spanStyle} id={`build-${build.id}`}>
+            {hasShot && (
+              <div class={`build-card__shot ${build.shot_class}`}>
+                {build.shot_images.map((src, j) => (
+                  <img src={src} alt={build.shot_alts[j] || build.name} loading="lazy" />
+                ))}
+              </div>
+            )}
+            {build.live_url && (
+              <a class="build-card__url" href={build.live_url} target="_blank" rel="noopener">
+                {build.live_url.replace('https://', '')}
+              </a>
+            )}
+            <div class="build-card__top">
+              <h2 class="build-card__name">{build.name}</h2>
+            </div>
+            <p class="build-card__desc">{build.description}</p>
+            <div class="build-card__bottom">
+              <div class="build-card__index">{idx}</div>
+              <span class={statusClass(build.status)}>{statusLabel(build.status)}</span>
+            </div>
+            <div class="build-card__stack">
               {build.tech_stack.map((tech) => (
-                <li class="ai-builds-grid__tech-tag">{tech}</li>
+                <span class="tag">{tech}</span>
               ))}
-            </ul>
-            <div class="ai-builds-grid__card-links">
-              {build.github_url && (
-                <a
-                  href={build.github_url}
-                  class="ai-builds-grid__link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${build.name} on GitHub (opens in new tab)`}
-                >
-                  GitHub ↗
-                </a>
-              )}
-              {build.live_url && (
-                <a
-                  href={build.live_url}
-                  class="ai-builds-grid__link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Open ${build.name} (opens in new tab)`}
-                >
-                  Live ↗
-                </a>
-              )}
+            </div>
+            <div class="build-card__cta">
+              {build.live_url
+                ? <a class="build-card__launch" href={build.live_url} target="_blank" rel="noopener">Try it out <span class="arrow">↗</span></a>
+                : build.status === 'in-dev'
+                  ? <span class="build-card__coming-soon">Coming Soon</span>
+                  : null
+              }
             </div>
           </article>
-        </li>
-      ))}
-    </ul>
+        );
+      })}
+    </div>
   </div>
 </section>

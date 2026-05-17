@@ -46,67 +46,66 @@ test('smoke: index.html has OG meta tags', () => {
 test('smoke: index.html has nav with correct links', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('<nav'), 'nav element must be present');
-  assert.ok(html.includes('href="/#projects"'), 'Work link must point to /#projects');
-  assert.ok(html.includes('href="/reel"'), 'Reel link must be present');
-  assert.ok(html.includes('href="/ai-builds"'), 'AI Builds link must be present');
-  assert.ok(html.includes('href="/#contact"'), 'Contact link must be present');
+  assert.ok(html.includes('href="#work"'), 'Work link must point to #work');
+  assert.ok(html.includes('href="#about"'), 'About link must be present');
+  assert.ok(html.includes('href="#builds"'), 'Builds link must be present');
+  assert.ok(html.includes('href="#sound"'), 'Sound link must be present');
+  assert.ok(html.includes('href="#contact"'), 'Contact link must be present');
 });
 
 // ── Hero ─────────────────────────────────────────────────────────────────────
 
 test('smoke: index.html has hero section with name and CTA', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="hero"'), '#hero section must exist');
+  assert.ok(html.includes('id="top"'), '#top hero section must exist');
   assert.ok(html.includes('Jeremy Twogood'), 'Name must appear in hero');
-  assert.ok(html.includes('Watch the Reel'), 'CTA link must be present');
-  assert.ok(html.includes('href="/reel"'), 'CTA must link to /reel');
+  assert.ok(html.includes('Watch Sizzle'), 'Watch Sizzle CTA must be present');
+  assert.ok(html.includes('youtube.com/watch?v=Tl1n3hu4e8I'), 'CTA must link to sizzle reel');
 });
 
-// ── Reel ─────────────────────────────────────────────────────────────────────
+// ── Work ─────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has reel section with YouTube iframe', () => {
+test('smoke: index.html has work section with video cards', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="reel"'), '#reel section must exist');
-  assert.ok(html.includes('youtube.com/embed'), 'YouTube embed must be present');
-  assert.ok(html.includes('id="reel-index-data"'), 'reel-index data block must be present');
+  assert.ok(html.includes('id="work"'), '#work section must exist');
+  assert.ok(html.includes('Shell'), 'Shell must appear in work section');
+  assert.ok(html.includes('youtube.com'), 'Work cards must link to YouTube');
 });
 
-// ── Clients ──────────────────────────────────────────────────────────────────
+// ── About ────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has clients section with client names', () => {
+test('smoke: index.html has about section', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="clients"'), '#clients section must exist');
-  assert.ok(html.includes('Google'), 'Google must appear in clients');
-  assert.ok(html.includes('Microsoft Xbox'), 'Xbox must appear in clients');
-  assert.ok(html.includes('Shell'), 'Shell must appear in clients');
-});
-
-// ── Projects ─────────────────────────────────────────────────────────────────
-
-test('smoke: index.html has projects section with video cards', () => {
-  const html = getHtml('index.html');
-  assert.ok(html.includes('id="projects"'), '#projects section must exist');
-  assert.ok(html.includes('Shell Ojibway Artist Feature'), 'First project name must appear');
-  assert.ok(html.includes('youtube.com'), 'Projects must link to YouTube');
-  assert.ok(html.includes('class="projects__role-tag"'), 'Role tags must be present');
+  assert.ok(html.includes('id="about"'), '#about section must exist');
+  assert.ok(html.includes('Jeremy Twogood'), 'Name must appear in about');
+  assert.ok(html.includes('Toronto'), 'Toronto must appear in about');
 });
 
 // ── AI Builds ────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has ai-builds section with preview cards', () => {
+test('smoke: index.html has builds section with cards', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="ai-builds"'), '#ai-builds section must exist');
-  assert.ok(html.includes('The Gibbon Knight'), 'First AI build must appear');
-  assert.ok(html.includes('href="/ai-builds"'), '"See all builds" link must be present');
-  assert.ok(html.includes('class="ai-builds__status"'), 'Status badges must be present');
+  assert.ok(html.includes('id="builds"'), '#builds section must exist');
+  assert.ok(html.includes('Gibbon Knight'), 'Gibbon Knight must appear in builds');
+  assert.ok(html.includes('build-card__status'), 'Status badges must be present');
 });
 
 test('smoke: /ai-builds/index.html exists with full grid', () => {
   const html = getHtml('ai-builds/index.html');
-  assert.ok(html.includes('The Gibbon Knight'), 'Gibbon Knight must appear');
-  assert.ok(html.includes('Rome Brone'), 'Rome Brone must appear');
-  assert.ok(html.includes('Unbusy App'), 'Unbusy must appear');
-  assert.ok(html.includes('Bike App'), 'Bike App must appear');
+  assert.ok(html.includes('Gibbon Knight'), 'Gibbon Knight must appear');
+  assert.ok(html.includes('Production Intelligence'), 'Production Intelligence must appear');
+  assert.ok(html.includes('Unbusy Scanner'), 'Unbusy Scanner must appear');
+  assert.ok(html.includes('MCP Integrator'), 'MCP Integrator must appear');
+  assert.ok(html.includes('Biking App'), 'Biking App must appear');
+});
+
+// ── Sound ─────────────────────────────────────────────────────────────────────
+
+test('smoke: index.html has sound section with tracks', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('id="sound"'), '#sound section must exist');
+  assert.ok(html.includes('soundcloud.com/j-twogood'), 'SoundCloud link must be present');
+  assert.ok(html.includes('Original compositions'), 'Section heading must be present');
 });
 
 // ── Contact & Footer ─────────────────────────────────────────────────────────
@@ -115,32 +114,32 @@ test('smoke: index.html has contact section with email and social links', () => 
   const html = getHtml('index.html');
   assert.ok(html.includes('id="contact"'), '#contact section must exist');
   assert.ok(html.includes('mailto:'), 'Email link must be present');
-  assert.ok(html.includes('youtube.com'), 'YouTube link must be in contact');
+  assert.ok(html.includes('linkedin.com'), 'LinkedIn link must be in contact');
 });
 
-test('smoke: index.html has footer with Jeroam SoundCloud line', () => {
+test('smoke: index.html has footer', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('<footer'), 'footer element must be present');
-  assert.ok(html.includes('soundcloud.com/jeroam'), 'Jeroam SoundCloud link must be in footer');
-  assert.ok(html.includes('Jeroam'), 'Jeroam name must appear in footer');
+  assert.ok(html.includes('Jeremy Twogood'), 'Name must appear in footer');
+  assert.ok(html.includes('llms.txt'), 'llms.txt link must be in footer');
 });
 
 // ── Section order ────────────────────────────────────────────────────────────
 
 test('smoke: index.html section order is correct', () => {
   const html = getHtml('index.html');
-  const heroIdx     = html.indexOf('id="hero"');
-  const reelIdx     = html.indexOf('id="reel"');
-  const clientsIdx  = html.indexOf('id="clients"');
-  const projectsIdx = html.indexOf('id="projects"');
-  const aiBuildsIdx = html.indexOf('id="ai-builds"');
-  const contactIdx  = html.indexOf('id="contact"');
+  const topIdx    = html.indexOf('id="top"');
+  const workIdx   = html.indexOf('id="work"');
+  const aboutIdx  = html.indexOf('id="about"');
+  const buildsIdx = html.indexOf('id="builds"');
+  const soundIdx  = html.indexOf('id="sound"');
+  const contactIdx = html.indexOf('id="contact"');
 
-  assert.ok(heroIdx     < reelIdx,     'hero must come before reel');
-  assert.ok(reelIdx     < clientsIdx,  'reel must come before clients');
-  assert.ok(clientsIdx  < projectsIdx, 'clients must come before projects');
-  assert.ok(projectsIdx < aiBuildsIdx, 'projects must come before ai-builds');
-  assert.ok(aiBuildsIdx < contactIdx,  'ai-builds must come before contact');
+  assert.ok(topIdx     < workIdx,    'top/hero must come before work');
+  assert.ok(workIdx    < aboutIdx,   'work must come before about');
+  assert.ok(aboutIdx   < buildsIdx,  'about must come before builds');
+  assert.ok(buildsIdx  < soundIdx,   'builds must come before sound');
+  assert.ok(soundIdx   < contactIdx, 'sound must come before contact');
 });
 
 // ── Standalone pages ─────────────────────────────────────────────────────────

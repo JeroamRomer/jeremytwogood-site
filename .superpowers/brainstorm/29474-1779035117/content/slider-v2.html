@@ -1,0 +1,74 @@
+<h2>Revised — ungraded left, graded right</h2>
+<p class="subtitle">Slider moves right to reveal your grade. Two options for how to communicate the full post scope in the metadata.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0;overflow:hidden;border-radius:6px 6px 0 0">
+      <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;overflow:hidden;cursor:ew-resize">
+        <!-- Ungraded side (left, full width base) -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#6a6255 0%,#8a7a65 40%,#5a5248 100%);display:flex;align-items:center;justify-content:center">
+        </div>
+        <!-- Graded side (right, revealed by slider) -->
+        <div style="position:absolute;inset:0;left:50%;background:linear-gradient(135deg,#1a2535 0%,#2a3f55 40%,#1c3040 100%)"></div>
+        <!-- Slider line -->
+        <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:rgba(255,255,255,0.8);transform:translateX(-50%)">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center">
+            <span style="font-size:12px;color:#fff">⇔</span>
+          </div>
+        </div>
+        <!-- Floating pill labels -->
+        <div style="position:absolute;top:50%;left:calc(50% - 140px);transform:translateY(-50%);background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:20px;font-size:9px;font-family:monospace;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap">Camera Original →</div>
+        <div style="position:absolute;top:50%;left:calc(50% + 10px);transform:translateY(-50%);background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:20px;font-size:9px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap">← Colour Graded</div>
+        <!-- drag hint -->
+        <div style="position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-size:9px;font-family:monospace;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:2px;white-space:nowrap">drag to compare</div>
+        <!-- Meta: type = full post, subtitle lists disciplines -->
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,rgba(0,0,0,0.85));display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <div style="font-size:16px;font-family:serif;color:#fff;font-weight:600;letter-spacing:-0.01em">Thales Canada · RCN</div>
+            <div style="font-size:10px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1px;margin-top:4px">Full Post-Production</div>
+            <div style="font-size:9px;font-family:monospace;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Motion Graphics · Titles · Audio Mix · Colour Grade</div>
+          </div>
+          <div style="font-size:11px;font-family:monospace;color:#c8922a;flex-shrink:0;margin-left:16px">2021</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Full discipline list in metadata</h3>
+      <p>Type line: "Full Post-Production" in amber. Sub-line beneath it lists every discipline in muted mono text. Clear at a glance that grading was one part of a larger scope.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0;overflow:hidden;border-radius:6px 6px 0 0">
+      <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;overflow:hidden;cursor:ew-resize">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#6a6255 0%,#8a7a65 40%,#5a5248 100%)"></div>
+        <div style="position:absolute;inset:0;left:50%;background:linear-gradient(135deg,#1a2535 0%,#2a3f55 40%,#1c3040 100%)"></div>
+        <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:rgba(255,255,255,0.8);transform:translateX(-50%)">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center">
+            <span style="font-size:12px;color:#fff">⇔</span>
+          </div>
+        </div>
+        <div style="position:absolute;top:50%;left:calc(50% - 140px);transform:translateY(-50%);background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:20px;font-size:9px;font-family:monospace;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap">Camera Original →</div>
+        <div style="position:absolute;top:50%;left:calc(50% + 10px);transform:translateY(-50%);background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:20px;font-size:9px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap">← Colour Graded</div>
+        <div style="position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-size:9px;font-family:monospace;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:2px;white-space:nowrap">drag to compare</div>
+        <!-- Meta: name includes RCN context, type is tighter -->
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,rgba(0,0,0,0.85));display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <div style="font-size:16px;font-family:serif;color:#fff;font-weight:600;letter-spacing:-0.01em">Thales Canada</div>
+            <div style="font-size:10px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1px;margin-top:4px">Corporate · Internal · Full Post</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:16px">
+            <div style="font-size:11px;font-family:monospace;color:#c8922a">2021</div>
+            <div style="font-size:9px;font-family:monospace;color:rgba(255,255,255,0.3);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px">Colour grade shown</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Compact type + contextual note</h3>
+      <p>Type: "Corporate · Internal · Full Post" on one line. A small "Colour grade shown" note by the year signals the slider is a focused excerpt — not the whole project. Slightly more editorial.</p>
+    </div>
+  </div>
+
+</div>

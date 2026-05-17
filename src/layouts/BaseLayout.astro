@@ -1,5 +1,6 @@
 ---
 import profile from '../data/profile.json';
+import '../styles/global.css';
 
 interface Props {
   title?: string;
@@ -8,9 +9,11 @@ interface Props {
   pageType?: 'home' | 'reel' | 'ai-builds';
 }
 
+const bioText = Array.isArray(profile.bio) ? profile.bio.join(' ') : profile.bio;
+
 const {
   title = `${profile.name} — ${profile.title}`,
-  description = profile.bio,
+  description = bioText,
   ogImage = '/og-image.jpg',
   pageType = 'home',
 } = Astro.props;
@@ -23,7 +26,7 @@ const personSchema = {
   name: profile.name,
   url: profile.website,
   jobTitle: profile.title,
-  description: profile.bio,
+  description: bioText,
   knowsAbout: profile.skills,
   sameAs: Object.values(profile.social),
 };
@@ -35,6 +38,11 @@ const personSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@300;400;500&family=Jost:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
     <meta name="description" content={description} />

@@ -1,0 +1,91 @@
+<h2>Thales card — slider interaction design</h2>
+<p class="subtitle">Full-width card (span-6). Two options for how the slider labels and metadata are handled.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0;overflow:hidden;border-radius:6px 6px 0 0">
+      <!-- Mockup of slider card -->
+      <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;overflow:hidden;cursor:ew-resize">
+        <!-- Graded side (left) -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a2535 0%,#2a3f55 40%,#1c3040 100%);display:flex;align-items:center;justify-content:center">
+          <span style="color:rgba(200,180,140,0.25);font-size:11px;font-family:monospace;letter-spacing:2px;text-transform:uppercase">GRADED</span>
+        </div>
+        <!-- Ungraded side (right, clipped at 50%) -->
+        <div style="position:absolute;inset:0;left:50%;background:linear-gradient(135deg,#6a6255 0%,#8a7a65 40%,#5a5248 100%);display:flex;align-items:center;justify-content:center">
+          <span style="color:rgba(255,255,255,0.2);font-size:11px;font-family:monospace;letter-spacing:2px;text-transform:uppercase">UNGRADED</span>
+        </div>
+        <!-- Slider line -->
+        <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%)">
+          <!-- Handle -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.4)">
+            <span style="font-size:12px;color:#333">⇔</span>
+          </div>
+        </div>
+        <!-- Corner labels -->
+        <div style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.15);padding:3px 8px;border-radius:3px;font-size:10px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1px">Graded</div>
+        <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.15);padding:3px 8px;border-radius:3px;font-size:10px;font-family:monospace;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px">Ungraded</div>
+        <!-- Meta overlay (bottom) -->
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,rgba(0,0,0,0.8));display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <div style="font-size:16px;font-family:serif;color:#fff;font-weight:600">Thales Canada</div>
+            <div style="font-size:10px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1px;margin-top:3px">Colour Grade Showcase · Corporate · Internal</div>
+          </div>
+          <div style="font-size:11px;font-family:monospace;color:#c8922a">2021</div>
+        </div>
+        <!-- Index -->
+        <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:10px;font-family:monospace;color:rgba(255,255,255,0.3);letter-spacing:1px">08</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Corner labels + bottom meta</h3>
+      <p>Amber "Graded" label top-left, muted "Ungraded" top-right. Client/type/year overlaid at bottom as usual. Slider handle is a white circle with arrows. Clean, matches existing card pattern.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0;overflow:hidden;border-radius:6px 6px 0 0">
+      <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;overflow:hidden;cursor:ew-resize">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a2535 0%,#2a3f55 40%,#1c3040 100%)"></div>
+        <div style="position:absolute;inset:0;left:50%;background:linear-gradient(135deg,#6a6255 0%,#8a7a65 40%,#5a5248 100%)"></div>
+        <!-- Slider line -->
+        <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:rgba(255,255,255,0.8);transform:translateX(-50%)">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+            <span style="font-size:12px;color:#fff">⇔</span>
+          </div>
+        </div>
+        <!-- Floating pill labels that sit on the divider line -->
+        <div style="position:absolute;top:50%;left:calc(50% - 90px);transform:translateY(-50%);background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:20px;font-size:9px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap">← Colour Graded</div>
+        <div style="position:absolute;top:50%;left:calc(50% + 10px);transform:translateY(-50%);background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:20px;font-size:9px;font-family:monospace;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap">Camera Original →</div>
+        <!-- Static intro text (visible before hover) -->
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
+          <div style="font-size:9px;font-family:monospace;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:2px;margin-top:60px">drag to compare</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,rgba(0,0,0,0.8));display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <div style="font-size:16px;font-family:serif;color:#fff;font-weight:600">Thales Canada</div>
+            <div style="font-size:10px;font-family:monospace;color:#c8922a;text-transform:uppercase;letter-spacing:1px;margin-top:3px">Colour Grade Showcase · Corporate · Internal</div>
+          </div>
+          <div style="font-size:11px;font-family:monospace;color:#c8922a">2021</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Floating pill labels + "drag to compare" hint</h3>
+      <p>Labels float as pills flanking the divider line ("← Colour Graded" / "Camera Original →"). A subtle "drag to compare" hint sits below the handle. More descriptive — makes the interaction obvious without corner clutter.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top:20px">
+  <h3>Both options share:</h3>
+  <ul style="margin-top:8px;line-height:1.8;color:var(--text-secondary)">
+    <li>Static thumbnail on idle (no hover) — <code>thales-thumb.jpg</code></li>
+    <li>On hover → thumbnail fades out, both MP4s start playing simultaneously</li>
+    <li>Slider defaults to 50% — left = graded, right = ungraded</li>
+    <li>Dragging (mouse or touch) moves the reveal line in real time</li>
+    <li>No external link — this card doesn't open anything when clicked</li>
+    <li>Metadata: <strong>Thales Canada</strong> · Colour Grade · Corporate · 2021</li>
+  </ul>
+</div>

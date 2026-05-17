@@ -1,0 +1,59 @@
+---
+import profile from '../data/profile.json';
+
+const clientList = [
+  { num: '01', name: 'Shell', kind: 'Corporate' },
+  { num: '02', name: 'Xbox · Microsoft', kind: 'Campaign' },
+  { num: '03', name: 'Simbility', kind: 'Comedy' },
+  { num: '04', name: 'NS Health', kind: 'Documentary' },
+  { num: '05', name: 'CAOT', kind: 'Advocacy' },
+  { num: '06', name: 'Talk T.O. My Stomach', kind: 'Web Series' },
+];
+---
+<section id="about" class="section section--light" aria-label="About Jeremy Twogood">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">About</span>
+        <h2 class="section-title">A producer who<br/>still cuts the picture.</h2>
+      </div>
+      <span class="section-head__count">EST. 2006 · TORONTO</span>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-portrait">
+        <img src="/assets/portrait.jpg" alt="Jeremy Twogood" />
+        <div class="about-portrait__cap">
+          <span>Jeremy Twogood</span>
+          <span class="amber">Toronto · 2026</span>
+        </div>
+      </div>
+
+      <div class="about-bio">
+        {profile.bio.map((para) => (
+          <p>{para}</p>
+        ))}
+        <div class="about-how-i-work">
+          <h3>How I Work</h3>
+          <p>Nobody does their best work dreading Monday. I can't help but build culture into everything — check-ins, shared rituals, spaces that feel worth showing up to.</p>
+        </div>
+        <div class="about-personal">
+          Outside of production work, Jeremy makes electronic music — <a href="https://soundcloud.com/j-twogood" target="_blank" rel="noopener">soundcloud.com/j-twogood</a>.
+        </div>
+      </div>
+
+      <div class="about-clients">
+        <span class="eyebrow" style="margin-bottom:18px; display:inline-flex">Selected Clients</span>
+        <ul class="client-list" style="margin-top:14px">
+          {clientList.map((c) => (
+            <li>
+              <span class="num">{c.num}</span>
+              <span class="name">{c.name}</span>
+              <span class="kind">{c.kind}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

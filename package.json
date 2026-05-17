@@ -14,7 +14,10 @@
     "test": "node --test tests/build-agent-data.test.js tests/smoke.test.js"
   },
   "dependencies": {
-    "astro": "^6.2.2",
-    "@astrojs/sitemap": "latest"
+    "@astrojs/sitemap": "latest",
+    "astro": "^6.2.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
   }
 }

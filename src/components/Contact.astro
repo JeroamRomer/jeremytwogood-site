@@ -1,42 +1,30 @@
 ---
 import profile from '../data/profile.json';
-
-const socialLinks = [
-  { key: 'youtube',   label: 'YouTube',   href: profile.social.youtube },
-  { key: 'vimeo',     label: 'Vimeo',     href: profile.social.vimeo },
-  { key: 'instagram', label: 'Instagram', href: profile.social.instagram },
-  { key: 'twitter',   label: 'Twitter/X', href: profile.social.twitter },
-];
+const social = profile.social as Record<string, string>;
 ---
 <section id="contact" class="contact" aria-label="Contact Jeremy Twogood">
-  <div class="contact__container">
-    <h2 class="contact__heading">Contact</h2>
-    <p class="contact__intro">
-      Open to project enquiries, collaborations, and conversations.
-    </p>
-    <a
-      href={`mailto:${profile.email}`}
-      class="contact__email"
-      aria-label={`Email Jeremy Twogood at ${profile.email}`}
-    >
-      {profile.email}
-    </a>
-    <nav class="contact__social" aria-label="Social profiles">
-      <ul class="contact__social-list" role="list">
-        {socialLinks.map(({ label, href }) => (
-          <li>
-            <a
-              href={href}
-              class="contact__social-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${label} (opens in new tab)`}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+  <div class="contact__inner">
+    <div>
+      <h2>Let's make<br/>something<span class="amber">.</span></h2>
+      <p class="contact__line">Available for broadcast, corporate, and documentary projects. Edits, productions, and the occasional AI build.</p>
+    </div>
+    <div class="contact__links">
+      <div class="contact__row">
+        <span class="label">Email</span>
+        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+      </div>
+      <div class="contact__row">
+        <span class="label">LinkedIn</span>
+        <a href={social.linkedin} target="_blank" rel="noopener">/in/jeremy-twogood</a>
+      </div>
+      <div class="contact__row">
+        <span class="label">SoundCloud</span>
+        <a href="https://soundcloud.com/j-twogood/tracks" target="_blank" rel="noopener">/j-twogood</a>
+      </div>
+      <div class="contact__row">
+        <span class="label">Reel</span>
+        <a href="/reel">jeremytwogood.com/reel</a>
+      </div>
+    </div>
   </div>
 </section>

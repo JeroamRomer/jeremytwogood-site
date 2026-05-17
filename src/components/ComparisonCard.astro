@@ -73,11 +73,8 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     object-fit: cover;
   }
 
-  /* Ungraded sits on top, clips from right by --pct%.
-     Drag right → more right clipped → more graded (underneath) revealed. */
-  .cc-video--ungraded {
-    clip-path: inset(0 calc(var(--pct, 50) * 1%) 0 0);
-  }
+  /* Ungraded sits on top — clip-path set directly by JS */
+  .cc-video--ungraded {}
 
   /* ── Thumbnail (on top, fades out on hover) ── */
   .cc-thumb {
@@ -91,6 +88,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     transition: opacity 300ms ease;
     z-index: 3;
     filter: grayscale(0.15) contrast(1.05);
+    pointer-events: none;
   }
 
   .comparison-card:hover .cc-thumb {
@@ -111,12 +109,12 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     opacity: 1;
   }
 
-  /* The line tracks --pct across the card */
+  /* The line position is set directly by JS */
   .cc-slider__line {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: calc(var(--pct, 50) * 1%);
+    left: 50%;
     width: 2px;
     background: rgba(255, 255, 255, 0.8);
     transform: translateX(-50%);
@@ -164,11 +162,23 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   const card = document.getElementById(uid);
   if (!card) return;
 
-  const videos = card.querySelectorAll('video');
+  const gradedVideo = card.querySelector('.cc-video--graded');
+  const ungradedVideo = card.querySelector('.cc-video--ungraded');
+  const sliderLine = card.querySelector('.cc-slider__line');
   let dragging = false;
+  let syncInterval = null;
 
   function setPct(pct) {
-    card.style.setProperty('--pct', Math.min(100, Math.max(0, pct)));
+    const clamped = Math.min(100, Math.max(0, pct));
+    sliderLine.style.left = clamped + '%';
+    ungradedVideo.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+  }
+
+  // Keep ungraded locked to graded's playhead — runs every 500ms while playing
+  function syncVideos() {
+    if (Math.abs(gradedVideo.currentTime - ungradedVideo.currentTime) > 0.1) {
+      ungradedVideo.currentTime = gradedVideo.currentTime;
+    }
   }
 
   // Initialise at 50%
@@ -176,11 +186,19 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
 
   // Play both videos on hover, pause + reset on leave
   card.addEventListener('mouseenter', () => {
-    videos.forEach(v => v.play().catch(() => {}));
+    // Reset both to frame 0 so they always start in sync
+    gradedVideo.currentTime = 0;
+    ungradedVideo.currentTime = 0;
+    gradedVideo.play().catch(() => {});
+    ungradedVideo.play().catch(() => {});
+    syncInterval = setInterval(syncVideos, 500);
   });
 
   card.addEventListener('mouseleave', () => {
-    videos.forEach(v => v.pause());
+    clearInterval(syncInterval);
+    syncInterval = null;
+    gradedVideo.pause();
+    ungradedVideo.pause();
     setPct(50);
   });
 
