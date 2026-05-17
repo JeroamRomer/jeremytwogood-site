@@ -1,0 +1,245 @@
+---
+interface Props {
+  project: {
+    name: string;
+    type: string;
+    disciplines: string;
+    year: number;
+    thumbnail: string;
+    graded_src: string;
+    ungraded_src: string;
+  };
+  index: string;
+}
+const { project, index } = Astro.props;
+const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
+---
+
+<div
+  id={uid}
+  class="work-card span-6 comparison-card"
+  role="img"
+  aria-label={`${project.name} — ${project.type}, ${project.year}. Drag to compare colour grades.`}
+>
+  <!-- Base layer: ungraded (camera original), full width -->
+  <video class="cc-video cc-video--ungraded" src={project.ungraded_src} loop muted playsinline preload="none"></video>
+
+  <!-- Top layer: graded, clipped from left by --pct-inv -->
+  <video class="cc-video cc-video--graded" src={project.graded_src} loop muted playsinline preload="none"></video>
+
+  <!-- Slider overlay: line + handle + pills + hint -->
+  <div class="cc-slider" aria-hidden="true">
+    <div class="cc-slider__line">
+      <div class="cc-slider__handle">⇔</div>
+      <div class="cc-slider__pill cc-slider__pill--left">Camera Original →</div>
+      <div class="cc-slider__pill cc-slider__pill--right">← Colour Graded</div>
+    </div>
+    <div class="cc-slider__hint">drag to compare</div>
+  </div>
+
+  <!-- Static thumbnail — sits on top, fades out on hover -->
+  <img class="cc-thumb" src={project.thumbnail} alt="" aria-hidden="true" />
+
+  <!-- Veil gradient for meta readability -->
+  <div class="work-card__veil"></div>
+
+  <!-- Index + corner accent (matches existing cards) -->
+  <span class="work-card__index">{index}</span>
+  <span class="work-card__corner"></span>
+
+  <!-- Meta overlay -->
+  <div class="work-card__meta">
+    <div>
+      <div class="work-card__client">{project.name}</div>
+      <div class="work-card__type">{project.type}</div>
+      <div class="cc-disciplines">{project.disciplines}</div>
+    </div>
+    <div class="work-card__year">{project.year}</div>
+  </div>
+</div>
+
+<style>
+  /* Card cursor */
+  .comparison-card {
+    cursor: ew-resize;
+  }
+
+  /* ── Videos ── */
+  .cc-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Graded video: clipped on left, reveals from left as --pct increases */
+  /* --pct-inv = 100 - --pct, set by JS alongside --pct */
+  .cc-video--graded {
+    clip-path: inset(0 0 0 calc(var(--pct-inv, 50) * 1%));
+  }
+
+  /* ── Thumbnail (on top, fades out on hover) ── */
+  .cc-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 1;
+    transition: opacity 300ms ease;
+    z-index: 3;
+    filter: grayscale(0.15) contrast(1.05);
+  }
+
+  .comparison-card:hover .cc-thumb {
+    opacity: 0;
+  }
+
+  /* ── Slider overlay ── */
+  .cc-slider {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .comparison-card:hover .cc-slider {
+    opacity: 1;
+  }
+
+  /* The line moves horizontally with --pct */
+  .cc-slider__line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--pct, 50) * 1%);
+    width: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateX(-50%);
+  }
+
+  .cc-slider__handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* Pills sit left/right of the line, children of .cc-slider__line */
+  .cc-slider__pill {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+  }
+
+  /* Left pill: right edge flush to left of line with gap */
+  .cc-slider__pill--left {
+    right: calc(100% + 12px);
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Right pill: left edge flush to right of line with gap */
+  .cc-slider__pill--right {
+    left: calc(100% + 12px);
+    color: var(--amber);
+  }
+
+  /* Drag hint — centred below handle, fixed position */
+  .cc-slider__hint {
+    position: absolute;
+    bottom: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+  }
+
+  /* ── Disciplines sub-line (extra meta row) ── */
+  .cc-disciplines {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(244, 241, 236, 0.35);
+    margin-top: 4px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: transform 0.35s ease 0.1s, opacity 0.35s ease 0.1s;
+  }
+
+  .comparison-card:hover .cc-disciplines {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script define:vars={{ uid }}>
+  const card = document.getElementById(uid);
+  if (!card) return;
+
+  const videos = card.querySelectorAll('video');
+  let dragging = false;
+
+  function setPct(pct) {
+    const clamped = Math.min(100, Math.max(0, pct));
+    card.style.setProperty('--pct', clamped);
+    card.style.setProperty('--pct-inv', 100 - clamped);
+  }
+
+  // Initialise at 50%
+  setPct(50);
+
+  // Play both videos on hover, pause + reset on leave
+  card.addEventListener('mouseenter', () => {
+    videos.forEach(v => v.play().catch(() => {}));
+  });
+
+  card.addEventListener('mouseleave', () => {
+    videos.forEach(v => v.pause());
+    setPct(50);
+  });
+
+  // Pointer drag — works for mouse and touch
+  card.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    card.setPointerCapture(e.pointerId);
+  });
+
+  card.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const rect = card.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width * 100;
+    setPct(pct);
+  });
+
+  card.addEventListener('pointerup', () => { dragging = false; });
+  card.addEventListener('pointercancel', () => { dragging = false; });
+</script>
