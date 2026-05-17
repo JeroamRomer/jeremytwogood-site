@@ -43,8 +43,6 @@ const tracks = (profile as any).tracks as { num: string; title: string; url: str
       a.addEventListener('click', function(e){
         var url = a.getAttribute('href');
         if (!url) return;
-        // Private (share-link) tracks can't embed via the widget — open them externally instead.
-        if(/\/s-[A-Za-z0-9]+/.test(url)) return;
         e.preventDefault();
         var src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
           + '&color=%23c8922a&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false';

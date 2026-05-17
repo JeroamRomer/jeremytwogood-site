@@ -16,15 +16,15 @@
   {
     "id": "production-intelligence",
     "name": "Production Intelligence",
-    "description": "Internal. The semantic second brain you're talking to right now — pgvector + Anthropic auto-tagging + OpenAI embeddings + MCP server wired into Claude Desktop.",
+    "description": "Internal. A database-backed AI note system for production work — client context, project history, and research stored with semantic search and auto-tagging, accessible directly from my AI tools via a custom MCP server.",
     "tech_stack": ["Postgres", "pgvector", "Whisper", "Anthropic"],
     "role": "Creator",
     "status": "internal",
     "github_url": null,
     "live_url": null,
-    "shot_class": null,
-    "shot_images": [],
-    "shot_alts": [],
+    "shot_class": "build-card__shot--icon",
+    "shot_images": ["/assets/rome-brone.svg"],
+    "shot_alts": ["Rome Brone — Production Intelligence"],
     "featured": true
   },
   {

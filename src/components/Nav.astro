@@ -5,8 +5,8 @@
     <span class="nav__brand-mark" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--amber)">
         <g class="reel">
-          <circle cx="12" cy="12" r="11" style="stroke: var(--dark-rule)"/>
-          <circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+          <circle cx="12" cy="12" r="11" style="stroke: currentColor"/>
+          <circle cx="12" cy="12" r="2.6" fill="var(--amber)" stroke="none"/>
           <circle cx="12" cy="5" r="2" fill="currentColor" stroke="none"/>
           <circle cx="19" cy="12" r="2" fill="currentColor" stroke="none"/>
           <circle cx="12" cy="19" r="2" fill="currentColor" stroke="none"/>
@@ -14,7 +14,7 @@
         </g>
       </svg>
     </span>
-    <span class="nav__brand-name">Jeremy Twogood<span class="dot">.</span></span>
+    <span class="nav__brand-name">Jerem<span class="gap-y">y</span> Two<span class="gap-g">g</span>ood<span class="dot">.</span></span>
   </a>
   <button class="nav__burger" id="nav-burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <div class="nav__links">
@@ -71,6 +71,31 @@
         });
       });
     }
+
+    // Underline gap measurement — y and g descenders
+    (function() {
+      function measureGaps() {
+        var name = document.querySelector('.nav__brand-name');
+        if (!name) return;
+        var gapY = name.querySelector('.gap-y');
+        var gapG = name.querySelector('.gap-g');
+        if (!gapY || !gapG) return;
+        var nr = name.getBoundingClientRect();
+        var overhang = 15; // matches left:-15px on ::after
+        var totalW = nr.width + overhang;
+        function pct(el, side) {
+          var r = el.getBoundingClientRect();
+          var px = (side === 'left' ? r.left : r.right) - nr.left + overhang;
+          return (Math.max(0, px) / totalW * 100).toFixed(1) + '%';
+        }
+        name.style.setProperty('--ys', pct(gapY, 'left'));
+        name.style.setProperty('--ye', pct(gapY, 'right'));
+        name.style.setProperty('--gs', pct(gapG, 'left'));
+        name.style.setProperty('--ge', pct(gapG, 'right'));
+      }
+      document.fonts.ready.then(measureGaps);
+      window.addEventListener('resize', measureGaps);
+    })();
 
     // Rainbow rule: animate in when first visible
     document.querySelectorAll('[data-rainbow]').forEach(function(r){
