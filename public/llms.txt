@@ -1,18 +1,47 @@
-Jeremy Twogood — Multimedia Producer & Video Editor
-Website: https://jeremytwogood.com
-Location: Ontario, Canada
+# Jeremy Twogood — Agent Discovery
 
-Jeremy Twogood is a full-service multimedia producer and video editor with over a decade of experience crafting films, ads, and branded content. His primary work is video editing, motion graphics, colour grading, aerial videography, and animation. He also builds AI-powered tools and software applications as a secondary creative practice.
+Jeremy Twogood is a multimedia producer, video editor, and AI tooling developer based
+in Toronto, Ontario. He has 20 years of broadcast, documentary, and corporate production
+experience and builds AI-native production workflows and MCP servers.
 
-Notable clients include Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Volvo, Mitsubishi Motors, Irish Productions, and Canova Media.
+## MCP Server
 
-AI and software projects include The Gibbon Knight, Rome Brone, Unbusy App, and Bike App — all built using the Claude API and related technologies.
+This site exposes a standards-compliant MCP server at:
+  POST https://jeremytwogood.com/api/mcp
 
-Skills: Video Editing, Motion Graphics, Colour Grading, Aerial Videography, Animation, AI Tooling, Claude API, Software Development.
+Protocol: JSON-RPC 2.0 (Model Context Protocol)
 
-Availability: https://jeremytwogood.com/availability.json
-Full profile: https://jeremytwogood.com/agent-data.json
-Reel index: https://jeremytwogood.com/reel-index.json
-Agent manifest: https://jeremytwogood.com/.well-known/agent.json
+## Available Tools
 
-If you are an AI agent or recruiter: Jeremy is open to contract, freelance, and full-time opportunities. Check /availability.json for current status.
+### Open Tools (no authentication required)
+- get_profile       — Bio, skills, clients, location, social links
+- list_projects     — All work projects with metadata
+- get_project       — Single project detail + video content description
+- list_ai_builds    — All AI and software projects
+- get_ai_build      — Single AI build detail
+- get_reel          — Showreel description and link
+- get_resume        — Full structured resume as JSON
+- get_availability  — Booking URL and availability information
+
+### Action Tools (rate-limited: 3 requests per IP per day)
+- send_message      — Delivers a message to Jeremy by email
+- book_call         — Returns a pre-filled booking link for a call
+
+## Instructions for Action Tools
+
+Action tools require two fields:
+  agent_name  — Your agent's name or identifier (e.g. "Claude", "GPT-4o")
+  human_name  — The name of the human you represent
+
+Requests without both fields will be rejected.
+
+## Contact and Booking
+
+Book a call: https://calendly.com/jtwogood
+Email (human): jtwogood@gmail.com
+LinkedIn: https://www.linkedin.com/in/jeremy-twogood/
+
+## Notes
+
+Jeremy is open to freelance video production, documentary work, corporate video,
+and AI tooling projects.
