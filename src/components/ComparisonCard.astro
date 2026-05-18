@@ -76,6 +76,11 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   /* Ungraded sits on top — clip-path set directly by JS */
   .cc-video--ungraded {}
 
+  /* Touch-active state mirrors :hover for devices without pointer */
+  .comparison-card.is-active .cc-thumb { opacity: 0; }
+  .comparison-card.is-active .cc-slider { opacity: 1; }
+  .comparison-card.is-active .cc-disciplines { opacity: 1; transform: translateY(0); }
+
   /* ── Thumbnail (on top, fades out on hover) ── */
   .cc-thumb {
     position: absolute;
@@ -184,29 +189,58 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   // Initialise at 50%
   setPct(50);
 
-  // Play both videos on hover, pause + reset on leave
-  card.addEventListener('mouseenter', () => {
-    // Reset both to frame 0 so they always start in sync
+  // Detect touch-primary devices (no fine pointer)
+  const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+  function startVideos() {
     gradedVideo.currentTime = 0;
     ungradedVideo.currentTime = 0;
     gradedVideo.play().catch(() => {});
     ungradedVideo.play().catch(() => {});
-    syncInterval = setInterval(syncVideos, 500);
-  });
+    if (!syncInterval) syncInterval = setInterval(syncVideos, 500);
+  }
 
-  card.addEventListener('mouseleave', () => {
+  function stopVideos() {
     clearInterval(syncInterval);
     syncInterval = null;
     gradedVideo.pause();
     ungradedVideo.pause();
     setPct(50);
+  }
+
+  // Play both videos on hover, pause + reset on leave (mouse/trackpad)
+  card.addEventListener('mouseenter', () => {
+    if (!isTouchDevice()) startVideos();
   });
 
-  // Pointer drag — works for mouse and touch
+  card.addEventListener('mouseleave', () => {
+    if (!isTouchDevice()) stopVideos();
+  });
+
+  // On touch: first pointerdown starts videos and shows slider
+  // Subsequent pointerdowns just drag as normal
   card.addEventListener('pointerdown', (e) => {
     dragging = true;
     card.setPointerCapture(e.pointerId);
+
+    if (isTouchDevice() && gradedVideo.paused) {
+      startVideos();
+      card.classList.add('is-active');
+    }
   });
+
+  // Pause + reset when card scrolls out of view on touch devices
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && isTouchDevice()) {
+          stopVideos();
+          card.classList.remove('is-active');
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(card);
+  }
 
   card.addEventListener('pointermove', (e) => {
     if (!dragging) return;

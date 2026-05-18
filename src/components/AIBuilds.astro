@@ -69,3 +69,18 @@ function statusClass(status: string) {
     </div>
   </div>
 </section>
+
+<script>
+  // Tap-to-reveal shots on touch devices
+  if (window.matchMedia('(hover: none)').matches) {
+    document.querySelectorAll('.build-card').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        const target = e.target as Element;
+        if (target.closest('a, button')) return; // let links through
+        const wasActive = card.classList.contains('is-active');
+        document.querySelectorAll('.build-card').forEach((c) => c.classList.remove('is-active'));
+        if (!wasActive) card.classList.add('is-active');
+      });
+    });
+  }
+</script>

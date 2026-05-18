@@ -278,6 +278,12 @@ a{color:inherit;text-decoration:none}
   }
   .nav.is-open{ background:var(--dark-bg); }
   .nav.is-open.is-light{ background:var(--light-bg); }
+  /* Hero: remove full-viewport height on mobile — content flows from top */
+  .hero{
+    min-height:0;
+    justify-content:flex-start;
+    padding-top:96px;
+  }
 }
 
 /* ---------- Hero ---------- */
@@ -902,10 +908,24 @@ a{color:inherit;text-decoration:none}
 }
 .build-card__shot-hint{ display:none; }
 @media (max-width: 720px){
-  .build-card__shot, .build-card__shot-hint{ display:none; }
+  /* Hide overlay shots on mobile, but keep static icon in place */
+  .build-card__shot:not(.build-card__shot--icon), .build-card__shot-hint{ display:none; }
+  .build-card__shot--icon{ display:block; opacity:1; }
+  /* Tap-revealed overlay */
+  .build-card.is-active .build-card__shot:not(.build-card__shot--icon){
+    display:flex;
+    opacity:1;
+    pointer-events:auto;
+  }
 }
 @media (hover: none){
-  .build-card__shot, .build-card__shot-hint{ display:none; }
+  .build-card__shot:not(.build-card__shot--icon), .build-card__shot-hint{ display:none; }
+  .build-card__shot--icon{ opacity:1; }
+  .build-card.is-active .build-card__shot:not(.build-card__shot--icon){
+    display:flex;
+    opacity:1;
+    pointer-events:auto;
+  }
 }
 @media (max-width: 720px){
   .build-card{ padding-top:24px; }
