@@ -8,7 +8,7 @@ import {
   getProject,
   getAiBuild,
   getVideoContent,
-} from './data.ts';
+} from './data.js';
 
 type ToolResult = {
   content: Array<{ type: 'text'; text: string }>;

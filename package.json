@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --test tests/build-agent-data.test.js tests/smoke.test.js",
-    "test:mcp": "node --experimental-strip-types --test tests/mcp-rate-limit.test.ts tests/mcp-tools-open.test.ts tests/mcp-tools-actions.test.ts"
+    "test:mcp": "node --import tsx --test tests/mcp-rate-limit.test.ts tests/mcp-tools-open.test.ts tests/mcp-tools-actions.test.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "latest",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@vercel/node": "^5.8.2",
     "playwright": "^1.60.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "tsx": "^4.22.2"
   }
 }
