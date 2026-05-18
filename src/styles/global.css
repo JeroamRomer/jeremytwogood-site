@@ -861,6 +861,9 @@ a{color:inherit;text-decoration:none}
 .build-card__shot--four img{
   max-width:23%;
   border-radius:12px;
+  height:auto;       /* override height:100% from --phones so aspect ratio is preserved */
+  max-height:80%;
+  object-fit:contain;
 }
 .build-card__shot--icon{
   inset:auto;
@@ -910,7 +913,12 @@ a{color:inherit;text-decoration:none}
 @media (max-width: 720px){
   /* Hide overlay shots on mobile, but keep static icon in place */
   .build-card__shot:not(.build-card__shot--icon), .build-card__shot-hint{ display:none; }
-  .build-card__shot--icon{ display:block; opacity:1; }
+  .build-card__shot--icon{
+    display:block; opacity:1;
+    /* Smaller + tucked higher so it clears the text below */
+    width:54px; height:54px;
+    top:16px; right:16px;
+  }
   /* Tap-revealed overlay */
   .build-card.is-active .build-card__shot:not(.build-card__shot--icon){
     display:flex;
