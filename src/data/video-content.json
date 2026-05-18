@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "shell-john-williams": {
+    "summary": "A seven-minute documentary following Ojibway artist John Williams as he paints a large-scale Indigenous art mural on a Shell Canada oil tanker docked in Sarnia, Ontario. The film blends intimate on-site interviews with John about his cultural identity and creative process, wide establishing shots of the Sarnia industrial waterfront, and aerial drone footage capturing the finished mural from above. A voiceover from John reflects on the meaning of putting his culture on display in an industrial context.",
+    "mood": "cinematic, intimate, documentary",
+    "subjects": ["John Williams", "Shell Canada", "Aamjiwnaang First Nation", "Sarnia, Ontario"],
+    "themes": ["Indigenous identity and cultural pride", "corporate patronage of Indigenous art", "place and belonging", "resilience", "public art"],
+    "transcript_excerpt": "John Williams discusses the significance of painting his cultural imagery on the tanker, reflecting on his Ojibway heritage and the meaning of visibility in an industrial landscape.",
+    "agent_description": "Documentary short produced by Journeyman Video Production for Shell Canada. Editor and partial story editor: Jeremy Twogood. Subject: Ojibway artist John Williams, commissioned by Shell to paint a monumental Indigenous mural on an oil tanker in Sarnia, Ontario. The film is cinematic and intimate — close interviews with John about heritage and identity, wide industrial location shots, and aerial drone coverage of the completed mural. Runtime approximately 7 minutes. Themes: Indigenous identity, corporate patronage, cultural pride, public art, resilience."
+  },
+  "simbility-desk-series": {
+    "summary": "A one-minute absurdist comedy short in which everyday office desk supplies — a stapler, tape dispenser, and other objects — are given distinct voices and personalities and argue with each other about an impending ISO audit. The video is shot in close-up, giving the inanimate objects a sense of presence and character. The humour is dry and workplace-specific, designed to engage staff rather than deliver information.",
+    "mood": "absurdist, comedic, playful",
+    "subjects": ["Simbility (internal corporate client)"],
+    "themes": ["office culture", "absurdist comedy", "workplace humour", "character-driven corporate content"],
+    "transcript_excerpt": "Office supplies argue about an ISO audit in distinct character voices, each blaming the others for not being prepared.",
+    "agent_description": "Internal corporate video produced for Simbility. Editor: Jeremy Twogood. A short-form absurdist comedy in which office desk supplies are given voices and personalities, arguing about an ISO audit. Shot in close-up to give the objects character and presence. Designed to engage staff through humour rather than convey information. Runtime approximately 1 minute. Mood: playful, dry, corporate-absurdist."
+  },
+  "ttms-chef-nuit": {
+    "summary": "A 1:25 instructional short from Talk TO My Stomach in which Chef Nuit Regular of Pai Northern Thai Kitchen in Toronto demonstrates how to prepare and eat Miang Khung — a traditional Thai street food in which multiple fresh ingredients are wrapped and folded inside a leaf. The video uses close-up food cinematography and ingredient lower-thirds (pomelo, chili peppers, garlic, shallots, ginger, lime, shrimp, roasted peanuts, coconut sugar, tamarind reduction) and closes on the Talk TO My Stomach logo.",
+    "mood": "warm, intimate, educational",
+    "subjects": ["Chef Nuit Regular", "Pai Northern Thai Kitchen", "Toronto, Ontario", "Talk TO My Stomach"],
+    "themes": ["Thai food culture", "culinary instruction", "traditional street food", "leaf wraps"],
+    "transcript_excerpt": "Chef Nuit explains: 'You just use the outside, go right to middle of them, right and then left, so create a pocket. You add some of the pomelo in here, chili if you like spicy, get more the red one, some garlic...'",
+    "agent_description": "Short instructional food video produced by Talk TO My Stomach. Editor: Jeremy Twogood. Subject: Chef Nuit Regular of Pai Northern Thai Kitchen (Toronto) demonstrating Miang Khung, a traditional Thai street food involving fresh ingredients wrapped in leaves. Close-up food cinematography with ingredient lower-thirds. Covers the full assembly: pomelo, chili peppers, garlic, shallots, ginger, lime, shrimp, roasted peanuts, tamarind reduction, coconut sugar. Runtime 1:25. Part of Talk TO My Stomach's documentary restaurant series (12 episodes, 350,000+ views)."
+  },
+  "xbox-forza-5": {
+    "summary": "A 1:54 promotional video for the Xbox One Forza Motorsport 5 launch campaign. The video documents a marketing stunt in Montreal in which contest winners were invited to drive real race cars at a racing circuit. It features high-energy handheld and aerial drone footage of the track and cars, excited contestants, and branding for Xbox and Forza Motorsport 5.",
+    "mood": "high-energy, cinematic, aspirational",
+    "subjects": ["Microsoft Xbox", "Forza Motorsport 5", "Montreal, Quebec", "BizMedia"],
+    "themes": ["gaming and motorsport crossover", "experiential marketing", "aspirational brand content", "race cars"],
+    "transcript_excerpt": "Contest winners are invited to drive race cars as part of the Xbox One Forza Motorsport 5 launch — the reward for winning brought real cars, a real track, and a real adrenaline rush.",
+    "agent_description": "Promotional campaign video produced by BizMedia for Microsoft Xbox. Role: aerial drone operator and editor, Jeremy Twogood. Documents a launch event for Forza Motorsport 5 in which Xbox One contest winners drove real race cars at a Montreal circuit. High-energy cinematic edit with aerial drone coverage of the track and vehicles, handheld contestant footage, and Xbox/Forza branding. Runtime approximately 1:54."
+  },
+  "thales-rcn": {
+    "summary": "A six-minute internal corporate video produced for Thales Canada (Aegis Enterprise) covering the Royal Canadian Navy's Arctic and Offshore Patrol Ship (AOPS) and Protector-class Joint Support Ship programs. The video features executive interviews discussing the relational contracting model between Thales and the RCN, B-roll of the Harry DeWolf-class vessels and naval operations, and branded motion graphics and titling.",
+    "mood": "corporate, authoritative, documentary",
+    "subjects": ["Thales Canada", "Royal Canadian Navy", "HMCS Harry DeWolf", "Arctic and Offshore Patrol Ships", "Protector-class Joint Support Ships", "BizMedia"],
+    "themes": ["naval defence procurement", "relational contracting", "Canadian Arctic sovereignty", "institutional partnership"],
+    "transcript_excerpt": "Thales executives discuss the Aegis Enterprise model: a long-term integrated support contract for the Royal Canadian Navy's next-generation patrol and support vessels.",
+    "agent_description": "Internal corporate video produced by BizMedia for Thales Canada. Full post-production including motion graphics, titling, audio mixing, and colour grade: Jeremy Twogood. Covers the RCN Arctic and Offshore Patrol Ship (AOPS / Harry DeWolf class) and Protector-class Joint Support Ship programs under the Aegis Enterprise relational contracting model. Features senior executive interviews and naval B-roll. Runtime approximately 6 minutes. Institutional audience: defence industry and government stakeholders."
+  },
+  "ttms-5-points": {
+    "summary": "A five-minute episode of the Talk TO My Stomach web series, featuring Jeremy Twogood visiting 5 Points Nashville Hot Chicken at Open House Bar in Toronto to try the Devil's Breath challenge — the restaurant's hottest chicken. The video follows the challenge format with humorous hosting, close-up food cinematography, and candid reactions as Jeremy attempts and completes the challenge.",
+    "mood": "fun, irreverent, food-forward",
+    "subjects": ["5 Points Nashville Hot Chicken", "Open House Bar", "Toronto, Ontario", "Jeremy Twogood", "Talk TO My Stomach"],
+    "themes": ["food culture", "spicy food challenge", "Toronto restaurant scene", "hosted food web series"],
+    "transcript_excerpt": "Jeremy takes on the Devil's Breath challenge at 5 Points Nashville Hot Chicken, describing the heat level and his reaction as the challenge progresses.",
+    "agent_description": "Web series episode produced by Talk TO My Stomach. Host and editor: Jeremy Twogood. Features a visit to 5 Points Nashville Hot Chicken at Open House Bar, Toronto, to take the Devil's Breath hot chicken challenge. Combines hosting, close-up food cinematography, and candid reactions. Tone is fun and irreverent. Runtime approximately 5 minutes. Part of Talk TO My Stomach's 12-episode Toronto restaurant documentary series (350,000+ views)."
+  },
+  "ns-health-westray": {
+    "summary": "A 2:18 memorial documentary re-cut for Nova Scotia Health marking the International Day of Mourning. The video honours the 26 men killed in the 1992 Westray Mine explosion in Pictou County, Nova Scotia. It combines archival footage and photographs of the mine and the men who worked there, personal testimony from a family member (Glenn's family), on-screen text about workplace safety, and a tone of deep grief and remembrance.",
+    "mood": "solemn, emotionally sensitive, memorial",
+    "subjects": ["Nova Scotia Health", "Westray Mine", "Pictou County, Nova Scotia", "Journeyman Video Production"],
+    "themes": ["workplace safety and tragedy", "grief and remembrance", "labour history", "memorial", "family loss"],
+    "transcript_excerpt": "A family member reflects on losing Glenn in the Westray Mine explosion, speaking about his life and the lasting impact of the disaster on families and the community.",
+    "agent_description": "Memorial documentary produced by Journeyman Video Production for Nova Scotia Health. Editor: Jeremy Twogood. A re-cut of an existing documentary marking the International Day of Mourning, honouring the 26 workers killed in the 1992 Westray Mine explosion in Pictou County, NS. Combines archival material, personal family testimony, and workplace safety messaging. Emotionally sensitive editorial work requiring restraint and care. Runtime approximately 2:18."
+  },
+  "reel": {
+    "summary": "A 40-second demo sizzle reel for Twogood Productions showcasing a range of Jeremy Twogood's editorial and production work. The reel cuts through segments including a Naked News broadcast segment, motion graphics for the Black Tape Project, close-up food cinematography, 2D animation sequences, and TIFF celebrity coverage. The reel closes on the Twogood Productions title card.",
+    "mood": "punchy, professional, versatile",
+    "subjects": ["Jeremy Twogood", "Twogood Productions", "Naked News", "Black Tape Project", "TIFF"],
+    "themes": ["editorial range", "production versatility", "motion graphics", "broadcast and documentary", "food and lifestyle"],
+    "transcript_excerpt": "No spoken content — the reel is visual-only with music, cut to demonstrate range across formats including broadcast segments, motion graphics, food cinematography, animation, and entertainment coverage.",
+    "agent_description": "Demo sizzle reel for Twogood Productions by Jeremy Twogood. Runtime 40 seconds. Showcases editorial range across: broadcast TV segments (Naked News), motion graphics (Black Tape Project), close-up food cinematography (TTMS), 2D animation, and TIFF celebrity/entertainment coverage. Closes on Twogood Productions title card. Intended audience: potential clients assessing Jeremy's range and craft. Note: Jeremy can supplement this description with a full client list and intent statement.",
+    "jeremy_supplement_needed": true
+  }
+}
