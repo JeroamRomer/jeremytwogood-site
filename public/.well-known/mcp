@@ -1,0 +1,6 @@
+{
+  "mcpVersion": "1.0",
+  "endpoint": "https://jeremytwogood.com/api/mcp",
+  "protocol": "json-rpc-2.0",
+  "transport": "streamable-http"
+}
