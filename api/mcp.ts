@@ -1,8 +1,31 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { createServer } from './_lib/server.js';
+
+let importError: string | null = null;
+let StreamableHTTPServerTransport: any = null;
+let createServer: any = null;
+
+try {
+  const sdk = await import('@modelcontextprotocol/sdk/server/streamableHttp.js');
+  StreamableHTTPServerTransport = sdk.StreamableHTTPServerTransport;
+} catch (e: any) {
+  importError = `SDK import failed: ${e?.message ?? e}`;
+}
+
+if (!importError) {
+  try {
+    const srv = await import('./_lib/server.js');
+    createServer = srv.createServer;
+  } catch (e: any) {
+    importError = `server import failed: ${e?.message ?? e}`;
+  }
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (importError) {
+    res.status(500).json({ importError });
+    return;
+  }
+
   try {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Method not allowed. MCP endpoint requires POST.' });
@@ -15,11 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'unknown';
 
     const server = createServer(clientIp);
-
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
-
+    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
     await server.connect(transport);
     await transport.handleRequest(req, res, req.body);
   } catch (err: unknown) {
