@@ -39,8 +39,8 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
         const stillClass = stillClasses[i] || 'still-1';
         const hasThumbnail = !!project.thumbnail;
         const href = project.coming_soon
-          ? '#'
-          : (project.youtube_url || project.vimeo_url || project.facebook_url || '#');
+          ? null
+          : (project.youtube_url || project.vimeo_url || project.facebook_url || null);
         const label = `${project.client} — ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
         if (project.comparison) {
           return <ComparisonCard project={project} index={idx} />;
@@ -48,9 +48,10 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
         return (
           <a
             class={`work-card ${spanClass}`}
-            href={href}
+            href={href ?? undefined}
             target={project.coming_soon ? undefined : '_blank'}
             rel={project.coming_soon ? undefined : 'noopener'}
+            data-coming-soon={project.coming_soon ? 'true' : undefined}
             aria-label={label}
           >
             <div
@@ -79,3 +80,18 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll('[data-coming-soon]').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const badge = card.querySelector('.work-card__badge') as HTMLElement | null;
+      if (!badge) return;
+      badge.classList.remove('is-flashing');
+      // Force reflow so re-clicking re-triggers
+      void badge.offsetWidth;
+      badge.classList.add('is-flashing');
+      badge.addEventListener('animationend', () => badge.classList.remove('is-flashing'), { once: true });
+    });
+  });
+</script>
