@@ -150,12 +150,12 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   .cc-grade-label {
     font-family: var(--mono);
     font-weight: 500;
-    font-size: 9px;
+    font-size: 13px;
     letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--amber);
     text-align: right;
-    line-height: 1.5;
+    line-height: 1.6;
     opacity: 0;
     transform: translateY(8px);
     transition: transform .35s ease .1s, opacity .35s ease .1s;
@@ -166,31 +166,34 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     transform: translateY(0);
   }
 
-  /* ── "Slide me!" hint ── */
+  /* ── "Slide me!" hint ──
+     Handle center is at (50%, 50%) of the card.
+     Hint sits 70px right and 85px above that — giving a clean ~45° diagonal.
+  ── */
   .cc-slide-hint {
     position: absolute;
-    /* sits just to the right of the handle, slightly above centre */
-    top: calc(50% - 48px);
-    left: calc(50% + 34px);
+    top: calc(50% - 85px);
+    left: calc(50% + 70px);
     font-family: 'Caveat', cursive;
-    font-size: 22px;
+    font-size: 44px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
     white-space: nowrap;
     pointer-events: none;
-    text-shadow: 0 1px 6px rgba(0,0,0,.5);
-    /* little line connecting back to handle */
+    text-shadow: 0 1px 8px rgba(0,0,0,.55);
+    line-height: 1;
   }
+  /* Line from left edge of text, angled down-left at ~45° toward handle */
   .cc-slide-hint::before {
     content: '';
     position: absolute;
-    right: calc(100% + 4px);
-    top: 56%;
-    width: 22px;
-    height: 1px;
-    background: rgba(255,255,255,0.55);
+    right: calc(100% + 6px);
+    top: 50%;
+    width: 72px;
+    height: 1.5px;
+    background: rgba(255,255,255,0.6);
     transform-origin: right center;
-    transform: rotate(18deg);
+    transform: rotate(45deg);
   }
   /* hide after user has dragged once */
   .cc-slide-hint.is-used { display: none; }
