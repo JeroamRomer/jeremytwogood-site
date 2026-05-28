@@ -32,7 +32,16 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     <div class="cc-slider__line">
       <div class="cc-slider__handle">⇔</div>
     </div>
-    <div class="cc-slide-hint">Slide me!</div>
+    <div class="cc-slide-hint">
+      <svg class="cc-hint-line" viewBox="0 0 54 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- curved arrow from right → left, bowing slightly downward (hand-drawn feel) -->
+        <path d="M50,14 C38,22 20,24 4,18" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- arrowhead at left end -->
+        <path d="M4,18 L11,12" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M4,18 L12,24" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Slide me!
+    </div>
   </div>
 
   <!-- Static thumbnail — sits on top, fades out on hover -->
@@ -167,13 +176,16 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   }
 
   /* ── "Slide me!" hint ──
-     Handle center is at (50%, 50%) of the card.
-     Hint sits 70px right and 85px above that — giving a clean ~45° diagonal.
+     Vertically centred with the handle (top: 50% - half line-height).
+     SVG curved arrow sits to the LEFT of the text, pointing at the handle.
   ── */
   .cc-slide-hint {
     position: absolute;
-    top: calc(50% - 85px);
-    left: calc(50% + 70px);
+    top: calc(50% - 22px); /* 22px = half of 44px font — centres with handle */
+    left: calc(50% + 20px); /* just past the handle's right edge */
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-family: 'Caveat', cursive;
     font-size: 44px;
     font-weight: 500;
@@ -182,21 +194,17 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     pointer-events: none;
     text-shadow: 0 1px 8px rgba(0,0,0,.55);
     line-height: 1;
+    transition: opacity .7s ease;
   }
-  /* Line from left edge of text, angled down-left at ~45° toward handle */
-  .cc-slide-hint::before {
-    content: '';
-    position: absolute;
-    right: calc(100% + 6px);
-    top: 50%;
-    width: 72px;
-    height: 1.5px;
-    background: rgba(255,255,255,0.6);
-    transform-origin: right center;
-    transform: rotate(45deg);
+  .cc-hint-line {
+    width: 54px;
+    height: 36px;
+    flex-shrink: 0;
   }
-  /* hide after user has dragged once */
-  .cc-slide-hint.is-used { display: none; }
+  /* Fade out smoothly — no display:none */
+  .cc-slide-hint.is-used {
+    opacity: 0;
+  }
   /* hide on mobile — touch users don't need the prompt */
   @media (max-width: 720px) { .cc-slide-hint { display: none; } }
 
