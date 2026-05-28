@@ -32,6 +32,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     <div class="cc-slider__line">
       <div class="cc-slider__handle">⇔</div>
     </div>
+    <div class="cc-slide-hint">Slide me!</div>
   </div>
 
   <!-- Static thumbnail — sits on top, fades out on hover -->
@@ -51,11 +52,12 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
       <div class="work-card__type">{project.type}</div>
       <div class="cc-disciplines">{project.disciplines}</div>
     </div>
-    <div class="work-card__year">{project.year}</div>
+    <div class="cc-grade-label">Colour Grading<br/>Example</div>
   </div>
 </div>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
   /* Card cursor */
   .comparison-card {
     cursor: ew-resize;
@@ -144,6 +146,57 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     -webkit-backdrop-filter: blur(4px);
   }
 
+  /* ── Colour grading label (replaces year) ── */
+  .cc-grade-label {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    text-align: right;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: transform .35s ease .1s, opacity .35s ease .1s;
+  }
+  .comparison-card:hover .cc-grade-label,
+  .comparison-card.is-active .cc-grade-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── "Slide me!" hint ── */
+  .cc-slide-hint {
+    position: absolute;
+    /* sits just to the right of the handle, slightly above centre */
+    top: calc(50% - 48px);
+    left: calc(50% + 34px);
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    pointer-events: none;
+    text-shadow: 0 1px 6px rgba(0,0,0,.5);
+    /* little line connecting back to handle */
+  }
+  .cc-slide-hint::before {
+    content: '';
+    position: absolute;
+    right: calc(100% + 4px);
+    top: 56%;
+    width: 22px;
+    height: 1px;
+    background: rgba(255,255,255,0.55);
+    transform-origin: right center;
+    transform: rotate(18deg);
+  }
+  /* hide after user has dragged once */
+  .cc-slide-hint.is-used { display: none; }
+  /* hide on mobile — touch users don't need the prompt */
+  @media (max-width: 720px) { .cc-slide-hint { display: none; } }
+
   /* ── Disciplines sub-line (extra meta row) ── */
   .cc-disciplines {
     font-family: var(--mono);
@@ -170,6 +223,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   const gradedVideo = card.querySelector('.cc-video--graded');
   const ungradedVideo = card.querySelector('.cc-video--ungraded');
   const sliderLine = card.querySelector('.cc-slider__line');
+  const slideHint = card.querySelector('.cc-slide-hint');
   let dragging = false;
   let syncInterval = null;
 
@@ -246,6 +300,8 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     if (!dragging) return;
     const rect = card.getBoundingClientRect();
     setPct((e.clientX - rect.left) / rect.width * 100);
+    // Hide hint once user has actually dragged
+    if (slideHint) slideHint.classList.add('is-used');
   });
 
   card.addEventListener('pointerup', () => { dragging = false; });
