@@ -57,7 +57,7 @@
   },
   {
     "id": "bike-app",
-    "name": "Biking App",
+    "name": "Pedal Path",
     "description": "Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for the friend leaderboard.",
     "tech_stack": ["SwiftUI", "Mapbox", "CoreLocation", "Supabase"],
     "role": "Creator",
