@@ -96,7 +96,7 @@ test('smoke: /ai-builds/index.html exists with full grid', () => {
   assert.ok(html.includes('Production Intelligence'), 'Production Intelligence must appear');
   assert.ok(html.includes('Unbusy Scanner'), 'Unbusy Scanner must appear');
   assert.ok(html.includes('MCP Integrator'), 'MCP Integrator must appear');
-  assert.ok(html.includes('Biking App'), 'Biking App must appear');
+  assert.ok(html.includes('Pedal Path'), 'Pedal Path must appear');
 });
 
 // ── Sound ─────────────────────────────────────────────────────────────────────
