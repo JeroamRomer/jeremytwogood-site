@@ -41,6 +41,21 @@ test('smoke: index.html has OG meta tags', () => {
   assert.ok(html.includes('twitter:card'), 'twitter:card must be present');
 });
 
+// ── Chat widget ──────────────────────────────────────────────────────────────
+
+test('smoke: index.html mounts the chat widget with trigger and starters', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('data-chat-widget'), 'chat widget root must be present');
+  assert.ok(html.includes('Ask about my work'), 'panel title must render');
+  assert.ok(html.includes("aria-label=\"Ask about Jeremy's work\""), 'trigger must be labelled');
+  assert.ok(html.includes('colour-grading experience'), 'starter question must render');
+});
+
+test('smoke: chat widget is mounted site-wide (case-study page too)', () => {
+  const html = getHtml('work/shell-john-williams/index.html');
+  assert.ok(html.includes('data-chat-widget'), 'widget must appear on all pages via BaseLayout');
+});
+
 // ── Nav ─────────────────────────────────────────────────────────────────────
 
 test('smoke: index.html has nav with correct links', () => {

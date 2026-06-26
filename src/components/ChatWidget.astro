@@ -1,0 +1,310 @@
+---
+// Floating "chat with my portfolio" widget. Mounted once in BaseLayout, so it
+// appears site-wide. Streams answers from POST /api/chat (Anthropic Haiku),
+// grounded in Jeremy's site data. Read-only Q&A (phase 1).
+const STARTERS = [
+  "What's your colour-grading experience?",
+  'What AI tools have you built?',
+  'Who have you worked with?',
+  'Are you available for work?',
+];
+---
+<div class="cw" data-chat-widget>
+  <button class="cw__trigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="cw-panel" aria-label="Ask about Jeremy's work">
+    <span class="cw__trigger-dot" aria-hidden="true"></span>
+  </button>
+
+  <section id="cw-panel" class="cw__panel" role="dialog" aria-label="Ask about Jeremy Twogood's work" hidden>
+    <header class="cw__head">
+      <span class="cw__dot" aria-hidden="true"></span>
+      <span class="cw__title">Ask about my work</span>
+      <button class="cw__close" type="button" aria-label="Close chat">&times;</button>
+    </header>
+
+    <div class="cw__chips" data-cw-chips>
+      {STARTERS.map((q) => (
+        <button class="cw__chip" type="button" data-cw-starter={q}>{q}</button>
+      ))}
+    </div>
+
+    <div class="cw__msgs" data-cw-msgs aria-live="polite" aria-atomic="false"></div>
+
+    <form class="cw__form" data-cw-form>
+      <input
+        class="cw__input"
+        type="text"
+        name="message"
+        autocomplete="off"
+        placeholder="Ask anything about Jeremy…"
+        aria-label="Your question"
+        data-cw-input
+      />
+      <button class="cw__send" type="submit" aria-label="Send" data-cw-send>&#8593;</button>
+    </form>
+
+    <p class="cw__foot">Answers from Jeremy's site data · may be imperfect</p>
+  </section>
+</div>
+
+<style>
+  .cw {
+    --cw-bg: var(--dark-bg, #111);
+    --cw-fg: var(--dark-fg, #e8e4dc);
+    --cw-mute: var(--dark-mute, #888880);
+    --cw-rule: #2a2823;
+    --cw-amber: var(--amber, #c8922a);
+    font-family: var(--body, 'Inter', sans-serif);
+  }
+
+  /* Trigger */
+  .cw__trigger {
+    position: fixed; right: 22px; bottom: 22px; z-index: 900;
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--cw-bg); border: 1.5px solid var(--cw-amber); cursor: pointer;
+    display: grid; place-items: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .5);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .cw__trigger:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0, 0, 0, .55); }
+  .cw__trigger:focus-visible { outline: 2px solid var(--cw-amber); outline-offset: 3px; }
+  .cw__trigger-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--cw-amber); box-shadow: 0 0 12px var(--cw-amber);
+  }
+  .cw[data-open] .cw__trigger { transform: scale(.9); opacity: .55; }
+
+  /* Panel */
+  .cw__panel {
+    position: fixed; right: 22px; bottom: 88px; z-index: 901;
+    width: 360px; max-width: calc(100vw - 32px); max-height: min(620px, calc(100vh - 120px));
+    display: flex; flex-direction: column;
+    background: var(--cw-bg); color: var(--cw-fg);
+    border: 1px solid var(--cw-rule); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+    animation: cw-pop .2s cubic-bezier(.2, .8, .2, 1);
+  }
+  .cw__panel[hidden] { display: none; }
+
+  .cw__head {
+    display: flex; align-items: center; gap: 9px;
+    padding: 14px 16px; border-bottom: 1px solid var(--cw-rule); flex: 0 0 auto;
+  }
+  .cw__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cw-amber); box-shadow: 0 0 10px var(--cw-amber); }
+  .cw__title {
+    font-family: var(--mono, 'Montserrat', sans-serif);
+    text-transform: uppercase; letter-spacing: .18em; font-size: 10.5px; color: var(--cw-amber);
+  }
+  .cw__close {
+    margin-left: auto; background: transparent; border: 0; cursor: pointer;
+    color: var(--cw-mute); font-size: 20px; line-height: 1; padding: 0 2px;
+    transition: color .15s ease;
+  }
+  .cw__close:hover { color: var(--cw-fg); }
+  .cw__close:focus-visible { outline: 2px solid var(--cw-amber); outline-offset: 2px; border-radius: 4px; }
+
+  .cw__chips { display: flex; flex-wrap: wrap; gap: 7px; padding: 14px 16px 6px; flex: 0 0 auto; }
+  .cw__chips[hidden] { display: none; }
+  .cw__chip {
+    font-family: var(--body, 'Inter', sans-serif); font-size: 11.5px; color: #cdc7bb;
+    background: #16150f; border: 1px solid #34312a; border-radius: 999px;
+    padding: 6px 11px; cursor: pointer; transition: border-color .15s ease, color .15s ease;
+  }
+  .cw__chip:hover { border-color: var(--cw-amber); color: var(--cw-fg); }
+  .cw__chip:focus-visible { outline: 2px solid var(--cw-amber); outline-offset: 2px; }
+
+  .cw__msgs {
+    flex: 1 1 auto; overflow-y: auto; min-height: 60px;
+    padding: 12px 16px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .cw__msgs:empty { display: none; }
+  .cw__bubble { max-width: 88%; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
+  .cw__bubble--user {
+    align-self: flex-end; background: #1d1b15; border: 1px solid #34312a;
+    border-radius: 12px 12px 3px 12px; padding: 8px 12px;
+  }
+  .cw__bubble--bot { align-self: flex-start; color: var(--cw-fg); }
+  .cw__bubble--error { align-self: flex-start; color: #d98a6a; font-size: 12.5px; }
+  .cw__caret {
+    display: inline-block; width: 7px; height: 15px; margin-left: 1px;
+    background: var(--cw-amber); vertical-align: -2px; animation: cw-blink 1s steps(2) infinite;
+  }
+
+  .cw__form {
+    display: flex; align-items: center; gap: 10px; flex: 0 0 auto;
+    margin: 8px 14px 12px; padding: 8px 10px;
+    background: #161512; border: 1px solid #2f2c25; border-radius: 10px;
+  }
+  .cw__form:focus-within { border-color: var(--cw-amber); }
+  .cw__input {
+    flex: 1 1 auto; background: transparent; border: 0; color: var(--cw-fg);
+    font-family: var(--body, 'Inter', sans-serif); font-size: 13.5px; outline: none;
+  }
+  .cw__input::placeholder { color: #6f6c63; }
+  .cw__send {
+    flex: 0 0 auto; width: 28px; height: 28px; border: 0; border-radius: 7px;
+    background: var(--cw-amber); color: #111; font-size: 15px; font-weight: 700;
+    cursor: pointer; display: grid; place-items: center; transition: opacity .15s ease;
+  }
+  .cw__send:disabled { opacity: .45; cursor: default; }
+  .cw__send:focus-visible { outline: 2px solid var(--cw-fg); outline-offset: 2px; }
+
+  .cw__foot {
+    flex: 0 0 auto; margin: 0; padding: 0 16px 12px; text-align: center;
+    font-family: var(--mono-actual, 'JetBrains Mono', monospace);
+    font-size: 9.5px; letter-spacing: .02em; color: #6b6b63;
+  }
+
+  @keyframes cw-pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes cw-blink { 50% { opacity: 0; } }
+
+  @media (max-width: 560px) {
+    .cw__panel {
+      right: 0; left: 0; bottom: 0; width: 100%; max-width: 100%;
+      max-height: 82vh; border-radius: 16px 16px 0 0;
+    }
+    .cw__trigger { right: 16px; bottom: 16px; }
+    .cw[data-open] .cw__trigger { opacity: 0; pointer-events: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cw__panel { animation: none; }
+    .cw__trigger { transition: none; }
+    .cw__caret { animation: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-chat-widget]') as HTMLElement | null;
+    if (!root) return;
+    var trigger = root.querySelector('.cw__trigger') as HTMLButtonElement;
+    var panel = root.querySelector('#cw-panel') as HTMLElement;
+    var closeBtn = root.querySelector('.cw__close') as HTMLButtonElement;
+    var chips = root.querySelector('[data-cw-chips]') as HTMLElement;
+    var msgs = root.querySelector('[data-cw-msgs]') as HTMLElement;
+    var form = root.querySelector('[data-cw-form]') as HTMLFormElement;
+    var input = root.querySelector('[data-cw-input]') as HTMLInputElement;
+    var sendBtn = root.querySelector('[data-cw-send]') as HTMLButtonElement;
+
+    type Msg = { role: 'user' | 'assistant'; content: string };
+    var history: Msg[] = [];
+    var busy = false;
+    var trackedOpen = false;
+    var trackedFirst = false;
+
+    function track(name: string) {
+      try { (window as any).va && (window as any).va('event', { name: name }); } catch (e) { /* analytics optional */ }
+    }
+
+    function open() {
+      panel.hidden = false;
+      root!.setAttribute('data-open', '');
+      trigger.setAttribute('aria-expanded', 'true');
+      input.focus();
+      document.addEventListener('keydown', onKey);
+      if (!trackedOpen) { trackedOpen = true; track('chat_opened'); }
+    }
+
+    function close() {
+      panel.hidden = true;
+      root!.removeAttribute('data-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('keydown', onKey);
+      trigger.focus();
+    }
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') close();
+    }
+
+    function addBubble(cls: string, text: string): HTMLDivElement {
+      var el = document.createElement('div');
+      el.className = 'cw__bubble ' + cls;
+      el.textContent = text;
+      msgs.appendChild(el);
+      msgs.scrollTop = msgs.scrollHeight;
+      return el;
+    }
+
+    function setBusy(state: boolean) {
+      busy = state;
+      input.disabled = state;
+      sendBtn.disabled = state;
+    }
+
+    async function ask(question: string) {
+      if (busy) return;
+      var text = question.trim();
+      if (!text) return;
+
+      if (chips) chips.hidden = true;
+      if (!trackedFirst) { trackedFirst = true; track('chat_first_message'); }
+
+      history.push({ role: 'user', content: text });
+      addBubble('cw__bubble--user', text);
+      input.value = '';
+      setBusy(true);
+
+      var bot = addBubble('cw__bubble--bot', '');
+      var caret = document.createElement('span');
+      caret.className = 'cw__caret';
+      bot.appendChild(caret);
+      var answer = '';
+
+      try {
+        var res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history }),
+        });
+
+        if (!res.ok || !res.body) {
+          var info = await res.json().catch(function () { return { error: 'Something went wrong.' }; });
+          bot.remove();
+          addBubble('cw__bubble--error', info.error || 'Something went wrong.');
+          setBusy(false);
+          input.focus();
+          return;
+        }
+
+        var reader = res.body.getReader();
+        var decoder = new TextDecoder();
+        var buffer = '';
+
+        while (true) {
+          var chunk = await reader.read();
+          if (chunk.done) break;
+          buffer += decoder.decode(chunk.value, { stream: true });
+          var parts = buffer.split('\n\n');
+          buffer = parts.pop() || '';
+          for (var i = 0; i < parts.length; i++) {
+            var line = parts[i].trim();
+            if (line.indexOf('data: ') !== 0) continue;
+            var payload = line.slice(6);
+            if (payload === '[DONE]') continue;
+            try {
+              var obj = JSON.parse(payload);
+              if (obj.text) { answer += obj.text; bot.textContent = answer; bot.appendChild(caret); }
+              else if (obj.error) { answer += (answer ? '\n\n' : '') + obj.error; bot.textContent = answer; }
+            } catch (e) { /* ignore malformed frame */ }
+            msgs.scrollTop = msgs.scrollHeight;
+          }
+        }
+      } catch (e) {
+        if (!answer) { bot.remove(); addBubble('cw__bubble--error', 'Connection lost. Please try again.'); }
+      } finally {
+        if (caret.parentNode) caret.remove();
+        if (answer) history.push({ role: 'assistant', content: answer });
+        setBusy(false);
+        input.focus();
+      }
+    }
+
+    trigger.addEventListener('click', function () { panel.hidden ? open() : close(); });
+    closeBtn.addEventListener('click', close);
+    form.addEventListener('submit', function (e) { e.preventDefault(); ask(input.value); });
+    root.querySelectorAll('[data-cw-starter]').forEach(function (btn) {
+      btn.addEventListener('click', function () { ask(btn.getAttribute('data-cw-starter') || ''); });
+    });
+  })();
+</script>

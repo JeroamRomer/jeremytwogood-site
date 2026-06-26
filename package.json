@@ -12,9 +12,12 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --test tests/build-agent-data.test.js tests/smoke.test.js",
-    "test:mcp": "node --import tsx --test tests/mcp-rate-limit.test.ts tests/mcp-tools-open.test.ts tests/mcp-tools-actions.test.ts"
+    "test:mcp": "node --import tsx --test tests/mcp-rate-limit.test.ts tests/mcp-tools-open.test.ts tests/mcp-tools-actions.test.ts",
+    "test:chat": "node --import tsx --test tests/chat-rate-limit.test.ts tests/chat-validate.test.ts tests/chat-system.test.ts",
+    "test:api": "npm run test:mcp && npm run test:chat"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.106.0",
     "@astrojs/sitemap": "latest",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@vercel/analytics": "^2.0.1",
