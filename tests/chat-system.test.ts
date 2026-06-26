@@ -27,6 +27,11 @@ test('chat-system: states the core guardrails', () => {
   assert.match(SYSTEM, /third person/i, 'must set the third-person voice');
 });
 
+test('chat-system: requires plain-text output (widget renders textContent, not Markdown)', () => {
+  assert.match(SYSTEM, /plain text/i, 'must ask for plain text');
+  assert.match(SYSTEM, /markdown/i, 'must mention Markdown to forbid it');
+});
+
 test('chat-system: does not leak placeholder tokens', () => {
   assert.ok(!SYSTEM.includes('REPLACE_ME'), 'placeholder data must not reach the model');
 });
