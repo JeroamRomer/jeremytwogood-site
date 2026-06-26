@@ -30,3 +30,6 @@ design-sources/
 
 # Claude Code worktrees
 .claude/worktrees/
+
+# Brainstorming visual companion (local mockups)
+.superpowers/
