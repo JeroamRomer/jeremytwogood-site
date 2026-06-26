@@ -1,14 +1,10 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-05-17T21:10:49.075Z",
+  "generated_at": "2026-06-26T10:31:56.454Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
-    "bio": [
-      "Jeremy Twogood is a multimedia producer and video editor based in Toronto, with twenty years across broadcast, documentary, and corporate production.",
-      "The work spans long-form documentary, brand films for global clients, and the kind of nuanced corporate edits that demand patience and a steady hand. He produces, directs, and cuts — and increasingly builds AI tools out of genuine excitement for what's happening right now.",
-      "The throughline is craft: a sentence that lands, a cut that holds a beat longer than feels comfortable, a sound bed that disappears into the picture."
-    ],
+    "bio": "Jeremy Twogood is a Toronto-based multimedia producer and video editor with twenty years across broadcast, documentary, and corporate production.",
     "location": "Ontario, Canada",
     "email": "jtwogood@gmail.com",
     "website": "https://jeremytwogood.com"
@@ -36,7 +32,7 @@
   "projects": [
     {
       "id": "caot-brand-film",
-      "name": "CAOT",
+      "name": "Canadian Association of Occupational Therapists",
       "client": "CAOT",
       "role": [
         "Editor",
@@ -71,7 +67,8 @@
         "Producer",
         "Editor",
         "Host"
-      ]
+      ],
+      "youtube_url": "https://www.youtube.com/watch?v=xi8JhK9OPq8"
     },
     {
       "id": "xbox-forza-5",
@@ -83,13 +80,9 @@
       "youtube_url": "https://www.youtube.com/watch?v=sVqY9m7QUTM"
     },
     {
-      "id": "ns-health-westray",
-      "name": "NS Health · Westray",
-      "client": "NS Health",
-      "role": [
-        "Editor"
-      ],
-      "youtube_url": "https://www.youtube.com/watch?v=5Ux0sDZ6MY0"
+      "id": "thales-rcn",
+      "name": "Thales Canada · RCN",
+      "client": "Thales Canada"
     },
     {
       "id": "ttms-5-points",
@@ -103,9 +96,13 @@
       "youtube_url": "https://www.youtube.com/watch?v=kG6aFDd9j_g"
     },
     {
-      "id": "thales-rcn",
-      "name": "Thales Canada · RCN",
-      "client": "Thales Canada"
+      "id": "ns-health-westray",
+      "name": "NS Health · Westray",
+      "client": "NS Health",
+      "role": [
+        "Editor"
+      ],
+      "youtube_url": "https://www.youtube.com/watch?v=5Ux0sDZ6MY0"
     }
   ],
   "ai_builds": [
@@ -127,7 +124,7 @@
     {
       "id": "production-intelligence",
       "name": "Production Intelligence",
-      "description": "Internal. The semantic second brain you're talking to right now — pgvector + Anthropic auto-tagging + OpenAI embeddings + MCP server wired into Claude Desktop.",
+      "description": "Internal. A database-backed AI note system for production work — client context, project history, and research stored with semantic search and auto-tagging, accessible directly from my AI tools via a custom MCP server.",
       "tech_stack": [
         "Postgres",
         "pgvector",
@@ -170,8 +167,8 @@
     },
     {
       "id": "bike-app",
-      "name": "Biking App",
-      "description": "Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for the friend leaderboard.",
+      "name": "Pedal Path",
+      "description": "Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
       "tech_stack": [
         "SwiftUI",
         "Mapbox",

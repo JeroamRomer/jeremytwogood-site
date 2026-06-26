@@ -72,6 +72,12 @@ test('smoke: index.html has work section with video cards', () => {
   assert.ok(html.includes('youtube.com'), 'Work cards must link to YouTube');
 });
 
+test('smoke: index.html has video lightbox modal and embed triggers', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('id="lightbox"'), 'lightbox modal must be present');
+  assert.ok(html.includes('data-video-embed'), 'work cards must expose video embed data');
+});
+
 // ── About ────────────────────────────────────────────────────────────────────
 
 test('smoke: index.html has about section', () => {

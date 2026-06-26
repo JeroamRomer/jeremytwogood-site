@@ -23,7 +23,7 @@ const agentData = {
   profile: {
     name: profile.name,
     title: profile.title,
-    bio: profile.bio,
+    bio: profile.bioMeta,
     location: profile.location,
     email: profile.email,
     website: profile.website,

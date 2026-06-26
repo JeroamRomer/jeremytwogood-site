@@ -20,6 +20,11 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# design source files (kept locally, not deployed)
+design-sources/
+*.af
+*.heic
+
 # jetbrains setting folder
 .idea/
 

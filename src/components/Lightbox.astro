@@ -1,0 +1,108 @@
+---
+// Single on-site video modal. Triggered by any element with [data-video-embed].
+---
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Video player" hidden>
+  <div class="lightbox__backdrop" data-lightbox-close></div>
+  <div class="lightbox__dialog">
+    <button class="lightbox__close" id="lightbox-close" aria-label="Close video" data-lightbox-close>&times;</button>
+    <div class="lightbox__frame">
+      <iframe
+        id="lightbox-iframe"
+        title="Video player"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        allowfullscreen
+        src="about:blank"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lightbox {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(16px, 5vw, 64px);
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox__backdrop {
+    position: absolute; inset: 0;
+    background: rgba(8, 8, 10, 0.88);
+    backdrop-filter: blur(4px);
+    animation: lb-fade .2s ease;
+  }
+  .lightbox__dialog {
+    position: relative; width: min(1100px, 100%);
+    animation: lb-pop .24s cubic-bezier(.2, .8, .2, 1);
+  }
+  .lightbox__frame {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: #000; border-radius: 6px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  }
+  .lightbox__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .lightbox__close {
+    position: absolute; top: -44px; right: 0;
+    width: 36px; height: 36px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 30px; line-height: 1; color: #fff;
+    background: transparent; border: 0; cursor: pointer;
+    opacity: .8; transition: opacity .15s ease, transform .15s ease;
+  }
+  .lightbox__close:hover { opacity: 1; transform: scale(1.1); }
+  .lightbox__close:focus-visible { outline: 2px solid var(--amber, #c8922a); outline-offset: 3px; border-radius: 4px; }
+  @media (max-width: 640px) { .lightbox__close { top: -38px; } }
+  @keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes lb-pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox__backdrop, .lightbox__dialog { animation: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var lb = document.getElementById('lightbox');
+    var frame = document.getElementById('lightbox-iframe') as HTMLIFrameElement | null;
+    var closeBtn = document.getElementById('lightbox-close');
+    if (!lb || !frame || !closeBtn) return;
+    var lastFocused: HTMLElement | null = null;
+
+    function open(embed: string, label: string) {
+      lastFocused = document.activeElement as HTMLElement;
+      frame!.src = embed;
+      lb!.setAttribute('aria-label', label || 'Video player');
+      lb!.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      closeBtn!.focus();
+      document.addEventListener('keydown', onKey);
+    }
+
+    function close() {
+      lb!.hidden = true;
+      frame!.src = 'about:blank'; // stops playback + audio
+      document.documentElement.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'Tab') { e.preventDefault(); closeBtn!.focus(); } // trap focus in modal chrome
+    }
+
+    lb.querySelectorAll('[data-lightbox-close]').forEach(function (el) {
+      el.addEventListener('click', close);
+    });
+
+    document.querySelectorAll('[data-video-embed]').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        var me = e as MouseEvent;
+        // let cmd/ctrl/shift/middle clicks open a new tab as normal
+        if (me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button === 1) return;
+        e.preventDefault();
+        var embed = card.getAttribute('data-video-embed');
+        var label = card.getAttribute('data-video-title') || 'Video player';
+        if (embed) open(embed, label);
+      });
+    });
+  })();
+</script>

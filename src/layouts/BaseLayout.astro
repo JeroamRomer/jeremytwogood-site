@@ -1,5 +1,7 @@
 ---
 import profile from '../data/profile.json';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import '../styles/global.css';
 
 interface Props {
@@ -10,10 +12,12 @@ interface Props {
 }
 
 const bioText = Array.isArray(profile.bio) ? profile.bio.join(' ') : profile.bio;
+// Third-person canonical description for search engines + structured data (humans see first-person bio on the page)
+const metaDescription = (profile as any).bioMeta ?? bioText;
 
 const {
   title = `${profile.name} — ${profile.title}`,
-  description = bioText,
+  description = metaDescription,
   ogImage = '/og-image.jpg',
   pageType = 'home',
 } = Astro.props;
@@ -26,7 +30,7 @@ const personSchema = {
   name: profile.name,
   url: profile.website,
   jobTitle: profile.title,
-  description: bioText,
+  description: metaDescription,
   knowsAbout: profile.skills,
   sameAs: Object.values(profile.social),
 };
@@ -42,7 +46,7 @@ const personSchema = {
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@300;400;500&family=Jost:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -74,5 +78,7 @@ const personSchema = {
   </head>
   <body>
     <slot />
+    <Analytics />
+    <SpeedInsights />
   </body>
 </html>
