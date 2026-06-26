@@ -70,6 +70,8 @@ test('smoke: index.html work section links to case-study pages', () => {
   assert.ok(html.includes('id="work"'), '#work section must exist');
   assert.ok(html.includes('Shell'), 'Shell must appear in work section');
   assert.ok(html.includes('href="/work/shell-john-williams"'), 'work cards must link to case-study pages');
+  assert.ok(html.includes('work-card__preview'), 'hover-preview video must be present');
+  assert.ok(html.includes('shell-loop.webm'), 'preview loop source must be wired');
 });
 
 test('smoke: case-study page has VideoObject, breadcrumb, content, and lightbox', () => {
