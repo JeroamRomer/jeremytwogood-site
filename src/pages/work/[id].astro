@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import projects from '../../data/projects.json';
+import videoContent from '../../data/video-content.json';
+import profile from '../../data/profile.json';
+
+export function getStaticPaths() {
+  // A case-study page exists for every project that has a real video (i.e. not
+  // Coming Soon, and not the Thales before/after comparison card).
+  return projects
+    .filter((p) => !p.coming_soon && !p.comparison)
+    .map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const content = (videoContent as Record<string, any>)[project.id] ?? {};
+
+const watchUrl = project.youtube_url || project.vimeo_url || null;
+const platform = project.youtube_id ? 'YouTube' : project.vimeo_id ? 'Vimeo' : null;
+const embed = project.youtube_id
+  ? `https://www.youtube-nocookie.com/embed/${project.youtube_id}?autoplay=1&rel=0`
+  : project.vimeo_id
+    ? `https://player.vimeo.com/video/${project.vimeo_id}?autoplay=1`
+    : null;
+
+const roleList: string[] = Array.isArray(project.role)
+  ? project.role
+  : project.role
+    ? [project.role]
+    : [];
+const summary: string = content.summary || '';
+const excerpt: string = content.transcript_excerpt || '';
+const mood: string = content.mood || '';
+const themes: string[] = content.themes || [];
+const subjects: string[] = content.subjects || [];
+
+const metaDesc = (summary || `${project.type} by ${profile.name}.`).slice(0, 200);
+const thumbAbs = new URL(project.thumbnail, profile.website).href;
+
+const videoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: `${project.name} — ${project.type}`,
+  description: summary || `${project.type} by ${profile.name}.`,
+  thumbnailUrl: thumbAbs,
+  uploadDate: `${project.year}-01-01`,
+  ...(embed ? { embedUrl: embed.split('?')[0] } : {}),
+  ...(watchUrl ? { contentUrl: watchUrl } : {}),
+  creator: { '@type': 'Person', name: profile.name, url: profile.website },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: profile.website },
+    { '@type': 'ListItem', position: 2, name: 'Selected Work', item: `${profile.website}/#work` },
+    { '@type': 'ListItem', position: 3, name: project.name },
+  ],
+};
+---
+<BaseLayout
+  title={`${project.name} — ${project.client} | ${profile.name}`}
+  description={metaDesc}
+  ogImage={project.thumbnail}
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(videoSchema, null, 2)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema, null, 2)} />
+  </Fragment>
+  <Nav />
+  <main class="section--light case">
+    <article class="wrap case__wrap">
+      <a class="case__back" href="/#work">← Selected Work</a>
+
+      <header class="case__head">
+        <span class="eyebrow">{project.client} · {project.year}</span>
+        <h1 class="case__title">{project.name}</h1>
+        <p class="case__type">{project.type}</p>
+      </header>
+
+      <a
+        class="case__player"
+        href={watchUrl ?? '#'}
+        target={watchUrl ? '_blank' : undefined}
+        rel={watchUrl ? 'noopener' : undefined}
+        data-video-embed={embed ?? undefined}
+        data-video-title={`${project.name} — ${project.type}`}
+        aria-label={`Play ${project.name}`}
+        style={`background-image:url('${project.thumbnail}')`}
+      >
+        <span class="case__play" aria-hidden="true">▶</span>
+      </a>
+
+      <div class="case__grid">
+        <div class="case__body">
+          {summary && <p class="case__summary">{summary}</p>}
+          {excerpt && <blockquote class="case__quote">{excerpt}</blockquote>}
+          {watchUrl && platform && (
+            <a class="case__watch" href={watchUrl} target="_blank" rel="noopener">Watch on {platform} ↗</a>
+          )}
+        </div>
+
+        <aside class="case__meta">
+          {roleList.length > 0 && (
+            <div class="case__metablock">
+              <span class="case__metalabel">Role</span>
+              <span class="case__metaval">{roleList.join(' · ')}</span>
+            </div>
+          )}
+          {project.disciplines && (
+            <div class="case__metablock">
+              <span class="case__metalabel">Disciplines</span>
+              <span class="case__metaval">{project.disciplines}</span>
+            </div>
+          )}
+          {mood && (
+            <div class="case__metablock">
+              <span class="case__metalabel">Mood</span>
+              <span class="case__metaval">{mood}</span>
+            </div>
+          )}
+          {themes.length > 0 && (
+            <div class="case__metablock">
+              <span class="case__metalabel">Themes</span>
+              <div class="case__pills">
+                {themes.map((t) => <span class="case__pill">{t}</span>)}
+              </div>
+            </div>
+          )}
+          {subjects.length > 0 && (
+            <div class="case__metablock">
+              <span class="case__metalabel">Subjects</span>
+              <span class="case__metaval">{subjects.join(', ')}</span>
+            </div>
+          )}
+        </aside>
+      </div>
+    </article>
+  </main>
+  <Lightbox />
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Relies on global tokens: --display, --body, --mono, --amber. */
+  .case { padding: 120px 0 100px; min-height: 70vh; }
+  .case__wrap { max-width: 1100px; }
+  .case__back {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+    text-transform: uppercase; opacity: .55; text-decoration: none;
+    transition: opacity .15s ease, color .15s ease;
+  }
+  .case__back:hover { opacity: 1; color: var(--amber); }
+  .case__head { margin: 30px 0 28px; }
+  .case__title { font-family: var(--display); font-size: clamp(40px, 7vw, 84px); line-height: .98; margin: 12px 0 0; }
+  .case__type { font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; font-size: 13px; opacity: .6; margin-top: 14px; }
+
+  .case__player {
+    position: relative; display: block; aspect-ratio: 16 / 9;
+    border-radius: 8px; overflow: hidden; cursor: pointer;
+    background-size: cover; background-position: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .22);
+  }
+  .case__player::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .18); transition: background .25s ease; }
+  .case__player:hover::after { background: rgba(0, 0, 0, .04); }
+  .case__play { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; padding-left: 5px; }
+  .case__play::before {
+    content: ''; position: absolute; width: 84px; height: 84px; border-radius: 50%;
+    background: rgba(0, 0, 0, .5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    transition: transform .2s ease;
+  }
+  .case__player:hover .case__play::before { transform: scale(1.08); }
+
+  .case__grid { display: grid; grid-template-columns: 1fr 300px; gap: 48px; margin-top: 48px; }
+  .case__summary { font-size: clamp(17px, 2vw, 21px); line-height: 1.65; }
+  .case__quote { border-left: 3px solid var(--amber); padding-left: 20px; margin: 28px 0 0; font-style: italic; opacity: .82; line-height: 1.55; }
+  .case__watch { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--amber); text-decoration: none; }
+  .case__watch:hover { text-decoration: underline; }
+
+  .case__meta { display: flex; flex-direction: column; gap: 22px; }
+  .case__metablock { display: flex; flex-direction: column; gap: 6px; }
+  .case__metalabel { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .42; }
+  .case__metaval { font-size: 14px; line-height: 1.5; }
+  .case__pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .case__pill { font-family: var(--mono); font-size: 11px; letter-spacing: .03em; padding: 5px 10px; border: 1px solid rgba(0, 0, 0, .14); border-radius: 999px; }
+
+  @media (max-width: 820px) {
+    .case { padding: 100px 0 70px; }
+    .case__grid { grid-template-columns: 1fr; gap: 34px; }
+  }
+</style>

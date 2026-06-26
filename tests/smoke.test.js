@@ -65,17 +65,27 @@ test('smoke: index.html has hero section with name and CTA', () => {
 
 // ── Work ─────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has work section with video cards', () => {
+test('smoke: index.html work section links to case-study pages', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('id="work"'), '#work section must exist');
   assert.ok(html.includes('Shell'), 'Shell must appear in work section');
-  assert.ok(html.includes('youtube.com'), 'Work cards must link to YouTube');
+  assert.ok(html.includes('href="/work/shell-john-williams"'), 'work cards must link to case-study pages');
 });
 
-test('smoke: index.html has video lightbox modal and embed triggers', () => {
-  const html = getHtml('index.html');
-  assert.ok(html.includes('id="lightbox"'), 'lightbox modal must be present');
-  assert.ok(html.includes('data-video-embed'), 'work cards must expose video embed data');
+test('smoke: case-study page has VideoObject, breadcrumb, content, and lightbox', () => {
+  const html = getHtml('work/shell-john-williams/index.html');
+  assert.ok(html.includes('"@type": "VideoObject"'), 'VideoObject JSON-LD must be present');
+  assert.ok(html.includes('"@type": "BreadcrumbList"'), 'BreadcrumbList JSON-LD must be present');
+  assert.ok(html.includes('John Williams'), 'summary content must render');
+  assert.ok(html.includes('id="lightbox"'), 'lightbox must be present on detail page');
+  assert.ok(html.includes('Selected Work'), 'back link must be present');
+});
+
+test('smoke: all six case-study pages are generated', () => {
+  const ids = ['shell-john-williams', 'simbility-desk-series', 'ttms-chef-nuit', 'xbox-forza-5', 'ttms-5-points', 'ns-health-westray'];
+  for (const id of ids) {
+    assert.ok(existsSync(join(DIST, 'work', id, 'index.html')), `missing case-study page: ${id}`);
+  }
 });
 
 // ── About ────────────────────────────────────────────────────────────────────

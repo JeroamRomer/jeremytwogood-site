@@ -1,7 +1,6 @@
 ---
 import projects from '../data/projects.json';
 import ComparisonCard from './ComparisonCard.astro';
-import Lightbox from './Lightbox.astro';
 
 const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6','still-3','still-1'];
 ---
@@ -39,17 +38,8 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
         const spanClass = `span-${project.span}`;
         const stillClass = stillClasses[i] || 'still-1';
         const hasThumbnail = !!project.thumbnail;
-        const href = project.coming_soon
-          ? null
-          : (project.youtube_url || project.vimeo_url || project.facebook_url || null);
-        // On-site lightbox embed (privacy-friendly nocookie for YouTube). Null = falls back to href/new tab.
-        const embed = project.coming_soon
-          ? null
-          : project.youtube_id
-            ? `https://www.youtube-nocookie.com/embed/${project.youtube_id}?autoplay=1&rel=0`
-            : project.vimeo_id
-              ? `https://player.vimeo.com/video/${project.vimeo_id}?autoplay=1`
-              : null;
+        // Each non-coming-soon project links to its own case-study page.
+        const href = project.coming_soon ? null : `/work/${project.id}`;
         const label = `${project.client} — ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
         if (project.comparison) {
           return <ComparisonCard project={project} index={idx} />;
@@ -58,11 +48,7 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
           <a
             class={`work-card ${spanClass}`}
             href={href ?? undefined}
-            target={project.coming_soon ? undefined : '_blank'}
-            rel={project.coming_soon ? undefined : 'noopener'}
             data-coming-soon={project.coming_soon ? 'true' : undefined}
-            data-video-embed={embed ?? undefined}
-            data-video-title={embed ? `${project.name} — ${project.type}` : undefined}
             aria-label={label}
           >
             <div
@@ -90,8 +76,6 @@ const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6
     </div>
   </div>
 </section>
-
-<Lightbox />
 
 <script>
   document.querySelectorAll('[data-coming-soon]').forEach((card) => {
