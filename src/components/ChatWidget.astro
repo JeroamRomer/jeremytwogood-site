@@ -137,7 +137,9 @@ const STARTERS = [
   .cw__form:focus-within { border-color: var(--cw-amber); }
   .cw__input {
     flex: 1 1 auto; background: transparent; border: 0; color: var(--cw-fg);
-    font-family: var(--body, 'Inter', sans-serif); font-size: 13.5px; outline: none;
+    font-family: var(--body, 'Inter', sans-serif);
+    /* 16px minimum — anything smaller makes iOS Safari zoom (and crop) on focus */
+    font-size: 16px; outline: none;
   }
   .cw__input::placeholder { color: #6f6c63; }
   .cw__send {
