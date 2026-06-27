@@ -198,6 +198,18 @@ const STARTERS = [
       try { (window as any).va && (window as any).va('event', { name: name }); } catch (e) { /* analytics optional */ }
     }
 
+    // The model is asked for plain text but occasionally slips Markdown into
+    // structured readbacks. Bubbles render textContent, so strip it for display.
+    function clean(s: string): string {
+      return s
+        .replace(/\*\*(.+?)\*\*/g, '$1')                 // **bold**
+        .replace(/__(.+?)__/g, '$1')                     // __bold__
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')  // [text](url) -> text (url)
+        .replace(/`([^`]+)`/g, '$1')                     // `code`
+        .replace(/^#{1,6}\s+/gm, '')                     // # headings
+        .replace(/^\s*[-*+]\s+/gm, '• ');           // - bullets -> •
+    }
+
     function open() {
       panel.hidden = false;
       root!.setAttribute('data-open', '');
@@ -286,8 +298,8 @@ const STARTERS = [
             if (payload === '[DONE]') continue;
             try {
               var obj = JSON.parse(payload);
-              if (obj.text) { answer += obj.text; bot.textContent = answer; bot.appendChild(caret); }
-              else if (obj.error) { answer += (answer ? '\n\n' : '') + obj.error; bot.textContent = answer; }
+              if (obj.text) { answer += obj.text; bot.textContent = clean(answer); bot.appendChild(caret); }
+              else if (obj.error) { answer += (answer ? '\n\n' : '') + obj.error; bot.textContent = clean(answer); }
             } catch (e) { /* ignore malformed frame */ }
             msgs.scrollTop = msgs.scrollHeight;
           }

@@ -32,6 +32,11 @@ test('chat-system: requires plain-text output (widget renders textContent, not M
   assert.match(SYSTEM, /markdown/i, 'must mention Markdown to forbid it');
 });
 
+test('chat-system: states the contact-action rules (confirm before sending)', () => {
+  assert.match(SYSTEM, /send_message_to_jeremy/, 'must name the send tool');
+  assert.match(SYSTEM, /confirm/i, 'must require confirmation before sending');
+});
+
 test('chat-system: does not leak placeholder tokens', () => {
   assert.ok(!SYSTEM.includes('REPLACE_ME'), 'placeholder data must not reach the model');
 });
