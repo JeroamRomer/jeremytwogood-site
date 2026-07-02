@@ -1,0 +1,153 @@
+---
+// Homepage-only NLE-style scroll timeline: sections rendered as clips with
+// widths proportional to their real heights, an amber playhead + timecode
+// chip tracking scroll. Desktop only; duplicates nav functionally, so it is
+// hidden from the accessibility tree.
+const sections = [
+  { id: 'top', label: 'Hero' },
+  { id: 'work', label: 'Work' },
+  { id: 'about', label: 'About' },
+  { id: 'builds', label: 'AI Builds' },
+  { id: 'sound', label: 'Sound' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+<div class="tlbar" data-tlbar aria-hidden="true">
+  <div class="tlbar__clips">
+    {sections.map((s) => (
+      <button class="tlbar__clip" data-target={s.id} tabindex="-1">
+        <span>{s.label}</span>
+      </button>
+    ))}
+  </div>
+  <div class="tlbar__playhead" data-tlbar-playhead></div>
+  <div class="tlbar__tc" data-tlbar-tc>00:00:00:00</div>
+</div>
+
+<style>
+  .tlbar{
+    position:fixed; left:0; right:0; bottom:0; height:40px; z-index:60;
+    background:#0a0a09; border-top:1px solid var(--dark-rule);
+    opacity:0; transform:translateY(100%); pointer-events:none;
+    transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .tlbar.is-visible{ opacity:1; transform:none; pointer-events:auto; }
+  .tlbar__clips{ display:flex; height:100%; }
+  .tlbar__clip{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    border:none; border-right:1px solid #111; background:#1c1a16;
+    cursor:pointer; min-width:0; padding:0;
+  }
+  .tlbar__clip::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:rgba(200,146,42,.2);
+  }
+  .tlbar__clip span{
+    font-family:var(--mono); font-weight:500; font-size:9px;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--dark-mute);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 8px;
+  }
+  .tlbar__clip.is-active{ background:#2a2415; }
+  .tlbar__clip.is-active span{ color:var(--amber); }
+  .tlbar__playhead{
+    position:absolute; top:0; bottom:0; left:0; width:1.5px;
+    background:var(--amber); pointer-events:none; will-change:transform;
+  }
+  .tlbar__playhead::before{
+    content:""; position:absolute; top:0; left:-5px;
+    border:6px solid transparent; border-top:7px solid var(--amber);
+  }
+  .tlbar__tc{
+    position:absolute; right:10px; top:-30px;
+    background:#0a0a09; border:1px solid var(--dark-rule); border-radius:3px;
+    color:var(--amber); font-family:var(--mono-actual); font-size:10.5px;
+    letter-spacing:.08em; padding:3px 8px; pointer-events:none;
+  }
+  @media (max-width:719px){ .tlbar{ display:none; } }
+  @media (prefers-reduced-motion: reduce){ .tlbar{ transition:none; } }
+</style>
+
+<script>
+  import { tcFormat } from '../scripts/timecode';
+
+  (function () {
+    const bar = document.querySelector('[data-tlbar]') as HTMLElement | null;
+    if (!bar) return;
+    const desktop = window.matchMedia('(min-width: 720px)');
+    const playhead = bar.querySelector('[data-tlbar-playhead]') as HTMLElement;
+    const tcEl = bar.querySelector('[data-tlbar-tc]') as HTMLElement;
+    const clips = Array.from(bar.querySelectorAll('.tlbar__clip')) as HTMLElement[];
+    const DURATION = 60; // nominal "program length" in seconds mapped onto full page scroll
+
+    let bounds: { el: HTMLElement; start: number }[] = [];
+    function measure() {
+      if (!desktop.matches) return;
+      clips.forEach((clip) => {
+        const sec = document.getElementById(clip.dataset.target || '');
+        if (sec) clip.style.flexGrow = String(Math.max(sec.offsetHeight, 1));
+      });
+      bounds = clips
+        .map((clip) => {
+          const sec = document.getElementById(clip.dataset.target || '');
+          return sec ? { el: clip, start: sec.offsetTop } : null;
+        })
+        .filter(Boolean) as { el: HTMLElement; start: number }[];
+    }
+
+    function progress() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      return max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+    }
+
+    let raf = 0;
+    function update() {
+      raf = 0;
+      const f = progress();
+      playhead.style.transform = `translateX(${f * (bar.clientWidth - 2)}px)`;
+      tcEl.textContent = tcFormat(f * DURATION);
+      // Active clip = section containing the viewport midpoint.
+      const mid = window.scrollY + window.innerHeight / 2;
+      let active = bounds.length - 1;
+      for (let i = 0; i < bounds.length; i++) {
+        if (mid >= bounds[i].start) active = i;
+      }
+      bounds.forEach((b, i) => b.el.classList.toggle('is-active', i === active));
+      // Visible once past half the hero; the chat trigger lifts with it.
+      const hero = document.getElementById('top');
+      const show = hero ? window.scrollY > hero.offsetHeight * 0.5 : true;
+      bar.classList.toggle('is-visible', show);
+      document.body.classList.toggle('has-tlbar', show && desktop.matches);
+    }
+    function schedule() { if (!raf) raf = requestAnimationFrame(update); }
+
+    // Scrub: plain click seeks smoothly, drag follows the pointer directly.
+    function seek(clientX: number, smooth: boolean) {
+      const r = bar.getBoundingClientRect();
+      const f = Math.min(Math.max((clientX - r.left) / r.width, 0), 1);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: f * max, behavior: smooth ? 'smooth' : 'auto' });
+    }
+    let dragging = false;
+    let moved = false;
+    let startX = 0;
+    bar.addEventListener('pointerdown', (e) => {
+      dragging = true; moved = false; startX = e.clientX;
+      bar.setPointerCapture(e.pointerId);
+    });
+    bar.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      if (Math.abs(e.clientX - startX) > 3) moved = true;
+      if (moved) seek(e.clientX, false);
+    });
+    bar.addEventListener('pointerup', (e) => {
+      if (dragging && !moved) seek(e.clientX, true);
+      dragging = false;
+    });
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', () => { measure(); schedule(); });
+    document.fonts.ready.then(() => { measure(); schedule(); });
+    measure();
+    schedule();
+  })();
+</script>

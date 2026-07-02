@@ -204,3 +204,16 @@ test('smoke: work card and case-study hero share a view-transition-name', () => 
   assert.ok(home.includes('view-transition-name:work-shell-john-williams'), 'card still must be tagged');
   assert.ok(caseStudy.includes('view-transition-name:work-shell-john-williams'), 'case hero must be tagged');
 });
+
+// ── NLE timeline bar ────────────────────────────────────────────────────────
+
+test('smoke: homepage mounts the NLE timeline bar', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('data-tlbar'), 'timeline bar root must be present');
+  assert.ok(html.includes('tlbar__clip'), 'clip segments must render');
+});
+
+test('smoke: timeline bar is homepage-only', () => {
+  const caseStudy = getHtml('work/shell-john-williams/index.html');
+  assert.ok(!caseStudy.includes('data-tlbar'), 'case-study pages must not mount the bar');
+});

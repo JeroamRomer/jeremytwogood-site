@@ -1235,3 +1235,7 @@ a{color:inherit;text-decoration:none}
   ::view-transition-old(*),
   ::view-transition-new(*){ animation:none !important; }
 }
+
+/* ---------- Chat trigger lift while the timeline bar is visible ---------- */
+body.has-tlbar .cw__trigger{ bottom:74px; transition:bottom .35s cubic-bezier(.22,1,.36,1), transform .18s ease, box-shadow .18s ease; }
+body.has-tlbar .cw__panel{ bottom:140px; }
