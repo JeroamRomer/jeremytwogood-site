@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --test tests/build-agent-data.test.js tests/smoke.test.js",
+    "test:ui": "node --import tsx --test tests/timecode.test.ts",
     "test:mcp": "node --import tsx --test tests/mcp-rate-limit.test.ts tests/mcp-tools-open.test.ts tests/mcp-tools-actions.test.ts",
     "test:chat": "node --import tsx --test tests/chat-rate-limit.test.ts tests/chat-validate.test.ts tests/chat-system.test.ts tests/chat-actions.test.ts",
     "test:api": "npm run test:mcp && npm run test:chat"
