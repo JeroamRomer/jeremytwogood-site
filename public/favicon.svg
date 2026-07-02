@@ -1,15 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
     <circle cx="12" cy="12" r="10.5" class="ring" stroke-width="2.2"/>
+    <line x1="19.2" y1="18.8" x2="24" y2="20.4" class="tail" stroke-width="2.2" stroke-linecap="round"/>
     <circle cx="12" cy="5" r="2" class="dot"/>
     <circle cx="19" cy="12" r="2" class="dot"/>
     <circle cx="12" cy="19" r="2" class="dot"/>
     <circle cx="5" cy="12" r="2" class="dot"/>
     <circle cx="12" cy="12" r="2.6" fill="#c8922a"/>
     <style>
-        .ring { fill: none; stroke: #111; }
+        .ring, .tail { fill: none; stroke: #111; }
         .dot { fill: #111; }
         @media (prefers-color-scheme: dark) {
-            .ring { stroke: #fff; }
+            .ring, .tail { stroke: #fff; }
             .dot { fill: #fff; }
         }
     </style>
