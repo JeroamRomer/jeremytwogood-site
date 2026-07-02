@@ -125,7 +125,7 @@ const sections = [
       const r = bar.getBoundingClientRect();
       const f = Math.min(Math.max((clientX - r.left) / r.width, 0), 1);
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      window.scrollTo({ top: f * max, behavior: smooth ? 'smooth' : 'auto' });
+      window.scrollTo({ top: f * max, behavior: smooth ? 'smooth' : 'instant' });
     }
     let dragging = false;
     let moved = false;
