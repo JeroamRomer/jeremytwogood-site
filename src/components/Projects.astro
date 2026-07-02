@@ -52,6 +52,10 @@ const previews: Record<string, string> = {
         // Each non-coming-soon project links to its own case-study page.
         const href = project.coming_soon ? null : `/work/${project.id}`;
         const label = `${project.client} — ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
+        const stillStyle = [
+          href ? `view-transition-name:work-${project.id}` : '',
+          hasThumbnail ? `background-image:url('${project.thumbnail}');background-size:contain;background-repeat:no-repeat;background-position:center` : '',
+        ].filter(Boolean).join(';') || undefined;
         if (project.comparison) {
           return <ComparisonCard project={project} index={idx} />;
         }
@@ -64,7 +68,7 @@ const previews: Record<string, string> = {
           >
             <div
               class={`work-card__still ${stillClass}`}
-              style={hasThumbnail ? `background-image:url('${project.thumbnail}');background-size:contain;background-repeat:no-repeat;background-position:center` : undefined}
+              style={stillStyle}
             >
               {!hasThumbnail && (
                 <div class="work-card__placeholder">[ video still ]</div>

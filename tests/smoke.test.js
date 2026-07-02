@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
@@ -182,4 +182,25 @@ test('smoke: /reel/index.html exists with VideoObject JSON-LD', () => {
   assert.ok(html.includes('"@type": "VideoObject"'), 'VideoObject JSON-LD must be present');
   assert.ok(html.includes('id="reel"'), 'Reel section must be present');
   assert.ok(html.includes('id="reel-index-data"'), 'reel-index data block must be present');
+});
+
+// ── View-transition morph ───────────────────────────────────────────────────
+
+function getBundledCss() {
+  const dir = join(DIST, '_astro');
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.css'))
+    .map((f) => readFileSync(join(dir, f), 'utf-8'))
+    .join('\n');
+}
+
+test('smoke: cross-document view transitions enabled in bundled CSS', () => {
+  assert.ok(getBundledCss().includes('@view-transition'), '@view-transition rule must be present');
+});
+
+test('smoke: work card and case-study hero share a view-transition-name', () => {
+  const home = getHtml('index.html');
+  const caseStudy = getHtml('work/shell-john-williams/index.html');
+  assert.ok(home.includes('view-transition-name:work-shell-john-williams'), 'card still must be tagged');
+  assert.ok(caseStudy.includes('view-transition-name:work-shell-john-williams'), 'case hero must be tagged');
 });

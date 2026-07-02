@@ -1227,3 +1227,11 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Selection ---------- */
 ::selection{ background:var(--amber); color:#111; }
+
+/* ---------- Cross-document view transitions (card → case-study morph) ---------- */
+@view-transition{ navigation:auto; }
+@media (prefers-reduced-motion: reduce){
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*){ animation:none !important; }
+}

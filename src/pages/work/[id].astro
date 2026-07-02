@@ -90,7 +90,7 @@ const breadcrumbSchema = {
         data-video-embed={embed ?? undefined}
         data-video-title={`${project.name} — ${project.type}`}
         aria-label={`Play ${project.name}`}
-        style={`background-image:url('${project.thumbnail}')`}
+        style={`view-transition-name:work-${project.id};background-image:url('${project.thumbnail}')`}
       >
         <span class="case__play" aria-hidden="true">▶</span>
       </a>
