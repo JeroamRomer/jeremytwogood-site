@@ -80,6 +80,9 @@ const previews: Record<string, string> = {
                 <source src={`/assets/${preview}.mp4`} type="video/mp4" />
               </video>
             )}
+            {preview && (
+              <span class="work-card__tc" aria-hidden="true">00:00:00:00</span>
+            )}
             <div class="work-card__veil"></div>
             <span class="work-card__index">{idx}</span>
             <span class="work-card__corner"></span>
@@ -118,18 +121,58 @@ const previews: Record<string, string> = {
   @media (prefers-reduced-motion: reduce) {
     .work-card__preview { transition: none; }
   }
+
+  /* Running timecode chip while the hover preview plays */
+  .work-card__tc{
+    position:absolute; top:16px; right:18px;
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(10,10,9,.75);
+    border:1px solid rgba(232,228,220,.15);
+    border-radius:3px;
+    padding:3px 8px;
+    font-family:var(--mono-actual);
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--amber);
+    opacity:0;
+    transition:opacity .3s ease .1s;
+    pointer-events:none;
+  }
+  .work-card__tc::before{
+    content:""; width:5px; height:5px; border-radius:50%;
+    background:var(--amber);
+    animation:tc-blink 1s steps(1) infinite;
+  }
+  @keyframes tc-blink{ 50%{ opacity:.25; } }
+  .work-card:hover .work-card__tc{ opacity:1; }
+  .work-card:has(.work-card__tc):hover .work-card__corner{ opacity:0; }
+  @media (hover: none){ .work-card__tc{ display:none; } }
 </style>
 
 <script>
+  import { tcFormat } from '../scripts/timecode';
+
   // Hover-to-play: load + play the loop on hover, pause + reset on leave.
   // preload="none" means nothing downloads until the first hover.
+  // While playing, the corner chip shows the loop's real time as timecode.
   document.querySelectorAll('.work-card').forEach((card) => {
     const v = card.querySelector('.work-card__preview') as HTMLVideoElement | null;
     if (!v) return;
-    card.addEventListener('mouseenter', () => { v.play().catch(() => {}); });
+    const tc = card.querySelector('.work-card__tc') as HTMLElement | null;
+    let raf = 0;
+    const tick = () => {
+      if (tc) tc.textContent = tcFormat(v.currentTime);
+      raf = requestAnimationFrame(tick);
+    };
+    card.addEventListener('mouseenter', () => {
+      v.play().catch(() => {});
+      if (tc && !raf) raf = requestAnimationFrame(tick);
+    });
     card.addEventListener('mouseleave', () => {
       v.pause();
       try { v.currentTime = 0; } catch (e) {}
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      if (tc) tc.textContent = '00:00:00:00';
     });
   });
 

@@ -252,3 +252,11 @@ test('smoke: pages add the js class before paint', () => {
   const caseStudy = getHtml('work/shell-john-williams/index.html');
   assert.ok(caseStudy.includes("classList.add('js')"), 'js-class script must be on case-study pages too');
 });
+
+// ── Hover timecodes ─────────────────────────────────────────────────────────
+
+test('smoke: work cards with previews render a timecode chip', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('work-card__tc'), 'timecode chip must render');
+  assert.ok(html.includes('00:00:00:00'), 'chip must start at zero timecode');
+});
