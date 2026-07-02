@@ -26,3 +26,12 @@ test('computePeaks: loud section stands out', () => {
   assert.equal(peaks[5], 1);
   assert.equal(peaks[0], 0);
 });
+
+test('computePeaks: sustained loudness (RMS) outweighs an isolated transient spike', () => {
+  const samples = new Int16Array(200);
+  samples[50] = 32000; // single spike in bucket 0, otherwise silent
+  for (let i = 100; i < 200; i++) samples[i] = 20000; // bucket 1: sustained throughout
+  const peaks = computePeaks(samples, 2);
+  assert.equal(peaks[1], 1, 'sustained bucket should be the loudest, not the spikier one');
+  assert.equal(peaks[0], 0.16, 'an isolated spike should barely register against RMS energy');
+});
