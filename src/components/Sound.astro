@@ -1,6 +1,10 @@
 ---
 import profile from '../data/profile.json';
+import waveforms from '../data/waveforms.json';
 const tracks = (profile as any).tracks as { num: string; title: string; url: string }[];
+const peaksFor = (num: string): number[] => (waveforms as Record<string, number[]>)[num] ?? [];
+const WAVE_W = 96;
+const WAVE_H = 32;
 ---
 <section id="sound" class="section--dark sound grain" style="padding-left:var(--gutter); padding-right:var(--gutter)" aria-label="Original music compositions">
   <div class="wrap">
@@ -13,13 +17,35 @@ const tracks = (profile as any).tracks as { num: string; title: string; url: str
     </div>
 
     <ul class="tracks">
-      {tracks.map((track) => (
-        <li>
-          <span class="tracks__num">{track.num}</span>
-          <a class="tracks__title" href={track.url} target="_blank" rel="noopener">{track.title}</a>
-          <span class="tracks__dur">↗</span>
-        </li>
-      ))}
+      {tracks.map((track) => {
+        const peaks = peaksFor(track.num);
+        return (
+          <li>
+            <div class="tracks__row">
+              <span class="tracks__num">{track.num}</span>
+              <a class="tracks__title" href={track.url} target="_blank" rel="noopener">{track.title}</a>
+              <span class="tracks__dur">↗</span>
+            </div>
+            {peaks.length > 0 && (
+              <div class="tracks__wave" aria-hidden="true">
+                <svg class="tracks__wave-base" viewBox={`0 0 ${WAVE_W} ${WAVE_H}`} preserveAspectRatio="none">
+                  {peaks.map((p, i) => {
+                    const h = Math.max(p * WAVE_H, 0.6);
+                    return <rect x={i + 0.15} y={(WAVE_H - h) / 2} width={0.7} height={h} />;
+                  })}
+                </svg>
+                <svg class="tracks__wave-lit" viewBox={`0 0 ${WAVE_W} ${WAVE_H}`} preserveAspectRatio="none" style="clip-path:inset(0 100% 0 0)">
+                  {peaks.map((p, i) => {
+                    const h = Math.max(p * WAVE_H, 0.6);
+                    return <rect x={i + 0.15} y={(WAVE_H - h) / 2} width={0.7} height={h} />;
+                  })}
+                </svg>
+                <span class="tracks__wave-ph" style="left:0%"></span>
+              </div>
+            )}
+          </li>
+        );
+      })}
     </ul>
 
     <div class="sound__player" id="sound-player" hidden>
@@ -33,24 +59,67 @@ const tracks = (profile as any).tracks as { num: string; title: string; url: str
 </section>
 
 <script>
-  // SoundCloud inline player
-  (function(){
+  // SoundCloud inline player + waveform playback sync.
+  (function () {
     var titles = document.querySelectorAll('.tracks__title');
     var player = document.getElementById('sound-player');
     var iframe = document.getElementById('sc-iframe');
-    if(!titles.length || !player || !iframe) return;
-    titles.forEach(function(a){
-      a.addEventListener('click', function(e){
+    if (!titles.length || !player || !iframe) return;
+
+    var widget: any = null;
+
+    function setProgress(li: Element | null, frac: number) {
+      if (!li) return;
+      var lit = li.querySelector('.tracks__wave-lit') as HTMLElement | null;
+      var ph = li.querySelector('.tracks__wave-ph') as HTMLElement | null;
+      var pct = Math.min(Math.max(frac, 0), 1) * 100;
+      if (lit) lit.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+      if (ph) ph.style.left = pct + '%';
+    }
+
+    function bindWidget() {
+      var SC = (window as any).SC;
+      if (!SC || widget) return;
+      widget = SC.Widget(iframe);
+      widget.bind(SC.Widget.Events.PLAY_PROGRESS, function (e: any) {
+        setProgress(document.querySelector('.tracks li.is-playing'), e.relativePosition);
+      });
+      widget.bind(SC.Widget.Events.FINISH, function () {
+        setProgress(document.querySelector('.tracks li.is-playing'), 0);
+      });
+    }
+
+    function loadWidgetApi() {
+      if ((window as any).SC || document.querySelector('script[data-sc-api]')) return;
+      var s = document.createElement('script');
+      s.src = 'https://w.soundcloud.com/player/api.js';
+      s.setAttribute('data-sc-api', '');
+      s.onload = bindWidget;
+      document.head.appendChild(s);
+    }
+
+    titles.forEach(function (a) {
+      a.addEventListener('click', function (e) {
         var url = a.getAttribute('href');
         if (!url) return;
         e.preventDefault();
-        var src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
-          + '&color=%23c8922a&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false';
-        (iframe as HTMLIFrameElement).src = src;
+        var prev = document.querySelector('.tracks li.is-playing');
+        if (prev) setProgress(prev, 0);
+        document.querySelectorAll('.tracks li').forEach(function (li) { li.classList.remove('is-playing'); });
+        var li = a.closest('li'); if (li) li.classList.add('is-playing');
+
+        if (widget && (window as any).SC) {
+          // Widget already bound — swap tracks without recreating the iframe.
+          widget.load(url, { auto_play: true, hide_related: true, show_comments: false, show_user: true, show_reposts: false, show_teaser: false, visual: false, color: '#c8922a' });
+        } else {
+          var src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
+            + '&color=%23c8922a&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false';
+          (iframe as HTMLIFrameElement).src = src;
+          loadWidgetApi();
+          bindWidget();
+        }
         (player as HTMLElement).hidden = false;
-        document.querySelectorAll('.tracks li').forEach(function(li){ li.classList.remove('is-playing'); });
-        var li = a.closest('li'); if(li) li.classList.add('is-playing');
-        player.scrollIntoView({behavior:'smooth', block:'nearest'});
+        player.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     });
   })();

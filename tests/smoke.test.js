@@ -217,3 +217,20 @@ test('smoke: timeline bar is homepage-only', () => {
   const caseStudy = getHtml('work/shell-john-williams/index.html');
   assert.ok(!caseStudy.includes('data-tlbar'), 'case-study pages must not mount the bar');
 });
+
+// ── Sound waveforms ─────────────────────────────────────────────────────────
+
+test('smoke: sound section track rows are restructured for waveforms', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('tracks__row'), 'restructured track rows must render');
+  const waveforms = JSON.parse(readFileSync(join(ROOT, 'src/data/waveforms.json'), 'utf-8'));
+  if (Object.keys(waveforms).length === 0) {
+    // Note: the always-present playback-sync <script> legitimately references
+    // '.tracks__wave-lit' / '.tracks__wave-ph' as querySelector strings, so we
+    // check for the markup wrapper specifically rather than the bare substring.
+    assert.ok(!html.includes('class="tracks__wave"'), 'no waveform strips until peak data exists');
+  } else {
+    assert.ok(html.includes('tracks__wave-base'), 'waveform SVG must render');
+    assert.ok(html.includes('tracks__wave-lit'), 'lit overlay must render');
+  }
+});
