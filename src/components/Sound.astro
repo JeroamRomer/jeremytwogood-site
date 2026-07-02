@@ -98,6 +98,18 @@ const WAVE_H = 32;
       document.head.appendChild(s);
     }
 
+    document.querySelectorAll('.tracks__wave').forEach(function (wave) {
+      wave.addEventListener('click', function (e) {
+        var li = wave.closest('li');
+        if (!li || !li.classList.contains('is-playing') || !widget) return;
+        var rect = (wave as HTMLElement).getBoundingClientRect();
+        var frac = Math.min(Math.max(((e as MouseEvent).clientX - rect.left) / rect.width, 0), 1);
+        widget.getDuration(function (duration: number) {
+          widget.seekTo(frac * duration);
+        });
+      });
+    });
+
     titles.forEach(function (a) {
       a.addEventListener('click', function (e) {
         var url = a.getAttribute('href');

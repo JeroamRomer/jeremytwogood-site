@@ -1129,6 +1129,7 @@ a{color:inherit;text-decoration:none}
   background:#ece8df; opacity:0;
 }
 .tracks li.is-playing .tracks__wave-ph{ opacity:.9; }
+.tracks li.is-playing .tracks__wave{ cursor:pointer; }
 
 /* ---------- Contact ---------- */
 .contact{

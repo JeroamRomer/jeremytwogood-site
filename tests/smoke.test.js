@@ -220,6 +220,12 @@ test('smoke: timeline bar is homepage-only', () => {
 
 // ── Sound waveforms ─────────────────────────────────────────────────────────
 
+test('smoke: sound waveform click-to-seek is wired for the active track', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('seekTo'), 'waveform click handler must call widget.seekTo');
+  assert.ok(html.includes('getDuration'), 'waveform click handler must resolve track duration before seeking');
+});
+
 test('smoke: sound section track rows are restructured for waveforms', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('tracks__row'), 'restructured track rows must render');
