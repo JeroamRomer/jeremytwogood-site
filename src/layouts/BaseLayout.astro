@@ -42,6 +42,7 @@ const personSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Google Fonts -->
@@ -82,5 +83,22 @@ const personSchema = {
     <ChatWidget />
     <Analytics />
     <SpeedInsights />
+    <script>
+      // Scroll-in reveals: section headers gain .is-inview on first entry.
+      const revealTargets = document.querySelectorAll('.section-head, .sound__head, .contact__inner');
+      if ('IntersectionObserver' in window && revealTargets.length) {
+        const rio = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-inview');
+              rio.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        revealTargets.forEach((t) => rio.observe(t));
+      } else {
+        revealTargets.forEach((t) => t.classList.add('is-inview'));
+      }
+    </script>
   </body>
 </html>

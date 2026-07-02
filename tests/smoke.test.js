@@ -234,3 +234,16 @@ test('smoke: sound section track rows are restructured for waveforms', () => {
     assert.ok(html.includes('tracks__wave-lit'), 'lit overlay must render');
   }
 });
+
+// ── Scroll-in reveals ───────────────────────────────────────────────────────
+
+test('smoke: reveal styles are gated behind html.js', () => {
+  const css = getBundledCss();
+  assert.ok(css.includes('.is-inview'), 'reveal CSS must be present');
+  assert.ok(css.includes('html.js'), 'reveal CSS must be js-gated');
+});
+
+test('smoke: pages add the js class before paint', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes("classList.add('js')"), 'inline js-class script must be present');
+});

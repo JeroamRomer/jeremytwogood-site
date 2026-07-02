@@ -1257,3 +1257,28 @@ a{color:inherit;text-decoration:none}
 /* ---------- Chat trigger lift while the timeline bar is visible ---------- */
 body.has-tlbar .cw__trigger{ bottom:74px; transition:bottom .35s cubic-bezier(.22,1,.36,1), transform .18s ease, box-shadow .18s ease; }
 body.has-tlbar .cw__panel{ bottom:140px; }
+
+/* ---------- Scroll-in section reveals (html.js gate keeps no-JS content visible) ---------- */
+html.js .section-head .eyebrow::before,
+html.js .sound__head .eyebrow::before{
+  width:0;
+  transition:width .7s cubic-bezier(.22,1,.36,1) .1s;
+}
+html.js .section-head.is-inview .eyebrow::before,
+html.js .sound__head.is-inview .eyebrow::before{ width:24px; }
+html.js .section-head .section-title,
+html.js .sound__head h2,
+html.js .contact__inner h2{
+  opacity:0; transform:translateY(18px);
+  transition:opacity .6s ease .15s, transform .6s cubic-bezier(.22,1,.36,1) .15s;
+}
+html.js .section-head.is-inview .section-title,
+html.js .sound__head.is-inview h2,
+html.js .contact__inner.is-inview h2{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  html.js .section-head .section-title,
+  html.js .sound__head h2,
+  html.js .contact__inner h2{ transform:none; transition:opacity .4s ease; }
+  html.js .section-head .eyebrow::before,
+  html.js .sound__head .eyebrow::before{ transition:none; width:24px; }
+}
