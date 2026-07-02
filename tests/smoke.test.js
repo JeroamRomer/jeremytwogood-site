@@ -241,9 +241,14 @@ test('smoke: reveal styles are gated behind html.js', () => {
   const css = getBundledCss();
   assert.ok(css.includes('.is-inview'), 'reveal CSS must be present');
   assert.ok(css.includes('html.js'), 'reveal CSS must be js-gated');
+  assert.ok(css.includes('.contact__inner.is-inview'), 'contact reveal rule must be present');
 });
 
 test('smoke: pages add the js class before paint', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes("classList.add('js')"), 'inline js-class script must be present');
+  assert.ok(html.includes('IntersectionObserver'), 'reveal observer script must ship');
+  assert.ok(html.includes('is-inview'), 'observer must add the is-inview class');
+  const caseStudy = getHtml('work/shell-john-williams/index.html');
+  assert.ok(caseStudy.includes("classList.add('js')"), 'js-class script must be on case-study pages too');
 });

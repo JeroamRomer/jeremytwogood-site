@@ -94,7 +94,7 @@ const personSchema = {
               rio.unobserve(e.target);
             }
           });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.15 });
         revealTargets.forEach((t) => rio.observe(t));
       } else {
         revealTargets.forEach((t) => t.classList.add('is-inview'));
