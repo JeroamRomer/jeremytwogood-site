@@ -120,6 +120,7 @@ const previews: Record<string, string> = {
   }
   @media (prefers-reduced-motion: reduce) {
     .work-card__preview { transition: none; }
+    .work-card__tc::before { animation: none; }
   }
 
   /* Running timecode chip while the hover preview plays */
