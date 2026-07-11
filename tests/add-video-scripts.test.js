@@ -42,3 +42,38 @@ test('extract-frames: writes N spread candidate stills', { skip: SKIP }, () => {
     assert.ok(statSync(join(out, f)).size > 5_000, `${f} must be a real image, not empty`);
   }
 });
+
+test('make-loop suggest: prints a valid start time', { skip: SKIP }, () => {
+  const out = execFileSync(join(SCRIPTS, 'make-loop.sh'), ['suggest', fixture()], {
+    encoding: 'utf-8',
+  });
+  const start = parseFloat(out.trim());
+  assert.ok(Number.isFinite(start), `output must be a number, got: ${out}`);
+  assert.ok(start >= 0 && start <= 16, 'start must leave room for a 4s loop in a 20s video');
+});
+
+test('make-loop cut: encodes matching mp4+webm loop pair', { skip: SKIP }, () => {
+  const dir = mkdtempSync(join(tmpdir(), 'loop-'));
+  const base = join(dir, 'test-loop');
+  execFileSync(join(SCRIPTS, 'make-loop.sh'), ['cut', fixture(), '5', base]);
+
+  for (const ext of ['mp4', 'webm']) {
+    const file = `${base}.${ext}`;
+    assert.ok(existsSync(file), `${ext} must exist`);
+    assert.ok(statSync(file).size <= 300 * 1024, `${ext} must be ≤ 300 KB`);
+
+    const probe = JSON.parse(
+      execSync(
+        `ffprobe -v error -show_streams -show_format -of json "${file}"`,
+        { encoding: 'utf-8' }
+      )
+    );
+    const video = probe.streams.find((s) => s.codec_type === 'video');
+    assert.equal(video.width, 960, `${ext} width`);
+    assert.equal(video.height, 540, `${ext} height`);
+    assert.equal(video.r_frame_rate, '24/1', `${ext} frame rate`);
+    assert.ok(!probe.streams.some((s) => s.codec_type === 'audio'), `${ext} must be muted`);
+    const dur = parseFloat(probe.format.duration);
+    assert.ok(Math.abs(dur - 4) < 0.3, `${ext} duration ~4s, got ${dur}`);
+  }
+});
