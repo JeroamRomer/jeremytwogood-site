@@ -103,3 +103,30 @@ test('make-loop cut: encodes matching mp4+webm loop pair', { skip: SKIP }, () =>
     assert.ok(Math.abs(dur - 4) < 0.3, `${ext} duration ~4s, got ${dur}`);
   }
 });
+
+test('compress-thumb: output is ≤ 300 KB and ≤ 1600 px wide', async () => {
+  const sharp = (await import('sharp')).default;
+  const dir = mkdtempSync(join(tmpdir(), 'thumb-'));
+  const input = join(dir, 'huge.png');
+
+  // Photo-like fixture: random noise blurred, 2400px wide — too big as PNG,
+  // forcing the script to resize and (likely) fall through to the JPEG ladder.
+  const raw = Buffer.alloc(2400 * 1350 * 3);
+  for (let i = 0; i < raw.length; i++) raw[i] = Math.floor(Math.random() * 256);
+  await sharp(raw, { raw: { width: 2400, height: 1350, channels: 3 } })
+    .blur(6)
+    .png()
+    .toFile(input);
+
+  const stdout = execFileSync(
+    'node',
+    [join(SCRIPTS, 'compress-thumb.mjs'), input, join(dir, 'out')],
+    { encoding: 'utf-8' }
+  );
+  const outPath = stdout.trim().split('\n').pop();
+  assert.ok(existsSync(outPath), `printed path must exist: ${outPath}`);
+  assert.ok(statSync(outPath).size <= 300 * 1024, 'output must be ≤ 300 KB');
+
+  const meta = await sharp(outPath).metadata();
+  assert.ok(meta.width <= 1600, `width must be ≤ 1600, got ${meta.width}`);
+});
