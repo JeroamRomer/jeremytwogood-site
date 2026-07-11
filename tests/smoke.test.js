@@ -300,3 +300,26 @@ test('smoke: every JSON-LD block on home + case study parses as valid JSON', () 
     }
   }
 });
+
+// ── /mcp page ────────────────────────────────────────────────────────────────
+
+test('smoke: /mcp page exists and lists every manifest tool', () => {
+  const html = getHtml('mcp/index.html');
+  const manifest = JSON.parse(
+    readFileSync(join(ROOT, 'src', 'data', 'mcp-manifest.json'), 'utf-8')
+  );
+  for (const tool of manifest.tools) {
+    assert.ok(html.includes(tool.name), `/mcp must list tool ${tool.name}`);
+  }
+  assert.ok(html.includes('https://jeremytwogood.com/api/mcp'), 'endpoint URL must appear');
+});
+
+test('smoke: /mcp page has FAQPage JSON-LD', () => {
+  const html = getHtml('mcp/index.html');
+  assert.ok(html.includes('"@type": "FAQPage"'), 'FAQPage schema must be present');
+});
+
+test('smoke: footer links to /mcp', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('href="/mcp"'), 'footer must link to /mcp');
+});
