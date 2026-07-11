@@ -13,6 +13,11 @@ const previews: Record<string, string> = {
   'ttms-5-points': 'fivepoints-loop',
   'ns-health-westray': 'nshealth-loop',
 };
+
+// Section-head count, derived so it never goes stale when a project is added.
+const projectCount = String(projects.length).padStart(2, '0');
+const projectYears = projects.map((p) => Number(p.year));
+const yearRange = `${Math.min(...projectYears)}—${Math.max(...projectYears)}`;
 ---
 <section id="work" class="section section--dark grain" aria-label="Selected work">
   <div class="wrap">
@@ -21,7 +26,7 @@ const previews: Record<string, string> = {
         <span class="eyebrow">Selected Work</span>
         <h2 class="section-title">Twenty years of<br/>solutions delivered.</h2>
       </div>
-      <span class="section-head__count">08 Projects · 2016—2026</span>
+      <span class="section-head__count">{projectCount} Projects · {yearRange}</span>
     </div>
 
     <div class="rainbow-rule" data-rainbow aria-hidden="true">
