@@ -9,7 +9,7 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
-  pageType?: 'home' | 'reel' | 'ai-builds';
+  pageType?: 'home' | 'reel' | 'ai-builds' | 'mcp';
 }
 
 const bioText = Array.isArray(profile.bio) ? profile.bio.join(' ') : profile.bio;
@@ -28,10 +28,23 @@ const canonicalUrl = new URL(Astro.url.pathname, profile.website).href;
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${profile.website}/#person`,
   name: profile.name,
   url: profile.website,
   jobTitle: profile.title,
   description: metaDescription,
+  email: `mailto:${profile.email}`,
+  image: new URL('/assets/portrait.jpg', profile.website).href,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Toronto',
+    addressRegion: 'ON',
+    addressCountry: 'CA',
+  },
+  hasOccupation: [
+    { '@type': 'Occupation', name: 'Video Producer' },
+    { '@type': 'Occupation', name: 'Video Editor' },
+  ],
   knowsAbout: profile.skills,
   sameAs: Object.values(profile.social),
 };
@@ -71,7 +84,7 @@ const personSchema = {
     <link rel="availability"   type="application/json" href="/availability.json" />
 
     <!-- MCP-friendly discovery comment -->
-    <!-- MCP-AGENT: profile=/agent-data.json availability=/availability.json reel=/reel-index.json manifest=/.well-known/agent.json -->
+    <!-- MCP-AGENT: mcp=/api/mcp card=/.well-known/mcp-server-card docs=/mcp profile=/agent-data.json availability=/availability.json reel=/reel-index.json manifest=/.well-known/agent.json -->
 
     <!-- JSON-LD: Person (every page) -->
     <script type="application/ld+json" set:html={JSON.stringify(personSchema, null, 2)} />

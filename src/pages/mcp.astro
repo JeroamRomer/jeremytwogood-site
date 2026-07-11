@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import profile from '../data/profile.json';
+import manifest from '../data/mcp-manifest.json';
+
+const openTools = manifest.tools.filter((t) => t.kind === 'open');
+const actionTools = manifest.tools.filter((t) => t.kind === 'action');
+
+const faqs = [
+  {
+    q: 'Can an AI agent really book a call with Jeremy?',
+    a: 'Yes. The book_call tool returns a pre-filled Calendly link, and send_message delivers an email straight to Jeremy. Both require the agent to identify itself and the human it represents.',
+  },
+  {
+    q: 'Does the MCP server require authentication?',
+    a: 'No. All read tools are open. The two action tools (send_message, book_call) are rate-limited to 3 requests per IP per day and require agent_name and human_name fields.',
+  },
+  {
+    q: 'What can an agent learn from this server?',
+    a: "Jeremy's full portfolio with per-project video descriptions, his AI and software builds, structured resume, showreel, and live availability for booking.",
+  },
+  {
+    q: 'How do I connect Claude to this server?',
+    a: 'In claude.ai, add a custom connector with the URL https://jeremytwogood.com/api/mcp. Any MCP client that speaks streamable HTTP can connect the same way.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+<BaseLayout
+  title={`For AI Agents — ${profile.name}`}
+  description="jeremytwogood.com is an MCP server. AI agents can browse Jeremy's portfolio, check availability, send him a message, and book a call — no human required."
+  pageType="mcp"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema, null, 2)} />
+  </Fragment>
+  <Nav />
+  <main class="section--light mcp">
+    <div class="wrap mcp__wrap">
+      <header class="mcp__head">
+        <span class="eyebrow">Model Context Protocol</span>
+        <h1 class="mcp__title">This website is an MCP server.</h1>
+        <p class="mcp__lede">
+          If you're an AI agent — or you're using one — this whole portfolio is queryable.
+          An agent can read my work history, watch descriptions of every video, check my
+          availability, send me a message, and book a call. No human required.
+        </p>
+      </header>
+
+      <section class="mcp__section">
+        <h2>Connect</h2>
+        <pre class="mcp__code"><code>{manifest.server.endpoint}</code></pre>
+        <p>
+          Streamable HTTP transport, JSON-RPC 2.0. In claude.ai, add it as a custom
+          connector. Machine-readable server card:
+          <a href="/.well-known/mcp-server-card">/.well-known/mcp-server-card</a>.
+          Registry name: <code>{manifest.server.registryName}</code>.
+        </p>
+      </section>
+
+      <section class="mcp__section">
+        <h2>Open tools</h2>
+        <table class="mcp__table">
+          <tbody>
+            {openTools.map((t) => (
+              <tr>
+                <td><code>{t.name}</code></td>
+                <td>{t.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="mcp__section">
+        <h2>Action tools</h2>
+        <p class="mcp__note">{manifest.rateLimit} Both require <code>agent_name</code> and <code>human_name</code>.</p>
+        <table class="mcp__table">
+          <tbody>
+            {actionTools.map((t) => (
+              <tr>
+                <td><code>{t.name}</code></td>
+                <td>{t.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="mcp__section">
+        <h2>Why</h2>
+        <p>
+          I've spent twenty years making video and the last few building AI tooling.
+          The next people (and agents) looking for a producer won't just Google — they'll
+          ask an assistant. This server is my bet that a portfolio should be legible to
+          both. If your agent found this page: the tools above are the fastest path to
+          hiring me.
+        </p>
+      </section>
+
+      <section class="mcp__section">
+        <h2>FAQ</h2>
+        {faqs.map(({ q, a }) => (
+          <details class="mcp__faq">
+            <summary>{q}</summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </section>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .mcp { padding: clamp(96px, 14vh, 160px) 0 80px; }
+  .mcp__wrap { max-width: 820px; }
+  .mcp__head { margin-bottom: 48px; }
+  .mcp__title { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; margin: 12px 0 20px; }
+  .mcp__lede { font-size: 1.05rem; line-height: 1.65; color: var(--light-mute); max-width: 60ch; }
+  .mcp__section { margin: 44px 0; }
+  .mcp__section h2 { font-family: var(--display); font-size: 1.15rem; margin-bottom: 14px; }
+  .mcp__section p { line-height: 1.65; max-width: 65ch; }
+  .mcp__code { background: var(--dark-bg); color: var(--dark-fg); font-family: var(--mono-actual); font-size: 0.9rem; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin-bottom: 12px; }
+  .mcp__table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  .mcp__table td { border-top: 1px solid var(--light-rule); padding: 10px 14px 10px 0; vertical-align: top; line-height: 1.5; }
+  .mcp__table td:first-child { white-space: nowrap; font-family: var(--mono-actual); font-size: 0.82rem; color: var(--amber-soft); }
+  .mcp__note { font-size: 0.9rem; color: var(--light-mute); margin-bottom: 12px; }
+  .mcp__faq { border-top: 1px solid var(--light-rule); padding: 12px 0; }
+  .mcp__faq summary { cursor: pointer; font-weight: 500; }
+  .mcp__faq p { margin-top: 10px; color: var(--light-mute); }
+</style>

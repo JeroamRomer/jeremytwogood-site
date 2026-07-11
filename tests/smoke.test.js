@@ -266,3 +266,60 @@ test('smoke: work cards with previews render a timecode chip', () => {
   assert.ok(html.includes('work-card__tc'), 'timecode chip must render');
   assert.ok(html.includes('00:00:00:00'), 'chip must start at zero timecode');
 });
+
+// ── Schema.org enrichment ────────────────────────────────────────────────────
+
+test('smoke: Person schema has @id, address, and occupation', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('"@id": "https://jeremytwogood.com/#person"'), 'Person @id must be present');
+  assert.ok(html.includes('"addressLocality": "Toronto"'), 'address must be present');
+  assert.ok(html.includes('"hasOccupation"'), 'hasOccupation must be present');
+});
+
+test('smoke: index.html has ProfessionalService schema linked to Person', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('"@type": "ProfessionalService"'), 'ProfessionalService schema must be present');
+  assert.ok(html.includes('"provider"'), 'service must reference a provider');
+  assert.ok(html.includes('Corporate Video Production'), 'serviceType list must render');
+});
+
+test('smoke: case-study VideoObject has keywords and genre', () => {
+  const html = getHtml('work/shell-john-williams/index.html');
+  assert.ok(html.includes('"keywords"'), 'VideoObject keywords must be present');
+  assert.ok(html.includes('"genre"'), 'VideoObject genre must be present');
+});
+
+test('smoke: every JSON-LD block on home + case study parses as valid JSON', () => {
+  for (const file of ['index.html', 'work/shell-john-williams/index.html']) {
+    const html = getHtml(file);
+    const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+    assert.ok(blocks.length >= 2, `${file} must have at least 2 JSON-LD blocks`);
+    for (const [, body] of blocks) {
+      const parsed = JSON.parse(body); // throws on invalid JSON
+      assert.ok(parsed['@type'], `every JSON-LD block in ${file} must declare @type`);
+    }
+  }
+});
+
+// ── /mcp page ────────────────────────────────────────────────────────────────
+
+test('smoke: /mcp page exists and lists every manifest tool', () => {
+  const html = getHtml('mcp/index.html');
+  const manifest = JSON.parse(
+    readFileSync(join(ROOT, 'src', 'data', 'mcp-manifest.json'), 'utf-8')
+  );
+  for (const tool of manifest.tools) {
+    assert.ok(html.includes(tool.name), `/mcp must list tool ${tool.name}`);
+  }
+  assert.ok(html.includes('https://jeremytwogood.com/api/mcp'), 'endpoint URL must appear');
+});
+
+test('smoke: /mcp page has FAQPage JSON-LD', () => {
+  const html = getHtml('mcp/index.html');
+  assert.ok(html.includes('"@type": "FAQPage"'), 'FAQPage schema must be present');
+});
+
+test('smoke: footer links to /mcp', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('href="/mcp"'), 'footer must link to /mcp');
+});
