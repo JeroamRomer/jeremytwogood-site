@@ -17,6 +17,10 @@ VIDEO="$2"
 
 DUR=$(ffprobe -v error -show_entries format=duration \
   -of default=noprint_wrappers=1:nokey=1 "$VIDEO")
+if ! [[ "$DUR" =~ ^[0-9.]+$ ]]; then
+  echo "could not determine duration for $VIDEO" >&2
+  exit 1
+fi
 
 if [ "$MODE" = "suggest" ]; then
   LOOP_LEN=4
@@ -38,6 +42,7 @@ if [ "$MODE" = "cut" ]; then
   START="$3"
   OUT_BASE="$4"
   LEN="${5:-4}"
+  mkdir -p "$(dirname "$OUT_BASE")"
   # Cover-fit any aspect ratio to the card's 16:9 frame, then conform to 24 fps.
   FILTERS="scale=960:540:force_original_aspect_ratio=increase,crop=960:540,fps=24"
 

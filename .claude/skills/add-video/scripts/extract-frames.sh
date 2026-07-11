@@ -19,6 +19,10 @@ fi
 mkdir -p "$OUT"
 DUR=$(ffprobe -v error -show_entries format=duration \
   -of default=noprint_wrappers=1:nokey=1 "$VIDEO")
+if ! [[ "$DUR" =~ ^[0-9.]+$ ]]; then
+  echo "could not determine duration for $VIDEO" >&2
+  exit 1
+fi
 
 for i in $(seq 1 "$COUNT"); do
   # Window i covers [(i-1)/COUNT, i/COUNT) of the runtime; sample its middle

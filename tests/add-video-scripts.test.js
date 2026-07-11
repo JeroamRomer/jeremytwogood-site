@@ -33,6 +33,23 @@ function fixture() {
   return fixtureVideo;
 }
 
+// 18 s fixture with hard cuts at t=6 and t=12 (red→blue→green), so the
+// scene-detection branch of make-loop suggest is actually exercised.
+let sceneVideo = null;
+function sceneFixture() {
+  if (!sceneVideo) {
+    const dir = mkdtempSync(join(tmpdir(), 'addvideo-scene-'));
+    sceneVideo = join(dir, 'scenes.mp4');
+    execSync(
+      `ffmpeg -y -v error -f lavfi -i "color=red:duration=6:size=640x360:rate=24" ` +
+        `-f lavfi -i "color=blue:duration=6:size=640x360:rate=24" ` +
+        `-f lavfi -i "color=green:duration=6:size=640x360:rate=24" ` +
+        `-filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0" -pix_fmt yuv420p "${sceneVideo}"`
+    );
+  }
+  return sceneVideo;
+}
+
 test('extract-frames: writes N spread candidate stills', { skip: SKIP }, () => {
   const out = mkdtempSync(join(tmpdir(), 'frames-'));
   execFileSync(join(SCRIPTS, 'extract-frames.sh'), [fixture(), out, '4']);
@@ -50,6 +67,14 @@ test('make-loop suggest: prints a valid start time', { skip: SKIP }, () => {
   const start = parseFloat(out.trim());
   assert.ok(Number.isFinite(start), `output must be a number, got: ${out}`);
   assert.ok(start >= 0 && start <= 16, 'start must leave room for a 4s loop in a 20s video');
+});
+
+test('make-loop suggest: picks the scene change nearest 1/3 of runtime', { skip: SKIP }, () => {
+  const out = execFileSync(join(SCRIPTS, 'make-loop.sh'), ['suggest', sceneFixture()], {
+    encoding: 'utf-8',
+  });
+  const start = parseFloat(out.trim());
+  assert.ok(Math.abs(start - 6) < 0.2, `expected the cut at ~6s (runtime/3), got ${start}`);
 });
 
 test('make-loop cut: encodes matching mp4+webm loop pair', { skip: SKIP }, () => {
@@ -71,6 +96,7 @@ test('make-loop cut: encodes matching mp4+webm loop pair', { skip: SKIP }, () =>
     const video = probe.streams.find((s) => s.codec_type === 'video');
     assert.equal(video.width, 960, `${ext} width`);
     assert.equal(video.height, 540, `${ext} height`);
+    assert.equal(video.codec_name, ext === 'mp4' ? 'h264' : 'vp9', `${ext} codec`);
     assert.equal(video.r_frame_rate, '24/1', `${ext} frame rate`);
     assert.ok(!probe.streams.some((s) => s.codec_type === 'audio'), `${ext} must be muted`);
     const dur = parseFloat(probe.format.duration);
