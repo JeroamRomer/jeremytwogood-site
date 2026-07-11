@@ -9,8 +9,29 @@ import Sound from '../components/Sound.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import TimelineBar from '../components/TimelineBar.astro';
+import profile from '../data/profile.json';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Jeremy Twogood — Video Production',
+  url: profile.website,
+  provider: { '@id': `${profile.website}/#person` },
+  areaServed: [{ '@type': 'City', name: 'Toronto' }, 'Remote'],
+  serviceType: [
+    'Corporate Video Production',
+    'Documentary Production',
+    'Video Editing',
+    'Motion Graphics',
+    'Colour Grading',
+    'AI Tooling Development',
+  ],
+};
 ---
 <BaseLayout>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(serviceSchema, null, 2)} />
+  </Fragment>
   <Nav />
   <main>
     <Hero />
