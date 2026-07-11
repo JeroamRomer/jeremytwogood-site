@@ -71,7 +71,7 @@ const personSchema = {
     <link rel="availability"   type="application/json" href="/availability.json" />
 
     <!-- MCP-friendly discovery comment -->
-    <!-- MCP-AGENT: profile=/agent-data.json availability=/availability.json reel=/reel-index.json manifest=/.well-known/agent.json -->
+    <!-- MCP-AGENT: mcp=/api/mcp card=/.well-known/mcp-server-card docs=/mcp profile=/agent-data.json availability=/availability.json reel=/reel-index.json manifest=/.well-known/agent.json -->
 
     <!-- JSON-LD: Person (every page) -->
     <script type="application/ld+json" set:html={JSON.stringify(personSchema, null, 2)} />

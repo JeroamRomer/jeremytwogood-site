@@ -3,7 +3,7 @@
     "registryName": "com.jeremytwogood/portfolio",
     "mcpName": "jeremytwogood-mcp",
     "title": "Jeremy Twogood — Portfolio",
-    "description": "Portfolio MCP server for Jeremy Twogood, Toronto video producer & editor. Projects, reel, resume, booking.",
+    "description": "MCP server for Jeremy Twogood, Toronto video producer & editor. Projects, reel, resume, booking.",
     "version": "1.0.0",
     "endpoint": "https://jeremytwogood.com/api/mcp",
     "websiteUrl": "https://jeremytwogood.com",
