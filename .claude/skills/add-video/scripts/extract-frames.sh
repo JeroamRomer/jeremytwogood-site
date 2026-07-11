@@ -11,6 +11,11 @@ VIDEO="$1"
 OUT="$2"
 COUNT="${3:-4}"
 
+if ! [[ "$COUNT" =~ ^[1-9][0-9]*$ ]]; then
+  echo "count must be a positive integer, got: $COUNT" >&2
+  exit 1
+fi
+
 mkdir -p "$OUT"
 DUR=$(ffprobe -v error -show_entries format=duration \
   -of default=noprint_wrappers=1:nokey=1 "$VIDEO")
@@ -24,4 +29,4 @@ for i in $(seq 1 "$COUNT"); do
     -vf "thumbnail=48" -frames:v 1 -q:v 2 "$OUT/candidate-$i.jpg"
 done
 
-ls "$OUT"/candidate-*.jpg
+ls -1 "$OUT"/candidate-*.jpg
