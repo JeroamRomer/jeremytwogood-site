@@ -75,7 +75,8 @@ Present options side by side:
   high-detail frames).
 
 Jeremy picks one. If a local frame: export at source resolution to
-`public/assets/<id>-thumb.png`, then **compress with `sharp`**
+`public/assets/<short-name>-thumb.png` (short-name convention, like loops:
+`talkto-thumb`, not `ttms-chef-nuit-thumb`), then **compress with `sharp`**
 (`scripts/compress-thumb.mjs`, target ≤ 300 KB, max width 1600px, jpg or png
 per content). Hosted URL: just record it in `projects.json`.
 
@@ -90,8 +91,9 @@ Final encode matches existing loops exactly:
 
 ### 6. Write data
 - `projects.json` — fill or append the entry (schema per existing entries:
-  `id, name, client, type, disciplines, year, role[], youtube_id, youtube_url,
-  vimeo_id, link, thumbnail, coming_soon: false, featured, span`).
+  `id, name, client, type, disciplines, year, role[], youtube_id+youtube_url
+  (or vimeo_id+vimeo_url), thumbnail, featured, span` — unused fields omitted;
+  legacy `link` field is dead).
 - `video-content.json` — add the approved entry under the project `id`.
 - `src/components/Projects.astro` — add `'<id>': '<name>-loop'` to the
   `previews` map.

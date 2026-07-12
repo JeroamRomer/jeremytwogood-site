@@ -81,8 +81,10 @@ Jeremy picks one:
 - Platform still → record its URL directly as `thumbnail` in `projects.json`.
 - Extracted frame → compress and place it:
   ```bash
-  node .claude/skills/add-video/scripts/compress-thumb.mjs <frame> public/assets/<id>-thumb
+  node .claude/skills/add-video/scripts/compress-thumb.mjs <frame> public/assets/<short-name>-thumb
   ```
+  Thumbnail filenames follow the same short-name convention as loops
+  (`talkto-thumb`, not `ttms-chef-nuit-thumb`).
   The script prints the final path (`.png` if lossless fits 300 KB, else
   `.jpg`); use `/assets/<basename>` as `thumbnail`.
 
@@ -116,18 +118,19 @@ Only after Gates 3-5 have all passed:
      "disciplines": "<Discipline · Discipline>",
      "year": "<YYYY>",
      "role": ["Editor"],
-     "youtube_id": "<id-or-null>",
-     "youtube_url": "<url-or-null>",
-     "vimeo_id": null,
-     "link": null,
+     "youtube_id": "<youtube-id>",
+     "youtube_url": "https://www.youtube.com/watch?v=<youtube-id>",
      "thumbnail": "<url-or-/assets/path>",
-     "coming_soon": false,
      "featured": true,
      "span": 2
    }
    ```
-   (Vimeo videos set `vimeo_id` and omit/null the youtube fields — see
-   `simbility-desk-series`.)
+   (Completed entries omit unused fields — no explicit nulls. Vimeo videos
+   replace the two youtube fields with `vimeo_id` AND `vimeo_url` — see
+   `simbility-desk-series`; the case-study page builds its watch link from
+   `youtube_url || vimeo_url`. When filling a `coming_soon` placeholder,
+   delete its `coming_soon: true` and leftover null fields; the legacy
+   `link` field is dead — no code reads it.)
 2. `src/data/video-content.json` — add the approved Step 3 entry under `<id>`.
 3. `src/components/Projects.astro` — add to the `previews` map:
    ```js
@@ -197,6 +200,7 @@ check the Vercel dashboard.
 |---|---|
 | watch download fails (login/region-locked) | Tell Jeremy plainly; ask for a local file path to use for frames/loop; copy can be drafted from his description if there's no transcript. |
 | No ffmpeg | `brew install ffmpeg` |
+| No sharp (module not found) | Run `npm install` — sharp is already in `package.json`. |
 | Vimeo oEmbed 404 | Use extracted frames only (Step 4 option 2). |
 | Tests fail in Step 8 | Stop. Show output. Fix before the commit gate. |
 | Loop files land > 300 KB | Source is unusually noisy — re-cut at a calmer moment rather than raising the bitrate. |
