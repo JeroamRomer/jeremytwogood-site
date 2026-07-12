@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { checkRateLimit } from './rate-limit.js';
+import manifest from '../../src/data/mcp-manifest.json' with { type: 'json' };
 import {
   handleGetProfile,
   handleListProjects,
@@ -13,35 +14,41 @@ import {
 } from './tools-open.js';
 import { handleSendMessage, handleBookCall } from './tools-actions.js';
 
+function desc(name: string): string {
+  const tool = manifest.tools.find((t) => t.name === name);
+  if (!tool) throw new Error(`Tool missing from mcp-manifest.json: ${name}`);
+  return tool.description;
+}
+
 export function createServer(clientIp: string): McpServer {
   const server = new McpServer({
-    name: 'jeremytwogood-mcp',
-    version: '1.0.0',
+    name: manifest.server.mcpName,
+    version: manifest.server.version,
   });
 
-  server.tool('get_profile', "Get Jeremy Twogood's profile — bio, skills, clients, location, and social links.", {}, handleGetProfile);
+  server.tool('get_profile', desc('get_profile'), {}, handleGetProfile);
 
-  server.tool('list_projects', "List all of Jeremy's work projects with metadata.", {}, handleListProjects);
+  server.tool('list_projects', desc('list_projects'), {}, handleListProjects);
 
-  server.tool('get_project', 'Get full details for a single project, including video content description.', {
+  server.tool('get_project', desc('get_project'), {
     id: z.string().describe('Project ID — get valid IDs from list_projects'),
   }, handleGetProject);
 
-  server.tool('list_ai_builds', "List all of Jeremy's AI and software projects.", {}, handleListAiBuilds);
+  server.tool('list_ai_builds', desc('list_ai_builds'), {}, handleListAiBuilds);
 
-  server.tool('get_ai_build', 'Get full details for a single AI or software project.', {
+  server.tool('get_ai_build', desc('get_ai_build'), {
     id: z.string().describe('Build ID — get valid IDs from list_ai_builds'),
   }, handleGetAiBuild);
 
-  server.tool('get_reel', "Get Jeremy's showreel description and link.", {}, handleGetReel);
+  server.tool('get_reel', desc('get_reel'), {}, handleGetReel);
 
-  server.tool('get_resume', "Get Jeremy's full structured resume as JSON.", {}, handleGetResume);
+  server.tool('get_resume', desc('get_resume'), {}, handleGetResume);
 
-  server.tool('get_availability', "Get Jeremy's booking URL and availability information.", {}, handleGetAvailability);
+  server.tool('get_availability', desc('get_availability'), {}, handleGetAvailability);
 
   server.tool(
     'send_message',
-    "Send a message to Jeremy by email. Requires agent_name (your identifier) and human_name (the person you represent). Rate limited to 3 action requests per IP per day.",
+    desc('send_message'),
     {
       agent_name: z.string().describe('Your agent name or identifier, e.g. "Claude"'),
       human_name: z.string().describe('The name of the human you represent'),
@@ -61,7 +68,7 @@ export function createServer(clientIp: string): McpServer {
 
   server.tool(
     'book_call',
-    "Get a pre-filled Calendly booking link for a call with Jeremy. Requires agent_name and human_name. Rate limited to 3 action requests per IP per day.",
+    desc('book_call'),
     {
       agent_name: z.string().describe('Your agent name or identifier, e.g. "Claude"'),
       human_name: z.string().describe('The name of the human you represent'),

@@ -50,6 +50,8 @@ const videoSchema = {
   ...(embed ? { embedUrl: embed.split('?')[0] } : {}),
   ...(watchUrl ? { contentUrl: watchUrl } : {}),
   creator: { '@type': 'Person', name: profile.name, url: profile.website },
+  genre: project.type,
+  ...(themes.length ? { keywords: themes.join(', ') } : {}),
 };
 
 const breadcrumbSchema = {

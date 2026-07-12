@@ -1,13 +1,20 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "owner": "Jeremy Twogood",
   "agent_friendly": true,
-  "description": "Jeremy Twogood is a multimedia producer, video editor, and AI tooling builder based in Ontario, Canada.",
+  "description": "Jeremy Twogood is a Toronto-based multimedia producer and video editor with twenty years across broadcast, documentary, and corporate production.",
   "endpoints": {
-    "profile":      "/agent-data.json",
+    "profile": "/agent-data.json",
     "availability": "/availability.json",
-    "reel_index":   "/reel-index.json",
-    "chat":         null
+    "reel_index": "/reel-index.json",
+    "chat": "/api/chat",
+    "mcp": "/api/mcp"
   },
-  "note": "chat endpoint is null — reserved for a future conversational interface"
+  "mcp": {
+    "endpoint": "https://jeremytwogood.com/api/mcp",
+    "transport": "streamable-http",
+    "server_card": "/.well-known/mcp-server-card",
+    "docs": "/mcp",
+    "rate_limit": "Action tools (send_message, book_call) are limited to 3 requests per IP per day."
+  }
 }

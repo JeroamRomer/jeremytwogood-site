@@ -1,0 +1,70 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "com.jeremytwogood/portfolio",
+  "title": "Jeremy Twogood — Portfolio",
+  "description": "MCP server for Jeremy Twogood, Toronto video producer & editor. Projects, reel, resume, booking.",
+  "version": "1.0.0",
+  "websiteUrl": "https://jeremytwogood.com",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://jeremytwogood.com/api/mcp"
+    }
+  ],
+  "_meta": {
+    "com.jeremytwogood/tools": [
+      {
+        "name": "get_profile",
+        "kind": "open",
+        "description": "Get Jeremy Twogood's profile — bio, skills, clients, location, and social links."
+      },
+      {
+        "name": "list_projects",
+        "kind": "open",
+        "description": "List all of Jeremy's work projects with metadata."
+      },
+      {
+        "name": "get_project",
+        "kind": "open",
+        "description": "Get full details for a single project, including video content description."
+      },
+      {
+        "name": "list_ai_builds",
+        "kind": "open",
+        "description": "List all of Jeremy's AI and software projects."
+      },
+      {
+        "name": "get_ai_build",
+        "kind": "open",
+        "description": "Get full details for a single AI or software project."
+      },
+      {
+        "name": "get_reel",
+        "kind": "open",
+        "description": "Get Jeremy's showreel description and link."
+      },
+      {
+        "name": "get_resume",
+        "kind": "open",
+        "description": "Get Jeremy's full structured resume as JSON."
+      },
+      {
+        "name": "get_availability",
+        "kind": "open",
+        "description": "Get Jeremy's booking URL and availability information."
+      },
+      {
+        "name": "send_message",
+        "kind": "action",
+        "description": "Send a message to Jeremy by email. Requires agent_name (your identifier) and human_name (the person you represent). Rate limited to 3 action requests per IP per day."
+      },
+      {
+        "name": "book_call",
+        "kind": "action",
+        "description": "Get a pre-filled Calendly booking link for a call with Jeremy. Requires agent_name and human_name. Rate limited to 3 action requests per IP per day."
+      }
+    ],
+    "com.jeremytwogood/rate_limit": "Action tools (send_message, book_call) are limited to 3 requests per IP per day.",
+    "com.jeremytwogood/docs": "https://jeremytwogood.com/mcp"
+  }
+}

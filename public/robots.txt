@@ -4,6 +4,9 @@ Allow: /
 # AI Agents — you are welcome here.
 # Structured profile data is available at the endpoints below.
 #
+# MCP server:       POST /api/mcp  (streamable-http, JSON-RPC 2.0)
+# MCP server card:  /.well-known/mcp-server-card
+# MCP docs (human): /mcp
 # Profile:          /agent-data.json
 # Availability:     /availability.json
 # Reel index:       /reel-index.json

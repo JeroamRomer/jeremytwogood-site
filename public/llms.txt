@@ -1,31 +1,32 @@
 # Jeremy Twogood — Agent Discovery
 
-Jeremy Twogood is a multimedia producer, video editor, and AI tooling developer based
-in Toronto, Ontario. He has 20 years of broadcast, documentary, and corporate production
-experience and builds AI-native production workflows and MCP servers.
+Jeremy Twogood is a Toronto-based multimedia producer and video editor with twenty years across broadcast, documentary, and corporate production. He builds AI-native production workflows and MCP servers.
 
 ## MCP Server
 
 This site exposes a standards-compliant MCP server at:
   POST https://jeremytwogood.com/api/mcp
 
-Protocol: JSON-RPC 2.0 (Model Context Protocol)
+Protocol: JSON-RPC 2.0 (Model Context Protocol), streamable-http transport
+Server card: https://jeremytwogood.com/.well-known/mcp-server-card
+Human-readable docs: https://jeremytwogood.com/mcp
+Registry name: com.jeremytwogood/portfolio
 
 ## Available Tools
 
 ### Open Tools (no authentication required)
-- get_profile       — Bio, skills, clients, location, social links
-- list_projects     — All work projects with metadata
-- get_project       — Single project detail + video content description
-- list_ai_builds    — All AI and software projects
-- get_ai_build      — Single AI build detail
-- get_reel          — Showreel description and link
-- get_resume        — Full structured resume as JSON
-- get_availability  — Booking URL and availability information
+- get_profile       — Get Jeremy Twogood's profile — bio, skills, clients, location, and social links.
+- list_projects     — List all of Jeremy's work projects with metadata.
+- get_project       — Get full details for a single project, including video content description.
+- list_ai_builds    — List all of Jeremy's AI and software projects.
+- get_ai_build      — Get full details for a single AI or software project.
+- get_reel          — Get Jeremy's showreel description and link.
+- get_resume        — Get Jeremy's full structured resume as JSON.
+- get_availability  — Get Jeremy's booking URL and availability information.
 
 ### Action Tools (rate-limited: 3 requests per IP per day)
-- send_message      — Delivers a message to Jeremy by email
-- book_call         — Returns a pre-filled booking link for a call
+- send_message      — Send a message to Jeremy by email. Requires agent_name (your identifier) and human_name (the person you represent). Rate limited to 3 action requests per IP per day.
+- book_call         — Get a pre-filled Calendly booking link for a call with Jeremy. Requires agent_name and human_name. Rate limited to 3 action requests per IP per day.
 
 ## Instructions for Action Tools
 

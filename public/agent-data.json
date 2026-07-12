@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0",
-  "generated_at": "2026-06-26T10:48:12.837Z",
+  "schema_version": "1.1",
+  "generated_at": "2026-07-11T12:25:38.580Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -223,6 +223,10 @@
     "agent_data": "/agent-data.json",
     "reel_index": "/reel-index.json",
     "availability": "/availability.json",
-    "agent_manifest": "/.well-known/agent.json"
+    "agent_manifest": "/.well-known/agent.json",
+    "chat": "/api/chat",
+    "mcp": "/api/mcp",
+    "mcp_server_card": "/.well-known/mcp-server-card",
+    "mcp_docs": "/mcp"
   }
 }
