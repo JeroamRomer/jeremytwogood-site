@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, execSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -129,4 +129,15 @@ test('compress-thumb: output is ≤ 300 KB and ≤ 1600 px wide', async () => {
 
   const meta = await sharp(outPath).metadata();
   assert.ok(meta.width <= 1600, `width must be ≤ 1600, got ${meta.width}`);
+});
+
+test('skill: SKILL.md exists and references every bundled script', () => {
+  const skillPath = join(ROOT, '.claude', 'skills', 'add-video', 'SKILL.md');
+  assert.ok(existsSync(skillPath), 'SKILL.md must exist');
+  const md = readFileSync(skillPath, 'utf-8');
+  for (const script of ['extract-frames.sh', 'make-loop.sh', 'compress-thumb.mjs']) {
+    assert.ok(md.includes(script), `SKILL.md must reference ${script}`);
+    assert.ok(existsSync(join(SCRIPTS, script)), `${script} must exist`);
+  }
+  assert.ok(md.startsWith('---\nname: add-video'), 'frontmatter must lead with the skill name');
 });
