@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-07-11T12:25:38.580Z",
+  "generated_at": "2026-07-17T18:38:45.387Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -168,7 +168,7 @@
     {
       "id": "bike-app",
       "name": "Pedal Path",
-      "description": "Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
+      "description": "Live on the App Store. Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
       "tech_stack": [
         "SwiftUI",
         "Mapbox",
@@ -176,9 +176,9 @@
         "Supabase"
       ],
       "role": "Creator",
-      "status": "in-dev",
+      "status": "live",
       "github_url": null,
-      "live_url": null
+      "live_url": "https://apps.apple.com/ca/app/pedal-path/id6784479426"
     }
   ],
   "reel": {

@@ -58,15 +58,15 @@
   {
     "id": "bike-app",
     "name": "Pedal Path",
-    "description": "Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
+    "description": "Live on the App Store. Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
     "tech_stack": ["SwiftUI", "Mapbox", "CoreLocation", "Supabase"],
     "role": "Creator",
-    "status": "in-dev",
+    "status": "live",
     "github_url": null,
-    "live_url": null,
-    "shot_class": "build-card__shot--phones build-card__shot--stacked",
-    "shot_images": ["/assets/biking-1.jpg", "/assets/biking-2.jpg"],
-    "shot_alts": ["Biking app — ride summary", "Biking app — active ride"],
+    "live_url": "https://apps.apple.com/ca/app/pedal-path/id6784479426",
+    "shot_class": "build-card__shot--phones build-card__shot--four",
+    "shot_images": ["/assets/pedal-path-icon.png", "/assets/pedal-path-1.jpg", "/assets/pedal-path-2.jpg", "/assets/pedal-path-3.jpg"],
+    "shot_alts": ["Pedal Path app icon", "Pedal Path — tracking a ride", "Pedal Path — ride summary", "Pedal Path — route map"],
     "span": 2,
     "featured": true
   }
