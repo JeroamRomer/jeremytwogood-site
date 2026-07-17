@@ -865,13 +865,16 @@ a{color:inherit;text-decoration:none}
   z-index:2;
 }
 .build-card__shot--four{ padding:16px; gap:8px; }
-.build-card__shot--phones.build-card__shot--four{ align-items:flex-end; } /* equal-height shots (Gibbon Knight) look identical either way; lets mixed-size rows (icon + phones) share one baseline */
+#build-bike-app .build-card__shot--phones.build-card__shot--four{ align-items:flex-end; } /* Pedal Path only: lets the small icon + taller phones share one baseline. Gibbon Knight's 4 equal-height shots stay centered (default from --phones). */
 .build-card__shot--four img{
   max-width:23%;
   border-radius:12px;
   height:auto;       /* override height:100% from --phones so aspect ratio is preserved */
   max-height:80%;
   object-fit:contain;
+}
+#build-gibbon-knight .build-card__shot--four img{
+  max-height:92%;   /* 80% left visible top/bottom margin next to Pedal Path's now-larger shots; fits 4-across up to the width cap */
 }
 #build-bike-app .build-card__shot--four img:first-child{
   max-width:11%;
