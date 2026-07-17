@@ -865,12 +865,19 @@ a{color:inherit;text-decoration:none}
   z-index:2;
 }
 .build-card__shot--four{ padding:16px; gap:8px; }
+.build-card__shot--phones.build-card__shot--four{ align-items:flex-end; } /* equal-height shots (Gibbon Knight) look identical either way; lets mixed-size rows (icon + phones) share one baseline */
 .build-card__shot--four img{
   max-width:23%;
   border-radius:12px;
   height:auto;       /* override height:100% from --phones so aspect ratio is preserved */
   max-height:80%;
   object-fit:contain;
+}
+#build-bike-app .build-card__shot--four img:first-child{
+  max-width:11%;
+  max-height:24%;
+  border-radius:0;   /* corners are already baked into the icon's own alpha mask */
+  box-shadow:none;
 }
 .build-card__shot--icon{
   inset:auto;
