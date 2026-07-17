@@ -879,6 +879,17 @@ a{color:inherit;text-decoration:none}
   border-radius:0;   /* corners are already baked into the icon's own alpha mask */
   box-shadow:none;
 }
+/* This card spans 2 grid columns with only 3 real screenshots (vs. Gibbon Knight's 4
+   in a single column), so the shared 23%/80% caps leave them looking sparse in the
+   much wider box even though the fill ratio matches. Give the screenshots more room —
+   but only above the 900px breakpoint where the grid actually honors span:2; below
+   that the card reverts to single-column width and the wider cap overflows it. */
+@media (min-width: 901px){
+  #build-bike-app .build-card__shot--four img:not(:first-child){
+    max-width:32%;
+    max-height:96%;
+  }
+}
 .build-card__shot--icon{
   inset:auto;
   top:24px;
