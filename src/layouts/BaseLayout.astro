@@ -17,7 +17,7 @@ const bioText = Array.isArray(profile.bio) ? profile.bio.join(' ') : profile.bio
 const metaDescription = (profile as any).bioMeta ?? bioText;
 
 const {
-  title = `${profile.name} — ${profile.title}`,
+  title = `${profile.name} · ${profile.title}`,
   description = metaDescription,
   ogImage = '/og-image.jpg',
   pageType = 'home',

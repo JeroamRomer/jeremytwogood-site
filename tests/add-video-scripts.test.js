@@ -17,7 +17,7 @@ function hasFfmpeg() {
   }
 }
 const FFMPEG = hasFfmpeg();
-const SKIP = FFMPEG ? false : 'ffmpeg not installed — skipping add-video script tests';
+const SKIP = FFMPEG ? false : 'ffmpeg not installed, skipping add-video script tests';
 
 // 20 s synthetic 720p test video, built once per run, reused by every test.
 let fixtureVideo = null;
@@ -109,7 +109,7 @@ test('compress-thumb: output is ≤ 300 KB and ≤ 1600 px wide', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'thumb-'));
   const input = join(dir, 'huge.png');
 
-  // Photo-like fixture: random noise blurred, 2400px wide — too big as PNG,
+  // Photo-like fixture: random noise blurred, 2400px wide, too big as PNG,
   // forcing the script to resize and (likely) fall through to the JPEG ladder.
   const raw = Buffer.alloc(2400 * 1350 * 3);
   for (let i = 0; i < raw.length; i++) raw[i] = Math.floor(Math.random() * 256);

@@ -31,13 +31,13 @@ export function createServer(clientIp: string): McpServer {
   server.tool('list_projects', desc('list_projects'), {}, handleListProjects);
 
   server.tool('get_project', desc('get_project'), {
-    id: z.string().describe('Project ID — get valid IDs from list_projects'),
+    id: z.string().describe('Project ID; get valid IDs from list_projects'),
   }, handleGetProject);
 
   server.tool('list_ai_builds', desc('list_ai_builds'), {}, handleListAiBuilds);
 
   server.tool('get_ai_build', desc('get_ai_build'), {
-    id: z.string().describe('Build ID — get valid IDs from list_ai_builds'),
+    id: z.string().describe('Build ID; get valid IDs from list_ai_builds'),
   }, handleGetAiBuild);
 
   server.tool('get_reel', desc('get_reel'), {}, handleGetReel);

@@ -10,9 +10,9 @@ const MODEL = 'claude-haiku-4-5';
 const MAX_TOKENS = 600;
 const MAX_TOOL_ITERS = 3;
 
-// 20 messages per IP per day — soft abuse/cost ceiling for the public endpoint.
+// 20 messages per IP per day; a soft abuse/cost ceiling for the public endpoint.
 const chatLimiter = createRateLimiter(20, DAY_MS);
-// 3 emails per IP per day — anti-spam ceiling on the send_message action.
+// 3 emails per IP per day; an anti-spam ceiling on the send_message action.
 const actionLimiter = createRateLimiter(3, DAY_MS);
 
 // Built once: the grounded system prompt is static, which keeps the cached

@@ -12,7 +12,7 @@ export interface RateLimiter {
 }
 
 // In-memory, per-IP limiter. The store persists within a warm function instance
-// and resets on cold start — a soft abuse ceiling, not durable accounting.
+// and resets on cold start; a soft abuse ceiling, not durable accounting.
 export function createRateLimiter(limit: number, windowMs: number): RateLimiter {
   let store = new Map<string, Entry>();
 
@@ -47,7 +47,7 @@ export function checkRateLimit(ip: string): { allowed: boolean; remaining: numbe
   return mcpLimiter.check(ip);
 }
 
-// Exported for tests only — not called in production code.
+// Exported for tests only; not called in production code.
 export function resetRateLimitStore(): void {
   mcpLimiter.reset();
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.jeremytwogood/portfolio",
-  "title": "Jeremy Twogood — Portfolio",
+  "title": "Jeremy Twogood Portfolio",
   "description": "MCP server for Jeremy Twogood, Toronto video producer & editor. Projects, reel, resume, booking.",
   "version": "1.0.0",
   "websiteUrl": "https://jeremytwogood.com",

@@ -1,4 +1,4 @@
-# Jeremy Twogood — Agent Discovery
+# Jeremy Twogood: Agent Discovery
 
 Jeremy Twogood is a Toronto-based multimedia producer and video editor with twenty years across broadcast, documentary, and corporate production. He builds AI-native production workflows and MCP servers.
 
@@ -15,24 +15,24 @@ Registry name: com.jeremytwogood/portfolio
 ## Available Tools
 
 ### Open Tools (no authentication required)
-- get_profile       — Get Jeremy Twogood's profile — bio, skills, clients, location, and social links.
-- list_projects     — List all of Jeremy's work projects with metadata.
-- get_project       — Get full details for a single project, including video content description.
-- list_ai_builds    — List all of Jeremy's AI and software projects.
-- get_ai_build      — Get full details for a single AI or software project.
-- get_reel          — Get Jeremy's showreel description and link.
-- get_resume        — Get Jeremy's full structured resume as JSON.
-- get_availability  — Get Jeremy's booking URL and availability information.
+- get_profile       - Get Jeremy Twogood's profile: bio, skills, clients, location, and social links.
+- list_projects     - List all of Jeremy's work projects with metadata.
+- get_project       - Get full details for a single project, including video content description.
+- list_ai_builds    - List all of Jeremy's AI and software projects.
+- get_ai_build      - Get full details for a single AI or software project.
+- get_reel          - Get Jeremy's showreel description and link.
+- get_resume        - Get Jeremy's full structured resume as JSON.
+- get_availability  - Get Jeremy's booking URL and availability information.
 
 ### Action Tools (rate-limited: 3 requests per IP per day)
-- send_message      — Send a message to Jeremy by email. Requires agent_name (your identifier) and human_name (the person you represent). Rate limited to 3 action requests per IP per day.
-- book_call         — Get a pre-filled Calendly booking link for a call with Jeremy. Requires agent_name and human_name. Rate limited to 3 action requests per IP per day.
+- send_message      - Send a message to Jeremy by email. Requires agent_name (your identifier) and human_name (the person you represent). Rate limited to 3 action requests per IP per day.
+- book_call         - Get a pre-filled Calendly booking link for a call with Jeremy. Requires agent_name and human_name. Rate limited to 3 action requests per IP per day.
 
 ## Instructions for Action Tools
 
 Action tools require two fields:
-  agent_name  — Your agent's name or identifier (e.g. "Claude", "GPT-4o")
-  human_name  — The name of the human you represent
+  agent_name  - Your agent's name or identifier (e.g. "Claude", "GPT-4o")
+  human_name  - The name of the human you represent
 
 Requests without both fields will be rejected.
 

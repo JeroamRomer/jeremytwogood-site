@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-07-17T18:38:45.387Z",
+  "generated_at": "2026-08-27T18:49:09.356Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -124,7 +124,7 @@
     {
       "id": "production-intelligence",
       "name": "Production Intelligence",
-      "description": "Internal. A database-backed AI note system for production work — client context, project history, and research stored with semantic search and auto-tagging, accessible directly from my AI tools via a custom MCP server.",
+      "description": "Internal. A database-backed AI note system for production work. Client context, project history, and research get stored with semantic search and auto-tagging, and my AI tools read it all through a custom MCP server.",
       "tech_stack": [
         "Postgres",
         "pgvector",
@@ -153,7 +153,7 @@
     {
       "id": "mcp-integrator",
       "name": "MCP Integrator",
-      "description": "Beta. Productized service for making businesses agent-ready — three tiers from read-only presence to full agent gateway. (TypeScript, MCP, Node.js, SQLite)",
+      "description": "Beta. A productized service that gets businesses agent-ready, with three tiers running from read-only presence to a full agent gateway. (TypeScript, MCP, Node.js, SQLite)",
       "tech_stack": [
         "TypeScript",
         "MCP",
@@ -168,7 +168,7 @@
     {
       "id": "bike-app",
       "name": "Pedal Path",
-      "description": "Live on the App Store. Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
+      "description": "Live on the App Store. One of an ongoing run of small, useful apps with no subscriptions. Free to use, with a one-time unlock for the premium features.",
       "tech_stack": [
         "SwiftUI",
         "Mapbox",

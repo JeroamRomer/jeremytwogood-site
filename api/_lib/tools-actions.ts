@@ -41,7 +41,7 @@ export async function handleSendMessage(params: {
   const { error } = await resend.emails.send({
     from: 'MCP Server <onboarding@resend.dev>',
     to: 'jtwogood@gmail.com',
-    subject: `Message via MCP — ${params.human_name}`,
+    subject: `Message via MCP from ${params.human_name}`,
     text: `Sent via MCP by ${params.agent_name} on behalf of ${params.human_name}.\n\n${params.message}`,
   });
 

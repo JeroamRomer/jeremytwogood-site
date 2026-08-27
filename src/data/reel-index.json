@@ -4,8 +4,8 @@
   "reel_youtube_id": "REPLACE_ME",
   "clips": [
     {
-      "name": "REPLACE_ME — clip name",
-      "description": "REPLACE_ME — populated via watch skill",
+      "name": "REPLACE_ME (clip name)",
+      "description": "REPLACE_ME (populated via watch skill)",
       "client": "REPLACE_ME",
       "role": "REPLACE_ME",
       "tech_stack": [],

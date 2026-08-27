@@ -122,7 +122,7 @@ const sections = [
 
     // Scrub: plain click seeks smoothly, drag follows the pointer directly.
     // Maps clientX to a position within the clicked clip's own section bounds
-    // (not a global bar-width fraction — clip widths sum to the sections'
+    // (not a global bar-width fraction; clip widths sum to the sections'
     // total height, which isn't the same denominator as scrollHeight minus
     // one viewport, so a global fraction systematically undershoots).
     function seek(clientX: number, smooth: boolean) {

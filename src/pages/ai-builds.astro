@@ -9,7 +9,7 @@ import profile from '../data/profile.json';
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: `AI Builds — ${profile.name}`,
+  name: `AI Builds · ${profile.name}`,
   description: 'Software and AI tools built by Jeremy Twogood.',
   itemListElement: aiBuilds.map((build, index) => ({
     '@type': 'ListItem',
@@ -30,7 +30,7 @@ const itemListSchema = {
 };
 ---
 <BaseLayout
-  title={`AI Builds — ${profile.name}`}
+  title={`AI Builds · ${profile.name}`}
   description="Software and AI tools built by Jeremy Twogood using the Claude API and related technologies."
   pageType="ai-builds"
 >

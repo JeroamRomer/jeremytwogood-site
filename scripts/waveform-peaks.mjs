@@ -1,7 +1,7 @@
 /**
  * Reduce raw mono PCM samples to N normalized RMS-energy buckets (0..1, 2 decimals).
  * RMS (not true peak) so the shape tracks sustained loudness/dynamics rather than
- * being dominated by isolated transient spikes — closer to how waveform displays
+ * being dominated by isolated transient spikes, closer to how waveform displays
  * like SoundCloud's read as "following the music".
  * Kept separate from build-waveforms.mjs so it can be unit-tested without ffmpeg.
  */

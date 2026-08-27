@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# AI Agents — you are welcome here.
+# AI Agents: you are welcome here.
 # Structured profile data is available at the endpoints below.
 #
 # MCP server:       POST /api/mcp  (streamable-http, JSON-RPC 2.0)

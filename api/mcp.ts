@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const server = createServer(clientIp);
 
   const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined, // stateless — no session state between requests
+    sessionIdGenerator: undefined, // stateless; no session state between requests
   });
 
   await server.connect(transport);

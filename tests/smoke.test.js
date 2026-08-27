@@ -232,7 +232,7 @@ test('smoke: work section project count is derived from projects.json', () => {
   const projects = JSON.parse(readFileSync(join(ROOT, 'src/data/projects.json'), 'utf-8'));
   const count = String(projects.length).padStart(2, '0');
   const years = projects.map((p) => Number(p.year));
-  const expected = `${count} Projects · ${Math.min(...years)}—${Math.max(...years)}`;
+  const expected = `${count} Projects · ${Math.min(...years)}–${Math.max(...years)}`;
   const html = getHtml('index.html');
   assert.ok(html.includes(expected), `index.html must contain "${expected}"`);
 });

@@ -17,7 +17,7 @@ const previews: Record<string, string> = {
 // Section-head count, derived so it never goes stale when a project is added.
 const projectCount = String(projects.length).padStart(2, '0');
 const projectYears = projects.map((p) => Number(p.year));
-const yearRange = `${Math.min(...projectYears)}—${Math.max(...projectYears)}`;
+const yearRange = `${Math.min(...projectYears)}–${Math.max(...projectYears)}`;
 ---
 <section id="work" class="section section--dark grain" aria-label="Selected work">
   <div class="wrap">
@@ -56,7 +56,7 @@ const yearRange = `${Math.min(...projectYears)}—${Math.max(...projectYears)}`;
         const hasThumbnail = !!project.thumbnail;
         // Each non-coming-soon project links to its own case-study page.
         const href = project.coming_soon ? null : `/work/${project.id}`;
-        const label = `${project.client} — ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
+        const label = `${project.client}, ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
         const stillStyle = [
           href ? `view-transition-name:work-${project.id}` : '',
           hasThumbnail ? `background-image:url('${project.thumbnail}');background-size:contain;background-repeat:no-repeat;background-position:center` : '',
@@ -108,7 +108,7 @@ const yearRange = `${Math.min(...projectYears)}—${Math.max(...projectYears)}`;
 
 <style>
   /* Hover-to-play preview loops on work cards. Sits above the still, below the
-     veil/meta (DOM order handles stacking — no z-index needed). */
+     veil/meta (DOM order handles stacking, so no z-index needed). */
   .work-card__preview {
     position: absolute;
     inset: 0;

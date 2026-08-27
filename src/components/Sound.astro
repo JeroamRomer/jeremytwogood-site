@@ -13,7 +13,7 @@ const WAVE_H = 32;
         <span class="eyebrow">Sound</span>
         <h2>Original compositions.</h2>
       </div>
-      <p class="sound__lede">Making music is the work that feeds the work — where the ear goes when it's off the clock.</p>
+      <p class="sound__lede">Music is where my ear goes when it's off the clock. It always ends up feeding back into the edit.</p>
     </div>
 
     <ul class="tracks">
@@ -121,7 +121,7 @@ const WAVE_H = 32;
         var li = a.closest('li'); if (li) li.classList.add('is-playing');
 
         if (widget && (window as any).SC) {
-          // Widget already bound — swap tracks without recreating the iframe.
+          // Widget already bound; swap tracks without recreating the iframe.
           widget.load(url, { auto_play: true, hide_related: true, show_comments: false, show_user: true, show_reposts: false, show_teaser: false, visual: false, color: '#c8922a' });
         } else {
           var src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)

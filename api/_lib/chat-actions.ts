@@ -53,7 +53,7 @@ export async function sendChatMessage(value: ContactValue): Promise<{ ok: boolea
   const { error } = await resend.emails.send({
     from: 'Website Chat <onboarding@resend.dev>',
     to: 'jtwogood@gmail.com',
-    subject: `Message via website chat — ${value.visitor_name}`,
+    subject: `Message via website chat from ${value.visitor_name}`,
     text: `From ${value.visitor_name} via the jeremytwogood.com chat assistant.${replyLine}\n\n${value.message}`,
     ...(value.visitor_email ? { replyTo: value.visitor_email } : {}),
   });

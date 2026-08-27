@@ -7,7 +7,7 @@ const { size = 40, color = '#1a1a1a' } = Astro.props;
 
 const reelSize = Math.round(size * 0.82);
 const lw       = 3;
-const lineUp   = 4;   // px above container bottom — increase to move line up
+const lineUp   = 4;   // px above container bottom; increase to move line up
 const strokeW    = Number((lw * 24 / reelSize).toFixed(2));
 const reelCenter = Math.round(reelSize / 2);
 const uid      = `bl-${Math.random().toString(36).slice(2, 7)}`;

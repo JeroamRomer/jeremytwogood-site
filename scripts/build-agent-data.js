@@ -142,11 +142,11 @@ writeFileSync(join(WELL_KNOWN, 'agent.json'), JSON.stringify(agentManifest, null
 
 // ── llms.txt ─────────────────────────────────────────────────────────────────
 
-const toolLine = (t) => `- ${t.name.padEnd(18)}— ${t.description}`;
+const toolLine = (t) => `- ${t.name.padEnd(18)}- ${t.description}`;
 const openTools = manifest.tools.filter((t) => t.kind === 'open');
 const actionTools = manifest.tools.filter((t) => t.kind === 'action');
 
-const llmsTxt = `# Jeremy Twogood — Agent Discovery
+const llmsTxt = `# Jeremy Twogood: Agent Discovery
 
 ${profile.bioMeta} He builds AI-native production workflows and MCP servers.
 
@@ -171,8 +171,8 @@ ${actionTools.map(toolLine).join('\n')}
 ## Instructions for Action Tools
 
 Action tools require two fields:
-  agent_name  — Your agent's name or identifier (e.g. "Claude", "GPT-4o")
-  human_name  — The name of the human you represent
+  agent_name  - Your agent's name or identifier (e.g. "Claude", "GPT-4o")
+  human_name  - The name of the human you represent
 
 Requests without both fields will be rejected.
 

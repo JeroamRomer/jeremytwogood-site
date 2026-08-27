@@ -43,7 +43,7 @@ const thumbAbs = new URL(project.thumbnail, profile.website).href;
 const videoSchema = {
   '@context': 'https://schema.org',
   '@type': 'VideoObject',
-  name: `${project.name} — ${project.type}`,
+  name: `${project.name} · ${project.type}`,
   description: summary || `${project.type} by ${profile.name}.`,
   thumbnailUrl: thumbAbs,
   uploadDate: `${project.year}-01-01`,
@@ -65,7 +65,7 @@ const breadcrumbSchema = {
 };
 ---
 <BaseLayout
-  title={`${project.name} — ${project.client} | ${profile.name}`}
+  title={`${project.name} · ${project.client} | ${profile.name}`}
   description={metaDesc}
   ogImage={project.thumbnail}
 >
@@ -90,7 +90,7 @@ const breadcrumbSchema = {
         target={watchUrl ? '_blank' : undefined}
         rel={watchUrl ? 'noopener' : undefined}
         data-video-embed={embed ?? undefined}
-        data-video-title={`${project.name} — ${project.type}`}
+        data-video-title={`${project.name} · ${project.type}`}
         aria-label={`Play ${project.name}`}
         style={`view-transition-name:work-${project.id};background-image:url('${project.thumbnail}')`}
       >

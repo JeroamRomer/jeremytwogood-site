@@ -16,7 +16,7 @@
   {
     "id": "production-intelligence",
     "name": "Production Intelligence",
-    "description": "Internal. A database-backed AI note system for production work — client context, project history, and research stored with semantic search and auto-tagging, accessible directly from my AI tools via a custom MCP server.",
+    "description": "Internal. A database-backed AI note system for production work. Client context, project history, and research get stored with semantic search and auto-tagging, and my AI tools read it all through a custom MCP server.",
     "tech_stack": ["Postgres", "pgvector", "Whisper", "Anthropic"],
     "role": "Creator",
     "status": "internal",
@@ -24,7 +24,7 @@
     "live_url": null,
     "shot_class": "build-card__shot--icon",
     "shot_images": ["/assets/rome-brone.svg"],
-    "shot_alts": ["Rome Brone — Production Intelligence"],
+    "shot_alts": ["Rome Brone (Production Intelligence)"],
     "featured": true
   },
   {
@@ -38,13 +38,13 @@
     "live_url": "https://gibbon-knight.vercel.app",
     "shot_class": "build-card__shot--phones build-card__shot--four",
     "shot_images": ["/assets/gibbon-1.jpg", "/assets/gibbon-2.jpg", "/assets/gibbon-3.jpg", "/assets/gibbon-4.jpg"],
-    "shot_alts": ["Gibbon Knight — title screen", "Gibbon Knight — reading", "Gibbon Knight — speaking", "Gibbon Knight — scrolls earned"],
+    "shot_alts": ["Gibbon Knight title screen", "Gibbon Knight reading view", "Gibbon Knight speaking view", "Gibbon Knight scrolls earned"],
     "featured": true
   },
   {
     "id": "mcp-integrator",
     "name": "MCP Integrator",
-    "description": "Beta. Productized service for making businesses agent-ready — three tiers from read-only presence to full agent gateway. (TypeScript, MCP, Node.js, SQLite)",
+    "description": "Beta. A productized service that gets businesses agent-ready, with three tiers running from read-only presence to a full agent gateway. (TypeScript, MCP, Node.js, SQLite)",
     "tech_stack": ["TypeScript", "MCP", "Node", "SQLite"],
     "role": "Creator",
     "status": "beta",
@@ -58,7 +58,7 @@
   {
     "id": "bike-app",
     "name": "Pedal Path",
-    "description": "Live on the App Store. Part of an ongoing suite of small, useful apps with no subscriptions. Free to use, with a one-time unlock for premium feature set access.",
+    "description": "Live on the App Store. One of an ongoing run of small, useful apps with no subscriptions. Free to use, with a one-time unlock for the premium features.",
     "tech_stack": ["SwiftUI", "Mapbox", "CoreLocation", "Supabase"],
     "role": "Creator",
     "status": "live",
@@ -66,7 +66,7 @@
     "live_url": "https://apps.apple.com/ca/app/pedal-path/id6784479426",
     "shot_class": "build-card__shot--phones build-card__shot--four",
     "shot_images": ["/assets/pedal-path-icon.png", "/assets/pedal-path-1.jpg", "/assets/pedal-path-2.jpg", "/assets/pedal-path-3.jpg"],
-    "shot_alts": ["Pedal Path app icon", "Pedal Path — tracking a ride", "Pedal Path — ride summary", "Pedal Path — route map"],
+    "shot_alts": ["Pedal Path app icon", "Pedal Path tracking a ride", "Pedal Path ride summary", "Pedal Path route map"],
     "span": 2,
     "featured": true
   }

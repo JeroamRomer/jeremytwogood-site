@@ -19,12 +19,12 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   id={uid}
   class="work-card span-6 comparison-card"
   role="img"
-  aria-label={`${project.name} — ${project.type}, ${project.year}. Drag to compare colour grades.`}
+  aria-label={`${project.name}: ${project.type}, ${project.year}. Drag to compare colour grades.`}
 >
   <!-- Bottom layer: graded (always full width, always visible behind) -->
   <video class="cc-video cc-video--graded" src={project.graded_src} loop muted playsinline preload="none"></video>
 
-  <!-- Top layer: ungraded, clips from right — drag right reveals more graded underneath -->
+  <!-- Top layer: ungraded, clips from right. Dragging right reveals more graded underneath -->
   <video class="cc-video cc-video--ungraded" src={project.ungraded_src} loop muted playsinline preload="none"></video>
 
   <!-- Slider overlay: vertical line + handle -->
@@ -44,7 +44,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     </div>
   </div>
 
-  <!-- Static thumbnail — sits on top, fades out on hover -->
+  <!-- Static thumbnail. Sits on top, fades out on hover -->
   <img class="cc-thumb" src={project.thumbnail} alt="" aria-hidden="true" />
 
   <!-- Veil gradient for meta readability -->
@@ -84,7 +84,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     object-fit: cover;
   }
 
-  /* Ungraded sits on top — clip-path set directly by JS */
+  /* Ungraded sits on top; clip-path set directly by JS */
   .cc-video--ungraded {}
 
   /* Touch-active state mirrors :hover for devices without pointer */
@@ -181,7 +181,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   ── */
   .cc-slide-hint {
     position: absolute;
-    top: calc(50% - 22px); /* 22px = half of 44px font — centres with handle */
+    top: calc(50% - 22px); /* 22px = half of 44px font, centres with handle */
     left: calc(50% + 20px); /* just past the handle's right edge */
     display: flex;
     align-items: center;
@@ -201,11 +201,11 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     height: 36px;
     flex-shrink: 0;
   }
-  /* Fade out smoothly — no display:none */
+  /* Fade out smoothly, no display:none */
   .cc-slide-hint.is-used {
     opacity: 0;
   }
-  /* hide on mobile — touch users don't need the prompt */
+  /* hide on mobile; touch users don't need the prompt */
   @media (max-width: 720px) { .cc-slide-hint { display: none; } }
 
   /* ── Disciplines sub-line (extra meta row) ── */
@@ -244,7 +244,7 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     ungradedVideo.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
   }
 
-  // Keep ungraded locked to graded's playhead — runs every 500ms while playing
+  // Keep ungraded locked to graded's playhead; runs every 500ms while playing
   function syncVideos() {
     if (Math.abs(gradedVideo.currentTime - ungradedVideo.currentTime) > 0.1) {
       ungradedVideo.currentTime = gradedVideo.currentTime;
