@@ -2100,7 +2100,8 @@ test('smoke: sound bin labels tracks as audio clips and plays inline', () => {
   assert.ok(sound.includes('>A1<'), 'first track is labelled A1');
   assert.ok(sound.includes('tracks__hint'), 'rows say they play inline');
   assert.ok(!sound.includes('↗'), 'external-link arrow is retired');
-  assert.ok(sound.includes('color=%23f4a23b') || html.includes("color: '#f4a23b'"), 'SoundCloud player uses the mango accent');
+  assert.ok(html.includes('color=%23f4a23b'), 'SoundCloud player uses the mango accent');
+  assert.ok(!html.includes('color=%23c8922a'), 'old amber player colour is gone');
 });
 ```
 
