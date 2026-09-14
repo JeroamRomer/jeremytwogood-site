@@ -1,0 +1,10 @@
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [
+      ".impeccable/mocks/proto/*"
+    ],
+    "ignoreValues": []
+  }
+}

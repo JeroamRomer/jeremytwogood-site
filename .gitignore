@@ -34,3 +34,14 @@ design-sources/
 # Brainstorming visual companion (local mockups)
 .superpowers/
 .vercel
+
+# Impeccable engine binary (downloaded on first run)
+.claude/skills/impeccable/scripts/bin/
+
+# Impeccable local mocks and prototypes
+.impeccable/mocks/
+
+# Impeccable runtime state
+.impeccable/hook.cache.json
+.impeccable/questions/
+.impeccable/config.local.json

@@ -161,6 +161,16 @@ Other film-adjacent worlds seen in the catalog, available if Jeremy wants to rer
 - Keep the dark/light section alternation? Decided by the chosen direction.
 - Whether `og-image.astro` should follow the new system (currently out of scope).
 
+## Phase 1 outcome (2026-09-14, Fable)
+
+- Branch `facelift` in the main checkout. Impeccable 4.3.1 skill installed under `.claude/skills/impeccable` (engine binary gitignored), agents under `.claude/agents`, design hook active.
+- `PRODUCT.md` written from the interview: both audiences at equal weight; position "a producer who still cuts"; binding brand: logo, the "Jeremy Twogood." wordmark, first-person plain voice. Amber, the dark base and the current fonts are not binding.
+- Build path recorded as **code-led** (`.impeccable/config.json`): Jeremy chose to skip image generation. Mockups were coded HTML prototypes instead.
+- The incumbent system was documented, then moved to `2026-09-14-design-before.md` as the anti-reference.
+- Critique (dual-agent) scored the homepage **19/32**, five P1s; snapshot in `.impeccable/critique/`. Decisions: hierarchy first; the three plumbing bugs (mobile hero dead CSS, bare `/reel`, Coming Soon in slot 01) fold into the rebuild; nothing is dropped outright (hero meta, numbering, CAOT card, "Watch Sizzle" are restyled, not removed).
+- Direction round (seed `f102dfc2`): the roll assigned The Contact Sheet; Jeremy shortlisted The Open Sequence (Impeccable's pick) and Mezzotint Velvet Night, saw both as prototypes, and **locked The Open Sequence**. The Saul Bass and Brodovitch seeds were not chosen.
+- Prototype: `.impeccable/mocks/proto/seq.html` (served by the `proto` launch config on port 4380). Direction contract: `.impeccable/surfaces/src-pages-index-astro.md`. `DESIGN.md` is now the seed for the new world; the documenter rewrites it with real tokens at the finish.
+
 ## Handoff
 
-In the Fable session: "Read `docs/superpowers/specs/2026-09-14-facelift-design.md` and start Phase 1."
+Phase 2, in this or a new session: "Read the facelift spec's Phase 1 outcome, the homepage surface brief and DESIGN.md, then run writing-plans for Phase 2."

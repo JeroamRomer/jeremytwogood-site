@@ -6,6 +6,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 4321
+    },
+    {
+      "name": "proto",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4380", "--bind", "127.0.0.1"],
+      "port": 4380
+    },
+    {
+      "name": "discoverability-preview",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/romer/Documents/Claude/Website-discoverability && npm run preview -- --port 4351 --host"],
+      "port": 4351
     }
   ]
 }
