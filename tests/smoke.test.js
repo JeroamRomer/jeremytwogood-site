@@ -150,11 +150,16 @@ test('smoke: about bin shows bio, properties and every client', () => {
 
 // ── AI Builds ────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has builds section with cards', () => {
+test('smoke: builds bin lists every build with a plain status', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="builds"'), '#builds section must exist');
-  assert.ok(html.includes('Gibbon Knight'), 'Gibbon Knight must appear in builds');
-  assert.ok(html.includes('build-card__status'), 'Status badges must be present');
+  assert.ok(html.includes('id="builds"'), '#builds bin must exist');
+  const builds = html.slice(html.indexOf('id="builds"'), html.indexOf('id="sound"'));
+  for (const name of ['Unbusy Scanner', 'Production Intelligence', 'Gibbon Knight', 'MCP Integrator', 'Pedal Path']) {
+    assert.ok(builds.includes(name), `${name} must appear`);
+  }
+  assert.ok(builds.includes('build-row__status'), 'status must render');
+  assert.ok(!builds.includes('class="tag"'), 'tag chips are retired');
+  assert.ok(builds.includes('href="/ai-builds"'), 'link to the full page must remain');
 });
 
 test('smoke: /ai-builds/index.html exists with full grid', () => {

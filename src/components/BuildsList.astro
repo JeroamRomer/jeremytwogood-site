@@ -1,0 +1,58 @@
+---
+import aiBuilds from '../data/ai-builds.json';
+
+interface Props { level?: 'h2' | 'h3' }
+const { level = 'h3' } = Astro.props;
+const Heading = level;
+const STATUS: Record<string, string> = { live: 'Live', internal: 'Internal', beta: 'Beta', 'in-dev': 'Private beta' };
+const linkLabel = (url: string) => (url.includes('apps.apple.com') ? 'App Store' : 'Open app');
+---
+<ol class="builds">
+  {aiBuilds.map((b) => {
+    const shot = b.shot_images?.[0];
+    return (
+      <li class="build-row" id={`build-${b.id}`}>
+        <div class="build-row__shot">
+          {shot && <img src={shot} alt={b.shot_alts?.[0] || b.name} loading="lazy" decoding="async" />}
+        </div>
+        <div class="build-row__main">
+          <Heading class="build-row__name">{b.name}</Heading>
+          <p class="build-row__desc">{b.description}</p>
+        </div>
+        <dl class="props build-row__props">
+          <dt>Status</dt><dd class:list={['build-row__status', `is-${b.status}`]}>{STATUS[b.status] ?? b.status}</dd>
+          <dt>Stack</dt><dd>{b.tech_stack.join(', ')}</dd>
+        </dl>
+        <div class="build-row__cta">
+          {b.live_url && (
+            <a class="pbtn" href={b.live_url} target="_blank" rel="noopener">
+              {linkLabel(b.live_url)} <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 2h7v7H8.5V4.6L3.1 10 2 8.9 7.4 3.5H3z" /></svg>
+            </a>
+          )}
+        </div>
+      </li>
+    );
+  })}
+</ol>
+
+<style>
+  .builds{ list-style:none; margin:0; padding:0; border-top:1px solid var(--hair); }
+  .build-row{ display:grid; grid-template-columns:160px minmax(0, 1fr) minmax(220px, 300px) auto; gap:20px; align-items:start; padding:16px 0; border-bottom:1px solid var(--hair); }
+  .build-row__shot{ aspect-ratio:16/10; background:var(--lane); border:1px solid var(--hair); overflow:hidden; }
+  .build-row__shot img{ width:100%; height:100%; object-fit:contain; }
+  .build-row__name{ margin:0 0 6px; font-family:var(--font-ui); font-weight:600; font-size:17px; line-height:1.3; }
+  .build-row__desc{ margin:0; max-width:65ch; color:var(--muted); }
+  .build-row__props{ font-size:13px; }
+  .build-row__status{ color:var(--muted); }
+  .build-row__status.is-live{ color:var(--text); font-weight:600; }
+  .build-row__cta{ justify-self:end; }
+  @media (max-width: 1000px){
+    .build-row{ grid-template-columns:120px minmax(0, 1fr); }
+    .build-row__props, .build-row__cta{ grid-column:2; justify-self:start; }
+  }
+  @media (max-width: 560px){
+    .build-row{ grid-template-columns:1fr; }
+    .build-row__shot{ max-width:220px; }
+    .build-row__props, .build-row__cta{ grid-column:1; }
+  }
+</style>
