@@ -6,14 +6,12 @@ const peaksFor = (num: string): number[] => (waveforms as Record<string, number[
 const WAVE_W = 96;
 const WAVE_H = 32;
 ---
-<section id="sound" class="section--dark sound grain" style="padding-left:var(--gutter); padding-right:var(--gutter)" aria-label="Original music compositions">
-  <div class="wrap">
-    <div class="sound__head">
-      <div>
-        <span class="eyebrow">Sound</span>
-        <h2>Original compositions.</h2>
-      </div>
-      <p class="sound__lede">Music is where my ear goes when it's off the clock. It always ends up feeding back into the edit.</p>
+<section id="sound" class="bin sound" aria-labelledby="sound-title">
+  <div class="bin__inner">
+    <div class="bin__head">
+      <h2 id="sound-title">Sound</h2>
+      <span class="readout">{tracks.length} tracks</span>
+      <p class="bin__lede">Original compositions. Music is where my ear goes when it's off the clock. It always ends up feeding back into the edit.</p>
     </div>
 
     <ul class="tracks">
@@ -22,9 +20,9 @@ const WAVE_H = 32;
         return (
           <li>
             <div class="tracks__row">
-              <span class="tracks__num">{track.num}</span>
+              <span class="tracks__num readout">A{Number(track.num)}</span>
               <a class="tracks__title" href={track.url} target="_blank" rel="noopener">{track.title}</a>
-              <span class="tracks__dur">↗</span>
+              <span class="tracks__hint">Play</span>
             </div>
             {peaks.length > 0 && (
               <div class="tracks__wave" aria-hidden="true">
@@ -52,11 +50,31 @@ const WAVE_H = 32;
       <iframe id="sc-iframe" allow="autoplay" frameborder="no" scrolling="no" src="" title="SoundCloud player"></iframe>
     </div>
 
-    <p class="sound__foot">
-      Full catalogue → <a href="https://soundcloud.com/j-twogood/tracks" target="_blank" rel="noopener">soundcloud.com/j-twogood</a>
-    </p>
+    <p class="sound__foot">Full catalogue on <a href="https://soundcloud.com/j-twogood/tracks" target="_blank" rel="noopener">soundcloud.com/j-twogood</a></p>
   </div>
 </section>
+
+<style>
+  .tracks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px 18px; }
+  .tracks li{ background:var(--lane); border:1px solid var(--hair); padding:10px 12px 12px; }
+  .tracks li.is-playing{ border-color:var(--hair-strong); background:var(--lane-alt); }
+  .tracks__row{ display:grid; grid-template-columns:3.2em minmax(0, 1fr) auto; gap:10px; align-items:baseline; margin-bottom:8px; }
+  .tracks__num{ font-size:11px; }
+  .tracks__title{ font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tracks__title:hover{ text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--mango); }
+  .tracks__hint{ font-size:12px; color:var(--dim); }
+  .tracks li.is-playing .tracks__hint{ color:var(--text); }
+  .tracks__wave{ position:relative; height:40px; background:var(--clip-audio); border-radius:2px; overflow:hidden; cursor:pointer; }
+  .tracks__wave svg{ position:absolute; inset:4px 6px; width:calc(100% - 12px); height:calc(100% - 8px); }
+  .tracks__wave-base rect{ fill:var(--clip-audio-ink); opacity:.4; }
+  .tracks__wave-lit rect{ fill:var(--clip-audio-ink); }
+  .tracks__wave-ph{ position:absolute; top:0; bottom:0; width:0; border-left:1px solid var(--mango); }
+  .sound__player{ margin-top:18px; border:1px solid var(--hair); }
+  .sound__player iframe{ display:block; width:100%; height:166px; }
+  .sound__foot{ margin:18px 0 0; font-size:13px; color:var(--muted); }
+  .sound__foot a{ color:var(--text); text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
+  @media (max-width: 760px){ .tracks{ grid-template-columns:1fr; } }
+</style>
 
 <script>
   // SoundCloud inline player + waveform playback sync.
@@ -122,10 +140,10 @@ const WAVE_H = 32;
 
         if (widget && (window as any).SC) {
           // Widget already bound; swap tracks without recreating the iframe.
-          widget.load(url, { auto_play: true, hide_related: true, show_comments: false, show_user: true, show_reposts: false, show_teaser: false, visual: false, color: '#c8922a' });
+          widget.load(url, { auto_play: true, hide_related: true, show_comments: false, show_user: true, show_reposts: false, show_teaser: false, visual: false, color: '#f4a23b' });
         } else {
           var src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
-            + '&color=%23c8922a&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false';
+            + '&color=%23f4a23b&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false';
           (iframe as HTMLIFrameElement).src = src;
           loadWidgetApi();
           bindWidget();

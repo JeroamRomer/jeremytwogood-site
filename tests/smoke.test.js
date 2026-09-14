@@ -180,6 +180,17 @@ test('smoke: index.html has sound section with tracks', () => {
   assert.ok(html.includes('Original compositions'), 'Section heading must be present');
 });
 
+test('smoke: sound bin labels tracks as audio clips and plays inline', () => {
+  const html = getHtml('index.html');
+  const sound = html.slice(html.indexOf('id="sound"'), html.indexOf('id="contact"'));
+  assert.ok(sound.includes('class="bin sound"'), 'sound must be a bin');
+  assert.ok(sound.includes('>A1<'), 'first track is labelled A1');
+  assert.ok(sound.includes('tracks__hint'), 'rows say they play inline');
+  assert.ok(!sound.includes('↗'), 'external-link arrow is retired');
+  assert.ok(html.includes('color=%23f4a23b'), 'SoundCloud player uses the mango accent');
+  assert.ok(!html.includes('color=%23c8922a'), 'old amber player colour is gone');
+});
+
 // ── Contact & Footer ─────────────────────────────────────────────────────────
 
 test('smoke: index.html has contact section with email and social links', () => {
