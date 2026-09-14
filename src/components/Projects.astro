@@ -29,24 +29,6 @@ const yearRange = `${Math.min(...projectYears)}–${Math.max(...projectYears)}`;
       <span class="section-head__count">{projectCount} Projects · {yearRange}</span>
     </div>
 
-    <div class="rainbow-rule" data-rainbow aria-hidden="true">
-      <span style="flex:8;background:#5fb3e8"></span>
-      <span style="flex:3;background:#0a0a0a"></span>
-      <span style="flex:5;background:#222a45"></span>
-      <span style="flex:4;background:#3a8a4d"></span>
-      <span style="flex:6;background:var(--amber)"></span>
-      <span style="flex:7;background:#d94a3d"></span>
-      <span style="flex:3;background:#1a2540"></span>
-      <span style="flex:9;background:#5fb3e8"></span>
-      <span style="flex:4;background:#0a0a0a"></span>
-      <span style="flex:5;background:#2f4a3a"></span>
-      <span style="flex:5;background:var(--amber)"></span>
-      <span style="flex:4;background:#f0c64a"></span>
-      <span style="flex:6;background:#d94a3d"></span>
-      <span style="flex:4;background:#6b3a6e"></span>
-      <span style="flex:7;background:#5fb3e8"></span>
-    </div>
-
     <div class="work-grid">
       {projects.map((project, i) => {
         const idx = String(i + 1).padStart(2, '0');

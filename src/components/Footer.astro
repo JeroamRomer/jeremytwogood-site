@@ -1,8 +1,23 @@
 ---
 ---
-<footer class="footer" aria-label="Site footer">
-  <div class="footer__inner">
-    <span>© 2026 Jeremy Twogood · Toronto</span>
-    <span>Site, edits, and code by JT · <a href="/llms.txt">llms.txt</a> · <a href="/mcp">for AI agents</a></span>
-  </div>
+<footer class="status" aria-label="Site footer">
+  <span>© 2026 Jeremy Twogood · Toronto</span>
+  <span>Site, edits, and code by JT · <a href="/llms.txt">llms.txt</a> · <a href="/mcp">For AI agents</a></span>
 </footer>
+
+<style>
+  .status{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 24px;
+    padding:12px var(--pad); padding-bottom:calc(12px + env(safe-area-inset-bottom));
+    background:var(--panel-head); border-top:1px solid var(--hair);
+    font-family:var(--font-ui); font-size:13px; color:var(--muted);
+  }
+  .status a{ color:var(--text); text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
+  .status a:hover{ text-decoration-color:var(--mango); }
+
+  /* The pinned page timeline bar (40px, fixed to the viewport bottom on desktop)
+     otherwise sits directly on top of this shorter footer and swallows its links
+     (the old, taller footer escaped it by sheer padding). Lift clear of the bar
+     itself; see task-4-report.md for a residual cosmetic note re: its chip. */
+  :global(body.has-tlbar) .status{ padding-bottom:calc(12px + 40px + env(safe-area-inset-bottom)); }
+</style>

@@ -58,14 +58,18 @@ test('smoke: chat widget is mounted site-wide (case-study page too)', () => {
 
 // ── Nav ─────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has nav with correct links', () => {
+test('smoke: panel bar links to sections on home and back home elsewhere', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('<nav'), 'nav element must be present');
-  assert.ok(html.includes('href="#work"'), 'Work link must point to #work');
-  assert.ok(html.includes('href="#about"'), 'About link must be present');
-  assert.ok(html.includes('href="#builds"'), 'Builds link must be present');
-  assert.ok(html.includes('href="#sound"'), 'Sound link must be present');
-  assert.ok(html.includes('href="#contact"'), 'Contact link must be present');
+  assert.ok(html.includes('class="bar"'), 'panel bar must render');
+  assert.ok(html.includes('<nav'), 'nav landmark must be present');
+  for (const id of ['work', 'about', 'builds', 'sound', 'contact']) {
+    assert.ok(html.includes(`href="#${id}"`), `home tab #${id} must be present`);
+  }
+  assert.ok(html.includes('Available · 2026'), 'availability readout must render');
+  assert.ok(html.includes('EST · GMT−5'), 'timezone readout must render');
+  const caseStudy = getHtml('work/shell-john-williams/index.html');
+  assert.ok(caseStudy.includes('href="/#work"'), 'tabs on other pages must point back home');
+  assert.ok(!html.includes('rainbow-rule'), 'rainbow rule is retired');
 });
 
 // ── Hero ─────────────────────────────────────────────────────────────────────
