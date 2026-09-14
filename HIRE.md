@@ -10,7 +10,9 @@ He builds AI-powered tools as a secondary creative practice.
 
 ## Notable clients
 
-Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Volvo, Mitsubishi Motors
+Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Mirvish Productions, Canova Media,
+Journeyman Film Company, Volvo, Mitsubishi Motors, Simbility, NS Health, Thales Canada,
+Ewing Morris & Co.
 
 ## What he is open to
 

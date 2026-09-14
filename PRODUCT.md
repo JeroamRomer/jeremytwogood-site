@@ -62,7 +62,7 @@ Explicitly not binding: the amber accent (`#c8922a`), the dark near-black base, 
 - **Reel:** YouTube `Tl1n3hu4e8I` (`src/data/reel-index.json`).
 - **Software:** 5 entries in `src/data/ai-builds.json`: Unbusy Scanner (live), Gibbon Knight (live), Pedal Path (live on the App Store, `id6784479426`), Production Intelligence (internal), MCP Integrator (beta). Product screenshots for Gibbon Knight and Pedal Path in `public/assets/`.
 - **Music:** 10 SoundCloud tracks in `profile.json` with real waveform peaks in `src/data/waveforms.json`.
-- **Clients:** the lists disagree and no single one has been confirmed as canonical. `profile.json`: Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Mirvish Productions, Canova Media, Journeyman Film Company. `HIRE.md`: Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Volvo, Mitsubishi Motors. The About section lists a shorter "selected clients" set. Open decision: which list the site shows.
+- **Clients (canonical, `profile.json`, merged 2026-09-14):** Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Mirvish Productions, Canova Media, Journeyman Film Company, Volvo, Mitsubishi Motors, Simbility, NS Health, Thales Canada, Ewing Morris & Co.
 - **Absent, do not fabricate:** testimonials, awards, press, view counts, client quotes, and any metric beyond "twenty years" and the real project count.
 
 ## Product Principles

@@ -120,11 +120,13 @@ Only after Gates 3-5 have all passed:
      "role": ["Editor"],
      "youtube_id": "<youtube-id>",
      "youtube_url": "https://www.youtube.com/watch?v=<youtube-id>",
+     "duration_seconds": <seconds>,
      "thumbnail": "<url-or-/assets/path>",
      "featured": true,
      "span": 2
    }
    ```
+   Measure `duration_seconds` with `yt-dlp --print duration --skip-download -q <watch-url>`; omit the field if the platform will not report it.
    (Completed entries omit unused fields — no explicit nulls. Vimeo videos
    replace the two youtube fields with `vimeo_id` AND `vimeo_url` — see
    `simbility-desk-series`; the case-study page builds its watch link from

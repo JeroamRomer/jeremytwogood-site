@@ -26,6 +26,7 @@
     "role": ["Editor", "Colour Grade"],
     "youtube_id": "dWlO9T5k4yw",
     "youtube_url": "https://www.youtube.com/watch?v=dWlO9T5k4yw",
+    "duration_seconds": 437,
     "thumbnail": "https://img.youtube.com/vi/dWlO9T5k4yw/maxresdefault.jpg",
     "featured": true,
     "span": 3
@@ -54,6 +55,7 @@
     "role": ["Producer", "Editor", "Host"],
     "youtube_id": "xi8JhK9OPq8",
     "youtube_url": "https://www.youtube.com/watch?v=xi8JhK9OPq8",
+    "duration_seconds": 85,
     "thumbnail": "/assets/talkto-thumb.png",
     "featured": true,
     "span": 2
@@ -68,6 +70,7 @@
     "role": ["Aerial Videographer"],
     "youtube_id": "sVqY9m7QUTM",
     "youtube_url": "https://www.youtube.com/watch?v=sVqY9m7QUTM",
+    "duration_seconds": 114,
     "thumbnail": "/assets/xbox-thumb.png",
     "featured": true,
     "span": 2
@@ -95,6 +98,7 @@
     "role": ["Producer", "Editor", "Host"],
     "youtube_id": "kG6aFDd9j_g",
     "youtube_url": "https://www.youtube.com/watch?v=kG6aFDd9j_g",
+    "duration_seconds": 307,
     "thumbnail": "/assets/fivepoints-thumb.png",
     "featured": true,
     "span": 3
@@ -109,6 +113,7 @@
     "role": ["Editor"],
     "youtube_id": "5Ux0sDZ6MY0",
     "youtube_url": "https://www.youtube.com/watch?v=5Ux0sDZ6MY0",
+    "duration_seconds": 138,
     "thumbnail": "https://img.youtube.com/vi/5Ux0sDZ6MY0/maxresdefault.jpg",
     "featured": true,
     "span": 3
