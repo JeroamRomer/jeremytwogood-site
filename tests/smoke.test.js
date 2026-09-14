@@ -334,3 +334,22 @@ test('smoke: footer links to /mcp', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('href="/mcp"'), 'footer must link to /mcp');
 });
+
+// ── Open Sequence design system ─────────────────────────────────────────────
+
+test('smoke: bundled CSS defines the Open Sequence tokens and primitives', () => {
+  const css = getBundledCss();
+  for (const token of ['--panel:', '--mango:', '--clip-video:', '--font-readout:']) {
+    assert.ok(css.includes(token), `token ${token} must be defined`);
+  }
+  for (const cls of ['.pane-head', '.bin__head', '.readout', '.pbtn--primary', '.props']) {
+    assert.ok(css.includes(cls), `primitive ${cls} must be defined`);
+  }
+});
+
+test('smoke: pages load Archivo, Barlow and Martian Mono', () => {
+  const html = getHtml('index.html');
+  for (const family of ['family=Archivo', 'family=Barlow', 'family=Martian+Mono']) {
+    assert.ok(html.includes(family), `${family} must be requested`);
+  }
+});
