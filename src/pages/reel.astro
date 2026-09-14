@@ -11,10 +11,12 @@ const videoSchema = {
   '@type': 'VideoObject',
   name: 'Demo Sizzle · Twogood Productions',
   description:
-    'Demo sizzle reel showcasing video editing, motion graphics, colour grade, and aerial work for clients including Google, Xbox, Shell, and Sobeys.',
+    '40-second demo sizzle reel by Jeremy Twogood: editing, motion graphics, and production work.',
   contentUrl: reelIndex.reel_url,
   embedUrl: `https://www.youtube.com/embed/${reelIndex.reel_youtube_id}`,
-  uploadDate: '2024-01-01',
+  thumbnailUrl: `https://i.ytimg.com/vi/${reelIndex.reel_youtube_id}/hqdefault.jpg`,
+  duration: 'PT40S',
+  uploadDate: '2020-02-09',
   creator: {
     '@type': 'Person',
     name: profile.name,
@@ -24,7 +26,7 @@ const videoSchema = {
 ---
 <BaseLayout
   title={`Reel · ${profile.name}`}
-  description="Demo sizzle reel: video editing, motion graphics, colour grade, and aerial work."
+  description="40-second demo sizzle reel: editing, motion graphics, and production work."
   pageType="reel"
 >
   <Fragment slot="head">

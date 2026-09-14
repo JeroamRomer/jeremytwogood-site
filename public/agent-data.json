@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-08-27T18:49:09.356Z",
+  "generated_at": "2026-09-14T14:13:56.290Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -182,8 +182,8 @@
     }
   ],
   "reel": {
-    "url": "https://youtu.be/REPLACE_ME",
-    "clips_count": 1,
+    "url": "https://www.youtube.com/watch?v=Tl1n3hu4e8I",
+    "clips_count": 0,
     "index_url": "/reel-index.json"
   },
   "availability_url": "https://jeremytwogood.com/availability.json",
