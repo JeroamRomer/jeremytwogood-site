@@ -1,59 +1,63 @@
 ---
 import profile from '../data/profile.json';
-
-const clientList = [
-  { num: '01', name: 'Shell', kind: 'Corporate' },
-  { num: '02', name: 'Xbox · Microsoft', kind: 'Campaign' },
-  { num: '03', name: 'Simbility', kind: 'Comedy' },
-  { num: '04', name: 'NS Health', kind: 'Documentary' },
-  { num: '05', name: 'Thales Canada', kind: 'Internal Comms' },
-  { num: '06', name: 'Ewing Morris & Co.', kind: 'Finance' },
-];
+const clients = profile.clients as string[];
 ---
-<section id="about" class="section section--light" aria-label="About Jeremy Twogood">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">About</span>
-        <h2 class="section-title">A producer who<br/>still cuts the picture.</h2>
-      </div>
-      <span class="section-head__count">EST. 2006 · TORONTO</span>
+<section id="about" class="bin about" aria-labelledby="about-title">
+  <div class="bin__inner">
+    <div class="bin__head">
+      <h2 id="about-title">About</h2>
+      <span class="readout">Toronto, ON · 43.65°N · EST · GMT−5</span>
     </div>
 
-    <div class="about-grid">
-      <div class="about-portrait">
-        <img src="/assets/portrait.jpg" alt="Jeremy Twogood" />
-        <div class="about-portrait__cap">
-          <span>Jeremy Twogood</span>
-          <span class="amber">Toronto · 2026</span>
-        </div>
+    <div class="about__grid">
+      <figure class="about__frame">
+        <img src="/assets/portrait.jpg" alt="Jeremy Twogood" width="2316" height="3088" loading="lazy" decoding="async" />
+        <figcaption class="readout">Jeremy Twogood · Toronto · 2026</figcaption>
+      </figure>
+
+      <div class="about__text">
+        <h3 class="about__lead">A producer who still cuts the picture.</h3>
+        {profile.bio.map((para) => <p>{para}</p>)}
+        <h4 class="about__sub">How I work</h4>
+        <p>Nobody does their best work dreading Monday. Wherever I work, I end up building some culture into the place: check-ins, small rituals, a room people actually want to show up to.</p>
+        <p class="about__music">Outside of production work, I make electronic music. It lives at <a href="https://soundcloud.com/j-twogood" target="_blank" rel="noopener">soundcloud.com/j-twogood</a>.</p>
       </div>
 
-      <div class="about-bio">
-        {profile.bio.map((para) => (
-          <p>{para}</p>
-        ))}
-        <div class="about-how-i-work">
-          <h3>How I Work</h3>
-          <p>Nobody does their best work dreading Monday. Wherever I work, I end up building some culture into the place: check-ins, small rituals, a room people actually want to show up to.</p>
-        </div>
-        <div class="about-personal">
-          Outside of production work, I make electronic music. It lives at <a href="https://soundcloud.com/j-twogood" target="_blank" rel="noopener">soundcloud.com/j-twogood</a>.
-        </div>
-      </div>
-
-      <div class="about-clients">
-        <span class="eyebrow" style="margin-bottom:18px; display:inline-flex">Selected Clients</span>
-        <ul class="client-list" style="margin-top:14px">
-          {clientList.map((c) => (
-            <li>
-              <span class="num">{c.num}</span>
-              <span class="name">{c.name}</span>
-              <span class="kind">{c.kind}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <dl class="props about__props">
+        <dt>Based in</dt><dd>Toronto, Ontario</dd>
+        <dt>Producing since</dt><dd><span class="readout">2006</span></dd>
+        <dt>Open to</dt><dd>Contract, freelance and full-time work. Remote-first.</dd>
+        <dt>Skills</dt><dd>{profile.skills.join(', ')}</dd>
+        <dt id="clients">Clients</dt>
+        <dd><ul class="about__clients">{clients.map((c) => <li>{c}</li>)}</ul></dd>
+      </dl>
     </div>
   </div>
 </section>
+
+<style>
+  .about__grid{ display:grid; grid-template-columns:minmax(200px, 300px) minmax(0, 1fr) minmax(240px, 340px); gap:32px; align-items:start; }
+  .about__frame{ margin:0; }
+  .about__frame img{ width:100%; aspect-ratio:3/4; object-fit:cover; border:1px solid var(--hair-strong); }
+  .about__frame figcaption{ margin-top:8px; font-size:11px; }
+  .about__text{ max-width:65ch; }
+  .about__text p{ margin:0 0 14px; }
+  .about__lead{ margin:0 0 16px; font-family:var(--font-display); font-variation-settings:'wdth' 112; font-weight:700; font-size:clamp(22px, 2.4vw, 30px); line-height:1.15; }
+  .about__sub{ margin:22px 0 8px; font-size:13px; font-weight:600; color:var(--muted); }
+  .about__text a{ text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
+  .about__text a:hover{ text-decoration-color:var(--mango); }
+  .about__props{ padding:14px; background:var(--lane); border:1px solid var(--hair); }
+  .about__props .readout{ font-size:13px; color:var(--text); }
+  .about__clients{ list-style:none; margin:0; padding:0; columns:2; column-gap:16px; }
+  .about__clients li{ break-inside:avoid; padding:1px 0; }
+  #clients{ scroll-margin-top:calc(var(--bar-h) + 16px); }
+  @media (max-width: 1100px){
+    .about__grid{ grid-template-columns:minmax(180px, 260px) minmax(0, 1fr); }
+    .about__props{ grid-column:1 / -1; }
+  }
+  @media (max-width: 640px){
+    .about__grid{ grid-template-columns:1fr; }
+    .about__frame{ max-width:280px; }
+    .about__clients{ columns:1; }
+  }
+</style>

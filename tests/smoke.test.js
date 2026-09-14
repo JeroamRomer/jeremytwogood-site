@@ -133,11 +133,19 @@ test('smoke: all six case-study pages are generated', () => {
 
 // ── About ────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has about section', () => {
+test('smoke: about bin shows bio, properties and every client', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="about"'), '#about section must exist');
-  assert.ok(html.includes('Jeremy Twogood'), 'Name must appear in about');
-  assert.ok(html.includes('Toronto'), 'Toronto must appear in about');
+  const about = html.slice(html.indexOf('id="about"'), html.indexOf('id="builds"'));
+  assert.ok(about.includes('Jeremy Twogood'), 'name must appear in about');
+  assert.ok(about.includes('Toronto'), 'Toronto must appear in about');
+  assert.ok(about.includes('A producer who still cuts the picture.'), 'lead line keeps its words');
+  assert.ok(about.includes('id="clients"'), 'clients anchor must exist');
+  const profile = JSON.parse(readFileSync(join(ROOT, 'src/data/profile.json'), 'utf-8'));
+  for (const name of profile.clients) {
+    const escaped = name.replace(/&/g, '&amp;');
+    assert.ok(about.includes(name) || about.includes(escaped), `about must list ${name}`);
+  }
+  assert.ok(!about.includes('client-list'), 'numbered client index is retired');
 });
 
 // ── AI Builds ────────────────────────────────────────────────────────────────
