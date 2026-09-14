@@ -1,0 +1,63 @@
+---
+import projects from '../../data/projects.json';
+import profile from '../../data/profile.json';
+import waveforms from '../../data/waveforms.json';
+import { buildSequence, type SequenceProject } from '../../lib/sequence';
+import { loopFor } from '../../lib/media';
+import BinsPane from './BinsPane.astro';
+import ProgramMonitor from './ProgramMonitor.astro';
+import InfoPane from './InfoPane.astro';
+import Sequence from './Sequence.astro';
+
+const sequence = buildSequence(projects as unknown as SequenceProject[], loopFor);
+const lead = sequence.clips.find((c) => c.loop) ?? sequence.clips[0];
+const firstTrack = profile.tracks[0];
+const peaks = (waveforms as Record<string, number[]>)[firstTrack.num] ?? [];
+
+const payload = {
+  total: sequence.layoutSeconds,
+  clips: sequence.clips.map((c) => ({
+    name: c.name,
+    tag: `${c.client} · ${c.year}`,
+    label: c.roleLabel ? `${c.name} · ${c.roleLabel}` : c.name,
+    href: c.href,
+    poster: c.thumbnail,
+    mp4: c.loop?.mp4 ?? null,
+    webm: c.loop?.webm ?? null,
+    start: c.startSeconds,
+    layout: c.layoutSeconds,
+    offline: c.offline,
+  })),
+};
+---
+<section id="top" class="suite" data-suite aria-label="Jeremy Twogood: selected work">
+  <div class="suite__panes">
+    <BinsPane clips={sequence.clips} />
+    <ProgramMonitor lead={lead} sequence={sequence} />
+    <InfoPane />
+  </div>
+  <Sequence sequence={sequence} peaks={peaks} trackTitle={firstTrack.title} />
+  <script type="application/json" id="sequence-data" set:html={JSON.stringify(payload)} />
+</section>
+
+<style>
+  .suite{
+    display:grid; grid-template-rows:minmax(0,1fr) auto;
+    height:calc(100svh - var(--bar-h)); min-height:620px;
+    background:var(--panel);
+  }
+  .suite__panes{ display:grid; grid-template-columns:256px minmax(0,1fr) 320px; min-height:0; }
+  @media (max-width: 1100px){
+    .suite{ height:auto; min-height:0; }
+    .suite__panes{ grid-template-columns:220px minmax(0,1fr); }
+  }
+  @media (max-width: 760px){
+    .suite__panes{ grid-template-columns:1fr; }
+  }
+</style>
+
+<script>
+  import { initSequencePlayer } from '../../scripts/sequence-player';
+  const root = document.querySelector<HTMLElement>('[data-suite]');
+  if (root) initSequencePlayer(root);
+</script>

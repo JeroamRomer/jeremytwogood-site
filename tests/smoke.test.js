@@ -72,14 +72,32 @@ test('smoke: panel bar links to sections on home and back home elsewhere', () =>
   assert.ok(!html.includes('rainbow-rule'), 'rainbow rule is retired');
 });
 
-// ── Hero ─────────────────────────────────────────────────────────────────────
+// ── Suite ────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html has hero section with name and CTA', () => {
+test('smoke: suite renders the monitor, info pane and sequence', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="top"'), '#top hero section must exist');
-  assert.ok(html.includes('Jeremy Twogood'), 'Name must appear in hero');
+  assert.ok(html.includes('id="top"'), '#top suite must exist');
+  assert.ok(html.includes('data-suite'), 'suite root must be marked');
+  assert.match(html, /<h1[^>]*>Jeremy Twogood/, 'name must be the h1');
   assert.ok(html.includes('Watch Sizzle'), 'Watch Sizzle CTA must be present');
-  assert.ok(html.includes('youtube.com/watch?v=Tl1n3hu4e8I'), 'CTA must link to sizzle reel');
+  assert.ok(html.includes('youtube.com/watch?v=Tl1n3hu4e8I'), 'CTA must fall back to the reel on YouTube');
+  assert.ok(html.includes('data-video-embed="https://www.youtube-nocookie.com/embed/Tl1n3hu4e8I'), 'CTA must open the reel in the lightbox');
+  assert.ok(html.includes('id="lightbox"'), 'lightbox must be mounted on the homepage');
+  assert.ok(html.includes('data-monitor'), 'program monitor must render');
+  assert.ok(html.includes('data-sequence'), 'sequence must render');
+  assert.ok(html.includes('id="sequence-data"'), 'player payload must render');
+  assert.ok(html.includes('07:17'), 'Shell clip must show its real running time');
+  assert.ok(html.includes('Toronto, ON · 43.65°N'), 'location readout keeps its place');
+  assert.ok(!html.includes('hero__meta'), 'old hero is gone');
+});
+
+test('smoke: sequence clips link to case studies and the offline clip comes last', () => {
+  const html = getHtml('index.html');
+  const seqStart = html.indexOf('data-sequence');
+  const seq = html.slice(seqStart, html.indexOf('</ol>', seqStart));
+  assert.ok(seq.includes('href="/work/shell-john-williams"'), 'Shell clip must link to its case study');
+  assert.ok(seq.indexOf('Shell') < seq.indexOf('Canadian Association'), 'CAOT (offline) must come after Shell');
+  assert.ok(seq.includes('Offline'), 'offline clip must be labelled');
 });
 
 // ── Work ─────────────────────────────────────────────────────────────────────

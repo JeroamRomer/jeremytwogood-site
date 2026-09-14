@@ -1,0 +1,54 @@
+---
+import profile from '../../data/profile.json';
+import aiBuilds from '../../data/ai-builds.json';
+import reel from '../../data/reel-index.json';
+
+const clients = profile.clients as string[];
+const shown = clients.slice(0, 3);
+const more = clients.length - shown.length;
+const liveBuilds = aiBuilds.filter((b) => b.status === 'live').map((b) => b.name);
+const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_id}?autoplay=1&rel=0`;
+---
+<aside class="pane info" aria-label="About Jeremy Twogood">
+  <div class="pane-head"><span>Info</span><span class="readout">Toronto, ON · 43.65°N</span></div>
+  <div class="info__body">
+    <h1 class="info__name">Jeremy Twogood<span class="info__dot">.</span></h1>
+    <p class="info__role">{profile.title}</p>
+    <p class="info__bio">{profile.bio[0]}</p>
+    <div class="info__actions">
+      <a class="pbtn pbtn--primary" href={reel.reel_url} target="_blank" rel="noopener" data-video-embed={sizzleEmbed} data-video-title="Demo sizzle">
+        Watch Sizzle <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" /></svg>
+      </a>
+      <a class="pbtn" href={`mailto:${profile.email}`}>Email</a>
+    </div>
+    <dl class="props info__props">
+      <dt>Clients</dt>
+      <dd>{shown.join(', ')}{more > 0 && <> and <a href="#clients">{more} more</a></>}</dd>
+      <dt>Open to</dt>
+      <dd>Contract, freelance and full-time work. Remote-first.</dd>
+      <dt>Also</dt>
+      <dd>Ships software: {liveBuilds.join(', ')}</dd>
+    </dl>
+  </div>
+</aside>
+
+<style>
+  .info{ border-left:1px solid var(--hair); }
+  .info .pane-head .readout{ font-size:11px; text-transform:none; }
+  .info__body{ padding:18px 18px 22px; display:flex; flex-direction:column; gap:14px; overflow:auto; min-height:0; }
+  .info__name{ margin:0; font-family:var(--font-display); font-variation-settings:'wdth' 118; font-weight:800; font-size:34px; line-height:1; }
+  .info__dot{ color:var(--mango); }
+  .info__role{ margin:-6px 0 0; font-size:13px; color:var(--muted); }
+  .info__bio{ margin:0; font-size:15px; max-width:46ch; }
+  .info__actions{ display:flex; flex-wrap:wrap; gap:10px; }
+  .info__props{ padding-top:12px; border-top:1px solid var(--hair); font-size:13px; }
+  @media (max-width: 1100px){
+    .info{ grid-column:1 / -1; border-left:0; border-top:1px solid var(--hair); }
+    .info__body{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
+    .info__props{ grid-column:2; grid-row:1 / span 4; border-top:0; padding-top:0; }
+  }
+  @media (max-width: 760px){
+    .info__body{ display:flex; }
+    .info__props{ border-top:1px solid var(--hair); padding-top:12px; }
+  }
+</style>

@@ -1,0 +1,121 @@
+---
+import { rulerMarks, type Sequence } from '../../lib/sequence';
+
+interface Props { sequence: Sequence; peaks: number[]; trackTitle: string }
+const { sequence, peaks, trackTitle } = Astro.props;
+const marks = rulerMarks(sequence.layoutSeconds);
+const W = Math.max(peaks.length, 1) * 4;
+---
+<div class="seq" data-sequence role="group" aria-label="Selected work, as a sequence">
+  <div class="seq__head">
+    <span class="seq__title">Selected work</span>
+    <div class="seq__ruler" aria-hidden="true">
+      {marks.map((m) => <span class="readout" style={`left:${m.pct}%`}>{m.label}</span>)}
+    </div>
+  </div>
+  <div class="seq__tracks">
+    <div class="seq__trackheads" aria-hidden="true">
+      <span class="seq__th seq__th--v readout">V1</span>
+      <span class="seq__th seq__th--a readout">A1</span>
+    </div>
+    <div class="seq__lanes" data-seq-lanes>
+      <ol class="seq__lane seq__lane--v">
+        {sequence.clips.map((c) => {
+          const style = `--start:${c.startPct}%;--len:${c.widthPct}%;--rel:${c.relPct}%`;
+          const narrow = c.widthPct < 7.5;
+          const body = (
+            <>
+              <span class="seq__clip-name"><span>{c.name}</span>{c.durationLabel && <small class="readout">{c.durationLabel}</small>}</span>
+              <span class="seq__clip-thumb">
+                {c.offline ? <span class="readout">Offline · {c.year}</span> : <img src={c.thumbnail} alt="" loading="lazy" decoding="async" draggable="false" />}
+              </span>
+              <span class="seq__clip-meta">{c.client} · {c.year}</span>
+              {c.durationSeconds !== null && <span class="seq__clip-bar" aria-hidden="true"><i></i></span>}
+            </>
+          );
+          return (
+            <li class:list={['seq__clip', { 'is-offline': c.offline, 'is-narrow': narrow }]} style={style}>
+              {c.href
+                ? <a class="seq__clip-link" href={c.href} data-clip={c.index} draggable="false">{body}</a>
+                : <span class="seq__clip-link" data-clip={c.index} aria-disabled="true">{body}</span>}
+            </li>
+          );
+        })}
+      </ol>
+      {peaks.length > 0 && (
+        <div class="seq__lane seq__lane--a" aria-hidden="true">
+          <div class="seq__aclip">
+            <span class="seq__clip-name"><span>{trackTitle}</span><small class="readout">music</small></span>
+            <svg viewBox={`0 0 ${W} 60`} preserveAspectRatio="none">
+              {peaks.map((p, i) => <rect x={i * 4} y={30 - p * 28} width="2.4" height={Math.max(1, p * 56)} />)}
+            </svg>
+          </div>
+        </div>
+      )}
+      <div class="seq__playhead" data-seq-playhead aria-hidden="true" style="left:0%"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .seq{ border-top:1px solid var(--hair-strong); background:var(--lane); user-select:none; font-family:var(--font-ui); }
+  .seq__head{ display:grid; grid-template-columns:120px 1fr; height:32px; background:var(--panel-head); border-bottom:1px solid var(--hair); }
+  .seq__title{ display:flex; align-items:center; padding:0 14px; font-size:12.5px; font-weight:600; color:var(--muted); border-right:1px solid var(--hair); white-space:nowrap; }
+  .seq__ruler{ position:relative; overflow:hidden; }
+  .seq__ruler span{ position:absolute; top:0; height:100%; padding:8px 0 0 6px; border-left:1px solid var(--hair-strong); font-size:11px; }
+  .seq__tracks{ display:grid; grid-template-columns:120px 1fr; }
+  .seq__trackheads{ display:flex; flex-direction:column; background:var(--panel-head); border-right:1px solid var(--hair); }
+  .seq__th{ display:flex; align-items:center; padding:0 14px; border-bottom:1px solid var(--hair); color:var(--text); }
+  .seq__th--v{ height:120px; }
+  .seq__th--a{ height:74px; }
+  .seq__lanes{ position:relative; overflow:hidden; }
+  .seq__lanes.is-scrubbing{ cursor:col-resize; }
+  .seq__lane{ position:relative; margin:0; padding:0; list-style:none; border-bottom:1px solid var(--hair); }
+  .seq__lane--v{ height:120px; }
+  .seq__lane--a{ height:74px; background:var(--lane-alt); }
+  .seq__clip{ position:absolute; top:8px; bottom:8px; left:var(--start); width:var(--len); padding-right:2px; }
+  .seq__clip-link{
+    display:grid; grid-template-rows:20px 1fr; height:100%; overflow:hidden;
+    background:var(--clip-video); color:var(--clip-video-ink); border:1px solid rgba(0,0,0,.35); border-radius:2px;
+    transition:filter .15s;
+  }
+  a.seq__clip-link:hover{ filter:brightness(1.12); }
+  .seq__clip-link.is-current{ box-shadow:inset 0 0 0 2px var(--mango); }
+  .seq__clip-name{ display:flex; align-items:center; gap:8px; min-width:0; padding:0 8px; font-size:12px; font-weight:600; white-space:nowrap; }
+  .seq__clip-name > span{ min-width:0; overflow:hidden; text-overflow:ellipsis; }
+  .seq__clip-name small{ flex-shrink:0; font-size:11px; color:inherit; opacity:.85; }
+  .is-narrow .seq__clip-name small{ display:none; }
+  .seq__clip-thumb{ position:relative; overflow:hidden; background:#000; }
+  .seq__clip-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:left center; }
+  .seq__clip-meta, .seq__clip-bar{ display:none; }
+  .is-offline .seq__clip-link{ background:repeating-linear-gradient(135deg, var(--clip-offline) 0 8px, var(--clip-offline-alt) 8px 16px); color:var(--clip-offline-ink); }
+  .is-offline .seq__clip-thumb{ display:grid; place-items:center; background:transparent; }
+  .is-offline .seq__clip-thumb .readout{ color:var(--clip-offline-ink); font-size:11px; }
+  .seq__aclip{ position:absolute; inset:8px 0; display:grid; grid-template-rows:20px 1fr; overflow:hidden; background:var(--clip-audio); color:var(--clip-audio-ink); border:1px solid rgba(0,0,0,.35); border-radius:2px; }
+  .seq__aclip svg{ width:100%; height:100%; display:block; }
+  .seq__aclip rect{ fill:var(--clip-audio-ink); opacity:.85; }
+  .seq__playhead{ position:absolute; top:0; bottom:0; width:0; border-left:1px solid var(--mango); z-index:2; pointer-events:none; }
+  .seq__playhead::before{ content:""; position:absolute; top:-1px; left:-7px; border:7px solid transparent; border-top:9px solid var(--mango); border-bottom:0; }
+
+  /* Phones: one row per clip, duration bar proportional to running time. */
+  @media (max-width: 760px){
+    .seq__head{ grid-template-columns:1fr; }
+    .seq__ruler, .seq__trackheads, .seq__lane--a, .seq__playhead{ display:none; }
+    .seq__tracks{ grid-template-columns:1fr; }
+    .seq__lane--v{ height:auto; border-bottom:0; }
+    .seq__clip{ position:static; width:auto; padding:0; border-bottom:1px solid var(--hair); }
+    .seq__clip-link{
+      display:grid; grid-template-columns:112px minmax(0,1fr); grid-template-rows:auto auto 1fr; column-gap:12px;
+      padding:10px 14px; background:transparent; color:var(--text); border:0; border-radius:0;
+    }
+    .seq__clip-thumb{ grid-column:1; grid-row:1 / span 3; aspect-ratio:16/9; border:1px solid var(--hair-strong); }
+    .seq__clip-name{ grid-column:2; padding:0; font-size:14px; }
+    .is-narrow .seq__clip-name small{ display:inline; }
+    .seq__clip-meta{ display:block; grid-column:2; font-size:13px; color:var(--muted); }
+    .seq__clip-bar{ display:block; grid-column:2; align-self:end; height:6px; background:var(--lane-alt); }
+    .seq__clip-bar i{ display:block; height:100%; width:var(--rel); background:var(--clip-video); }
+    .is-offline .seq__clip-link{ background:transparent; color:var(--muted); }
+    .is-offline .seq__clip-thumb{ background:repeating-linear-gradient(135deg, var(--clip-offline) 0 8px, var(--clip-offline-alt) 8px 16px); }
+  }
+  @media (prefers-reduced-motion: reduce){ .seq__clip-link{ transition:none; } }
+</style>

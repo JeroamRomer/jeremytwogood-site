@@ -134,7 +134,7 @@ Only after Gates 3-5 have all passed:
    delete its `coming_soon: true` and leftover null fields; the legacy
    `link` field is dead — no code reads it.)
 2. `src/data/video-content.json` — add the approved Step 3 entry under `<id>`.
-3. `src/components/Projects.astro` — add to the `previews` map:
+3. `src/lib/media.ts` — add to the `PREVIEW_LOOPS` map:
    ```js
    '<id>': '<name>-loop',
    ```

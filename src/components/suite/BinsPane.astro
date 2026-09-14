@@ -1,0 +1,56 @@
+---
+import type { Clip } from '../../lib/sequence';
+import projects from '../../data/projects.json';
+import aiBuilds from '../../data/ai-builds.json';
+import profile from '../../data/profile.json';
+
+interface Props { clips: Clip[] }
+const { clips } = Astro.props;
+const bins = [
+  { href: '#work', label: 'Work', count: projects.length },
+  { href: '#builds', label: 'AI builds', count: aiBuilds.length },
+  { href: '#sound', label: 'Sound', count: profile.tracks.length },
+  { href: '#about', label: 'About', count: null },
+  { href: '#contact', label: 'Contact', count: null },
+];
+---
+<aside class="pane bins" aria-label="Project bins">
+  <div class="pane-head"><span>Project</span></div>
+  <nav class="bins__list" aria-label="Bins">
+    {bins.map((b) => (
+      <a href={b.href}>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 4.5h4l1.5 1.5h7.5v7h-13z" /></svg>
+        <span>{b.label}</span>
+        {b.count !== null && <span class="readout">{b.count}</span>}
+      </a>
+    ))}
+  </nav>
+  <ul class="bins__clips">
+    {clips.map((c) => {
+      const inner = (
+        <>
+          <img src={c.thumbnail} alt="" loading="lazy" decoding="async" />
+          <span class="bins__clip-name">{c.name}</span>
+          <span class="readout">{c.offline ? 'offline' : c.durationLabel}</span>
+        </>
+      );
+      return <li>{c.href ? <a href={c.href}>{inner}</a> : <span class="bins__clip-static">{inner}</span>}</li>;
+    })}
+  </ul>
+</aside>
+
+<style>
+  .bins{ border-right:1px solid var(--hair); overflow:hidden; }
+  .bins__list{ padding:8px 0; }
+  .bins__list a{ display:grid; grid-template-columns:18px 1fr auto; gap:10px; align-items:center; padding:8px 14px; font-size:14px; }
+  .bins__list a:hover{ background:var(--lane); }
+  .bins__list svg{ width:16px; height:16px; fill:none; stroke:var(--muted); stroke-width:1.5; }
+  .bins__clips{ list-style:none; margin:0; padding:6px 0; border-top:1px solid var(--hair); overflow:auto; min-height:0; }
+  .bins__clips a, .bins__clip-static{ display:grid; grid-template-columns:52px minmax(0,1fr) auto; gap:10px; align-items:center; padding:6px 14px; font-size:13px; }
+  .bins__clips a:hover{ background:var(--lane); }
+  .bins__clips img{ width:52px; aspect-ratio:16/9; object-fit:cover; border:1px solid var(--hair-strong); }
+  .bins__clip-name{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bins__clip-static{ color:var(--muted); }
+  .bins .readout{ font-size:11px; }
+  @media (max-width: 760px){ .bins{ display:none; } }
+</style>
