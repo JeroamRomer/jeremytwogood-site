@@ -102,13 +102,17 @@ test('smoke: sequence clips link to case studies and the offline clip comes last
 
 // ── Work ─────────────────────────────────────────────────────────────────────
 
-test('smoke: index.html work section links to case-study pages', () => {
+test('smoke: work bin links items to case studies with hover previews', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="work"'), '#work section must exist');
-  assert.ok(html.includes('Shell'), 'Shell must appear in work section');
-  assert.ok(html.includes('href="/work/shell-john-williams"'), 'work cards must link to case-study pages');
-  assert.ok(html.includes('work-card__preview'), 'hover-preview video must be present');
-  assert.ok(html.includes('shell-loop.webm'), 'preview loop source must be wired');
+  assert.ok(html.includes('id="work"'), '#work bin must exist');
+  const work = html.slice(html.indexOf('id="work"'), html.indexOf('id="about"'));
+  assert.ok(work.includes('href="/work/shell-john-williams"'), 'items must link to case-study pages');
+  assert.ok(work.includes('work-item__preview'), 'hover-preview video must be present');
+  assert.ok(work.includes('shell-loop.webm'), 'preview loop source must be wired');
+  assert.ok(work.includes('Shell × John Williams'), 'titles must be visible at rest');
+  assert.ok(work.indexOf('Shell × John Williams') < work.indexOf('Canadian Association'), 'coming-soon project renders last');
+  assert.ok(work.includes('In progress'), 'coming-soon project keeps its status');
+  assert.ok(!work.includes('Twenty years of'), 'template headline is retired');
 });
 
 test('smoke: case-study page has VideoObject, breadcrumb, content, and lightbox', () => {
@@ -250,13 +254,11 @@ test('smoke: sound waveform click-to-seek is wired for the active track', () => 
 
 // ── Projects section ─────────────────────────────────────────────────────────
 
-test('smoke: work section project count is derived from projects.json', () => {
+test('smoke: work bin count and years are derived from projects.json', () => {
   const projects = JSON.parse(readFileSync(join(ROOT, 'src/data/projects.json'), 'utf-8'));
-  const count = String(projects.length).padStart(2, '0');
   const years = projects.map((p) => Number(p.year));
-  const expected = `${count} Projects · ${Math.min(...years)}–${Math.max(...years)}`;
-  const html = getHtml('index.html');
-  assert.ok(html.includes(expected), `index.html must contain "${expected}"`);
+  const expected = `${projects.length} projects · ${Math.min(...years)} to ${Math.max(...years)}`;
+  assert.ok(getHtml('index.html').includes(expected), `index.html must contain "${expected}"`);
 });
 
 test('smoke: sound section track rows are restructured for waveforms', () => {
@@ -294,10 +296,10 @@ test('smoke: pages add the js class before paint', () => {
 
 // ── Hover timecodes ─────────────────────────────────────────────────────────
 
-test('smoke: work cards with previews render a timecode chip', () => {
+test('smoke: work items with previews render a timecode chip at their running time', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('work-card__tc'), 'timecode chip must render');
-  assert.ok(html.includes('00:00:00:00'), 'chip must start at zero timecode');
+  assert.ok(html.includes('work-item__tc'), 'timecode chip must render');
+  assert.match(html, /data-duration="07:17"/, 'chip must rest at the real running time');
 });
 
 // ── Schema.org enrichment ────────────────────────────────────────────────────

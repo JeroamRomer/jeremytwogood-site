@@ -1,179 +1,83 @@
 ---
 import projects from '../data/projects.json';
 import ComparisonCard from './ComparisonCard.astro';
+import { hasCaseStudy, mmss, orderOnlineFirst, roleLabel, type SequenceProject } from '../lib/sequence';
+import { PREVIEW_LOOPS } from '../lib/media';
 
-const stillClasses = ['still-1','still-2','still-3','still-4','still-5','still-6','still-3','still-1'];
-
-// Hover-preview loops (in public/assets, as <id>.mp4 + <id>.webm). Keyed by project id.
-const previews: Record<string, string> = {
-  'shell-john-williams': 'shell-loop',
-  'simbility-desk-series': 'simbility-loop',
-  'ttms-chef-nuit': 'chefnuit-loop',
-  'xbox-forza-5': 'xbox-loop',
-  'ttms-5-points': 'fivepoints-loop',
-  'ns-health-westray': 'nshealth-loop',
-};
-
-// Section-head count, derived so it never goes stale when a project is added.
-const projectCount = String(projects.length).padStart(2, '0');
-const projectYears = projects.map((p) => Number(p.year));
-const yearRange = `${Math.min(...projectYears)}–${Math.max(...projectYears)}`;
+const ordered = orderOnlineFirst(projects as unknown as (SequenceProject & Record<string, any>)[]);
+const years = projects.map((p) => Number(p.year));
+const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.max(...years)}`;
 ---
-<section id="work" class="section section--dark grain" aria-label="Selected work">
-  <div class="wrap">
-    <div class="section-head no-border">
-      <div>
-        <span class="eyebrow">Selected Work</span>
-        <h2 class="section-title">Twenty years of<br/>solutions delivered.</h2>
-      </div>
-      <span class="section-head__count">{projectCount} Projects · {yearRange}</span>
+<section id="work" class="bin" aria-labelledby="work-title">
+  <div class="bin__inner">
+    <div class="bin__head">
+      <h2 id="work-title">Work</h2>
+      <span class="readout">{summary}</span>
     </div>
 
     <div class="work-grid">
-      {projects.map((project, i) => {
-        const idx = String(i + 1).padStart(2, '0');
-        const spanClass = `span-${project.span}`;
-        const stillClass = stillClasses[i] || 'still-1';
-        const preview = previews[project.id];
-        const hasThumbnail = !!project.thumbnail;
-        // Each non-coming-soon project links to its own case-study page.
-        const href = project.coming_soon ? null : `/work/${project.id}`;
-        const label = `${project.client}, ${project.type}${project.coming_soon ? ', Coming Soon' : ', ' + project.year}`;
-        const stillStyle = [
-          href ? `view-transition-name:work-${project.id}` : '',
-          hasThumbnail ? `background-image:url('${project.thumbnail}');background-size:contain;background-repeat:no-repeat;background-position:center` : '',
-        ].filter(Boolean).join(';') || undefined;
-        if (project.comparison) {
-          return <ComparisonCard project={project} index={idx} />;
-        }
+      {ordered.map((project, i) => {
+        const position = String(i + 1).padStart(2, '0');
+        if (project.comparison) return <ComparisonCard project={project} position={position} />;
+        const preview = PREVIEW_LOOPS[project.id];
+        const duration = typeof project.duration_seconds === 'number' ? mmss(project.duration_seconds) : '';
+        const linked = hasCaseStudy(project);
+        const Tag = linked ? 'a' : 'div';
+        const thumbStyle = linked ? `view-transition-name:work-${project.id}` : undefined;
         return (
-          <a
-            class={`work-card ${spanClass}`}
-            href={href ?? undefined}
-            data-coming-soon={project.coming_soon ? 'true' : undefined}
-            aria-label={label}
+          <Tag
+            class:list={['work-item', { 'is-offline': project.coming_soon }]}
+            href={linked ? `/work/${project.id}` : undefined}
+            aria-disabled={linked ? undefined : 'true'}
           >
-            <div
-              class={`work-card__still ${stillClass}`}
-              style={stillStyle}
-            >
-              {!hasThumbnail && (
-                <div class="work-card__placeholder">[ video still ]</div>
+            <div class="work-item__thumb" style={thumbStyle}>
+              <img src={project.thumbnail} alt="" loading="lazy" decoding="async" />
+              {preview && (
+                <video class="work-item__preview" muted loop playsinline preload="none" aria-hidden="true">
+                  <source src={`/assets/${preview}.webm`} type="video/webm" />
+                  <source src={`/assets/${preview}.mp4`} type="video/mp4" />
+                </video>
               )}
+              {project.coming_soon
+                ? <span class="work-item__tc readout">In progress</span>
+                : (duration || preview) && <span class="work-item__tc readout" data-duration={duration} hidden={!duration}>{duration}</span>}
             </div>
-            {preview && (
-              <video class="work-card__preview" muted loop playsinline preload="none" aria-hidden="true">
-                <source src={`/assets/${preview}.webm`} type="video/webm" />
-                <source src={`/assets/${preview}.mp4`} type="video/mp4" />
-              </video>
-            )}
-            {preview && (
-              <span class="work-card__tc" aria-hidden="true">00:00:00:00</span>
-            )}
-            <div class="work-card__veil"></div>
-            <span class="work-card__index">{idx}</span>
-            <span class="work-card__corner"></span>
-            {project.coming_soon && <span class="work-card__badge">Coming Soon</span>}
-            <div class="work-card__meta">
-              <div>
-                <div class="work-card__client">{project.name}</div>
-                <div class="work-card__type">{project.type}</div>
-                {project.disciplines && <div class="work-card__disciplines">{project.disciplines}</div>}
-              </div>
+            <div class="work-item__meta">
+              <span class="work-item__name">{project.name}</span>
+              <span class="readout">{position} · {project.year}</span>
+              <span class="work-item__sub">{project.client} · {project.type}{roleLabel(project) && ` · ${roleLabel(project)}`}</span>
             </div>
-          </a>
+          </Tag>
         );
       })}
     </div>
   </div>
 </section>
 
-<style>
-  /* Hover-to-play preview loops on work cards. Sits above the still, below the
-     veil/meta (DOM order handles stacking, so no z-index needed). */
-  .work-card__preview {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.45s ease;
-    pointer-events: none;
-  }
-  .work-card:hover .work-card__preview,
-  .work-card:focus-visible .work-card__preview {
-    opacity: 1;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .work-card__preview { transition: none; }
-    .work-card__tc::before { animation: none; }
-  }
-
-  /* Running timecode chip while the hover preview plays */
-  .work-card__tc{
-    position:absolute; top:16px; right:18px;
-    display:inline-flex; align-items:center; gap:6px;
-    background:rgba(10,10,9,.75);
-    border:1px solid rgba(232,228,220,.15);
-    border-radius:3px;
-    padding:3px 8px;
-    font-family:var(--mono-actual);
-    font-size:10px;
-    letter-spacing:.08em;
-    color:var(--amber);
-    opacity:0;
-    transition:opacity .3s ease .1s;
-    pointer-events:none;
-  }
-  .work-card__tc::before{
-    content:""; width:5px; height:5px; border-radius:50%;
-    background:var(--amber);
-    animation:tc-blink 1s steps(1) infinite;
-  }
-  @keyframes tc-blink{ 50%{ opacity:.25; } }
-  .work-card:hover .work-card__tc{ opacity:1; }
-  .work-card:has(.work-card__tc):hover .work-card__corner{ opacity:0; }
-  @media (hover: none){ .work-card__tc{ display:none; } }
-</style>
-
 <script>
   import { tcFormat } from '../scripts/timecode';
 
-  // Hover-to-play: load + play the loop on hover, pause + reset on leave.
-  // preload="none" means nothing downloads until the first hover.
-  // While playing, the corner chip shows the loop's real time as timecode.
-  document.querySelectorAll('.work-card').forEach((card) => {
-    const v = card.querySelector('.work-card__preview') as HTMLVideoElement | null;
+  // Hover-to-play: the chip rests at the real running time and counts the loop while it plays.
+  document.querySelectorAll<HTMLElement>('.work-item').forEach((item) => {
+    const v = item.querySelector<HTMLVideoElement>('.work-item__preview');
+    const tc = item.querySelector<HTMLElement>('.work-item__tc');
     if (!v) return;
-    const tc = card.querySelector('.work-card__tc') as HTMLElement | null;
+    const rest = tc?.dataset.duration ?? '';
     let raf = 0;
     const tick = () => {
       if (tc) tc.textContent = tcFormat(v.currentTime);
       raf = requestAnimationFrame(tick);
     };
-    card.addEventListener('mouseenter', () => {
+    item.addEventListener('mouseenter', () => {
       v.play().catch(() => {});
+      if (tc) tc.hidden = false;
       if (tc && !raf) raf = requestAnimationFrame(tick);
     });
-    card.addEventListener('mouseleave', () => {
+    item.addEventListener('mouseleave', () => {
       v.pause();
-      try { v.currentTime = 0; } catch (e) {}
+      try { v.currentTime = 0; } catch {}
       if (raf) { cancelAnimationFrame(raf); raf = 0; }
-      if (tc) tc.textContent = '00:00:00:00';
-    });
-  });
-
-  document.querySelectorAll('[data-coming-soon]').forEach((card) => {
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      const badge = card.querySelector('.work-card__badge') as HTMLElement | null;
-      if (!badge) return;
-      badge.classList.remove('is-flashing');
-      // Force reflow so re-clicking re-triggers
-      void badge.offsetWidth;
-      badge.classList.add('is-flashing');
-      badge.addEventListener('animationend', () => badge.classList.remove('is-flashing'), { once: true });
+      if (tc) { tc.textContent = rest; tc.hidden = !rest; }
     });
   });
 </script>

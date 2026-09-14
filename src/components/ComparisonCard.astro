@@ -3,233 +3,67 @@ interface Props {
   project: {
     name: string;
     type: string;
-    disciplines: string;
+    disciplines?: string;
     year: number | string;
     thumbnail: string;
     graded_src: string;
     ungraded_src: string;
   };
-  index: string;
+  position: string;
 }
-const { project, index } = Astro.props;
+const { project, position } = Astro.props;
 const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
 ---
-
-<div
-  id={uid}
-  class="work-card span-6 comparison-card"
-  role="img"
-  aria-label={`${project.name}: ${project.type}, ${project.year}. Drag to compare colour grades.`}
->
-  <!-- Bottom layer: graded (always full width, always visible behind) -->
-  <video class="cc-video cc-video--graded" src={project.graded_src} loop muted playsinline preload="none"></video>
-
-  <!-- Top layer: ungraded, clips from right. Dragging right reveals more graded underneath -->
-  <video class="cc-video cc-video--ungraded" src={project.ungraded_src} loop muted playsinline preload="none"></video>
-
-  <!-- Slider overlay: vertical line + handle -->
-  <div class="cc-slider" aria-hidden="true">
-    <div class="cc-slider__line">
-      <div class="cc-slider__handle">⇔</div>
+<div id={uid} class="work-item work-item--wide comparison">
+  <div class="work-item__thumb cc-stage" role="img" aria-label={`${project.name}: colour grade before and after. Drag to compare.`}>
+    <video class="cc-video cc-video--graded" src={project.graded_src} loop muted playsinline preload="none"></video>
+    <video class="cc-video cc-video--ungraded" src={project.ungraded_src} loop muted playsinline preload="none"></video>
+    <div class="cc-slider" aria-hidden="true">
+      <div class="cc-slider__line"><div class="cc-slider__handle">
+        <svg viewBox="0 0 16 16"><path d="M5 4L1 8l4 4M11 4l4 4-4 4" /></svg>
+      </div></div>
+      <div class="cc-slide-hint">
+        <svg class="cc-hint-line" viewBox="0 0 54 36" fill="none">
+          <path d="M50,18 C38,26 20,28 4,22" stroke="rgba(255,255,255,0.8)" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M4,22 L11,16" stroke="rgba(255,255,255,0.8)" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M4,22 L12,28" stroke="rgba(255,255,255,0.8)" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+        Slide me!
+      </div>
     </div>
-    <div class="cc-slide-hint">
-      <svg class="cc-hint-line" viewBox="0 0 54 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- curved arrow from right → left, bowing slightly downward (hand-drawn feel) -->
-        <path d="M50,18 C38,26 20,28 4,22" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- arrowhead at left end -->
-        <path d="M4,22 L11,16" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M4,22 L12,28" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
-      Slide me!
-    </div>
+    <img class="cc-thumb" src={project.thumbnail} alt="" aria-hidden="true" />
   </div>
-
-  <!-- Static thumbnail. Sits on top, fades out on hover -->
-  <img class="cc-thumb" src={project.thumbnail} alt="" aria-hidden="true" />
-
-  <!-- Veil gradient for meta readability -->
-  <div class="work-card__veil"></div>
-
-  <!-- Index + corner accent (matches existing cards) -->
-  <span class="work-card__index">{index}</span>
-  <span class="work-card__corner"></span>
-
-  <!-- Meta overlay -->
-  <div class="work-card__meta">
-    <div>
-      <div class="work-card__client">{project.name}</div>
-      <div class="work-card__type">{project.type}</div>
-      <div class="cc-disciplines">{project.disciplines}</div>
-    </div>
-    <div class="cc-grade-label">Colour Grading<br/>Example</div>
+  <div class="work-item__meta">
+    <span class="work-item__name">{project.name}</span>
+    <span class="readout">{position} · {project.year}</span>
+    <span class="work-item__sub">Colour grade, before and after · {project.type}</span>
   </div>
 </div>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
-  /* Card cursor */
-  .comparison-card {
-    cursor: ew-resize;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  /* ── Videos ── */
-  .cc-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Ungraded sits on top; clip-path set directly by JS */
-  .cc-video--ungraded {}
-
-  /* Touch-active state mirrors :hover for devices without pointer */
-  .comparison-card.is-active .cc-thumb { opacity: 0; }
-  .comparison-card.is-active .cc-slider { opacity: 1; }
-  .comparison-card.is-active .cc-disciplines { opacity: 1; transform: translateY(0); }
-
-  /* ── Thumbnail (on top, fades out on hover) ── */
-  .cc-thumb {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    opacity: 1;
-    transition: opacity 300ms ease;
-    z-index: 3;
-    filter: grayscale(0.15) contrast(1.05);
-    pointer-events: none;
-  }
-
-  .comparison-card:hover .cc-thumb {
-    opacity: 0;
-  }
-
-  /* ── Slider overlay ── */
-  .cc-slider {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 200ms ease;
-    z-index: 4;
-    pointer-events: none;
-  }
-
-  .comparison-card:hover .cc-slider {
-    opacity: 1;
-  }
-
-  /* The line position is set directly by JS */
-  .cc-slider__line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.8);
-    transform: translateX(-50%);
-  }
-
-  .cc-slider__handle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 14px;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-
-  /* ── Colour grading label (replaces year) ── */
-  .cc-grade-label {
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 13px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--amber);
-    text-align: right;
-    line-height: 1.6;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: transform .35s ease .1s, opacity .35s ease .1s;
-  }
-  .comparison-card:hover .cc-grade-label,
-  .comparison-card.is-active .cc-grade-label {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── "Slide me!" hint ──
-     Vertically centred with the handle (top: 50% - half line-height).
-     SVG curved arrow sits to the LEFT of the text, pointing at the handle.
-  ── */
-  .cc-slide-hint {
-    position: absolute;
-    top: calc(50% - 22px); /* 22px = half of 44px font, centres with handle */
-    left: calc(50% + 20px); /* just past the handle's right edge */
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Caveat', cursive;
-    font-size: 44px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-    white-space: nowrap;
-    pointer-events: none;
-    text-shadow: 0 1px 8px rgba(0,0,0,.55);
-    line-height: 1;
-    transition: opacity .7s ease;
-  }
-  .cc-hint-line {
-    width: 54px;
-    height: 36px;
-    flex-shrink: 0;
-  }
-  /* Fade out smoothly, no display:none */
-  .cc-slide-hint.is-used {
-    opacity: 0;
-  }
-  /* hide on mobile; touch users don't need the prompt */
-  @media (max-width: 720px) { .cc-slide-hint { display: none; } }
-
-  /* ── Disciplines sub-line (extra meta row) ── */
-  .cc-disciplines {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(244, 241, 236, 0.35);
-    margin-top: 4px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: transform 0.35s ease 0.1s, opacity 0.35s ease 0.1s;
-  }
-
-  .comparison-card:hover .cc-disciplines {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .cc-stage{ cursor:ew-resize; touch-action:none; user-select:none; -webkit-user-select:none; }
+  .cc-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .cc-thumb{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:3; pointer-events:none; transition:opacity .3s; }
+  .comparison:hover .cc-thumb, .comparison.is-active .cc-thumb{ opacity:0; }
+  .cc-slider{ position:absolute; inset:0; z-index:4; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .comparison:hover .cc-slider, .comparison.is-active .cc-slider{ opacity:1; }
+  .cc-slider__line{ position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--text); transform:translateX(-50%); }
+  .cc-slider__handle{ position:absolute; top:50%; left:50%; width:36px; height:36px; transform:translate(-50%,-50%); display:grid; place-items:center; background:var(--panel-head); border:1px solid var(--hair-strong); }
+  .cc-slider__handle svg{ width:16px; height:16px; fill:none; stroke:var(--text); stroke-width:1.5; }
+  .cc-slide-hint{ position:absolute; top:calc(50% - 22px); left:calc(50% + 24px); display:flex; align-items:center; gap:6px; font-family:'Caveat', cursive; font-size:44px; font-weight:500; line-height:1; color:#fff; white-space:nowrap; pointer-events:none; transition:opacity .7s; }
+  .cc-hint-line{ width:54px; height:36px; flex-shrink:0; }
+  .cc-slide-hint.is-used{ opacity:0; }
+  @media (max-width: 720px){ .cc-slide-hint{ display:none; } }
+  @media (prefers-reduced-motion: reduce){ .cc-thumb, .cc-slider, .cc-slide-hint{ transition:none; } }
 </style>
 
 <script define:vars={{ uid }}>
   const card = document.getElementById(uid);
   if (!card) return;
+
+  const stage = card.querySelector('.cc-stage');
+  if (!stage) return;
 
   const gradedVideo = card.querySelector('.cc-video--graded');
   const ungradedVideo = card.querySelector('.cc-video--ungraded');
@@ -284,9 +118,9 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
 
   // On touch: first pointerdown starts videos and shows slider
   // Subsequent pointerdowns just drag as normal
-  card.addEventListener('pointerdown', (e) => {
+  stage.addEventListener('pointerdown', (e) => {
     dragging = true;
-    card.setPointerCapture(e.pointerId);
+    stage.setPointerCapture(e.pointerId);
 
     if (isTouchDevice() && gradedVideo.paused) {
       startVideos();
@@ -307,14 +141,14 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
     observer.observe(card);
   }
 
-  card.addEventListener('pointermove', (e) => {
+  stage.addEventListener('pointermove', (e) => {
     if (!dragging) return;
-    const rect = card.getBoundingClientRect();
+    const rect = stage.getBoundingClientRect();
     setPct((e.clientX - rect.left) / rect.width * 100);
     // Hide hint once user has actually dragged
     if (slideHint) slideHint.classList.add('is-used');
   });
 
-  card.addEventListener('pointerup', () => { dragging = false; });
-  card.addEventListener('pointercancel', () => { dragging = false; });
+  stage.addEventListener('pointerup', () => { dragging = false; });
+  stage.addEventListener('pointercancel', () => { dragging = false; });
 </script>
