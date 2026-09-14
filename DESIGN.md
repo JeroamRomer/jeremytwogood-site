@@ -20,7 +20,7 @@ Motion grammar: one authored motion, the playhead. It advances as the monitor pr
 
 Imagery stance: real frames and real loops only, untouched. No tints, washes, gradients or overlays on footage. Thumbnails carry their titles at rest.
 
-Reusable signature: the sequence (ruler, V1 clips, A1 waveform, playhead). It replaces the old timeline bar rather than sitting beside it, and its timecode is real sequence time, never a fictional program length.
+Reusable signature: the sequence (ruler, V1 clips, A1 waveform, playhead), and its timecode is real sequence time, never a fictional program length. The existing page timeline bar survives beside it (decided 2026-09-14): a slim bar pinned to the bottom that scrubs the page through its panels, restyled as a mini sequence in this system. The top sequence picks clips; the bottom bar moves through the page.
 
 **Key Characteristics:**
 - Every region is a named panel with a 32px header; panels are separated by hairlines, never by shadows or space alone
@@ -76,9 +76,9 @@ Restrained strategy: near-black panel greys and one warm accent, with two clip c
 
 ## Layout
 
-Panels, not sections. The first viewport is a fixed suite: a 44px top bar, three panes (bins 256px, program monitor fluid, info 320px), and the sequence beneath (32px ruler, 120px V1, 74px A1), all within one screen at 1440x900 and down to 1100 wide. Below the fold, the bins open in place as full-width panels (Work in icon view with 16:9 thumbnails, then AI builds, Sound, About, Contact), each with the same 32px header.
+Panels, not sections. The first viewport is a fixed suite: a 44px top bar, three panes (bins 256px, program monitor fluid, info 320px), and the sequence beneath (32px ruler, 120px V1, 74px A1), all within one screen at 1440x900 and down to 1100 wide. Below the fold, each bin opens in place as a full-width panel with the same 32px header (decided 2026-09-14): Work in icon view with 16:9 thumbnails, AI builds in list view, Sound as waveform rows, About as a clip-properties panel, Contact as a short properties panel. A slim page timeline bar stays pinned to the viewport bottom on desktop.
 
-Density is high and even inside panels (8px to 14px steps), with hairlines doing the separating; whitespace appears only inside the monitor stage. At 1100px the info pane drops below the monitor; at 760px the bins pane hides (the tabs carry navigation), the monitor runs full width, and the sequence scrolls horizontally at a minimum width of 860px. Exact spacing tokens are resolved during implementation.
+Density is high and even inside panels (8px to 14px steps), with hairlines doing the separating; whitespace appears only inside the monitor stage. At 1100px the info pane drops below the monitor. At 760px and below (decided 2026-09-14) the bins pane hides and the tabs carry navigation, the monitor runs full width, and the sequence stacks vertically: one row per clip with its thumbnail, title, client and year, and a duration bar proportional to running time. Nothing scrolls sideways. The page timeline bar is hidden on phones. Exact spacing tokens are resolved during implementation.
 
 ## Elevation & Depth
 

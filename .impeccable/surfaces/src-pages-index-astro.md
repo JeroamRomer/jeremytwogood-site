@@ -16,7 +16,7 @@ Proof and content: 8 real projects with stills and six silent loops, real runnin
 Constraints: timeline bar, hover loops, waveforms, chat widget, lightbox, view transitions and scroll reveals keep working; no tints on footage; free fonts; 11px floor on functional text; no-JS content; reduced motion; ~400px works; tests green. Brand commitments: logo, the "Jeremy Twogood." wordmark, first-person plain voice.
 Chosen direction: The Open Sequence (prototype at `.impeccable/mocks/proto/seq.html`, approved by Jeremy 2026-09-14 over Mezzotint Velvet Night).
 Memorable moment: the visitor lands inside a running edit; the playhead moves through the real work while the monitor previews each clip.
-Unresolved: how About, Builds, Sound and Contact render below the sequence (bins opened in place vs. panel sections); the case-study page as a "clip properties" or source-monitor view; whether the chat widget becomes a panel; which client list is canonical; the fictional 60-second timecode on the current bar is replaced by real sequence time.
+Resolved 2026-09-14: the page timeline bar survives as a slim bottom bar that scrubs the page (the top sequence picks clips); below the fold each bin opens as a full-width panel (Work icon view, AI builds list, Sound waveform rows, About clip properties, Contact properties); phones stack the sequence vertically as clip rows with duration bars, no sideways scroll; profile.json is the canonical client list (HIRE.md and About to match). Still open: the case-study page as a clip-properties/source-monitor view; whether the chat widget becomes a panel.
 
 ## Direction contract
 
