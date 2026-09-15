@@ -24,11 +24,24 @@
   --font-ui:'Barlow', ui-sans-serif, system-ui, sans-serif;
   --font-readout:'Martian Mono', ui-monospace, Menlo, monospace;
   --bar-h:44px;
+  /* The bar's actual rendered height: equal to --bar-h on one row, overridden
+     below when it wraps to a brand row + tab row at <=760px. Anything that
+     needs to clear the bar (anchor scroll-margin, the chat panel's top) reads
+     this instead of --bar-h so it still clears the wrapped bar on phones. */
+  --bar-total-h:var(--bar-h);
+  --tlbar-h:28px;
   --pane-head-h:32px;
   --pad:clamp(16px, 2.4vw, 32px);
   --max:1600px;
   --chat-trigger-w:194px;
   --chat-trigger-w-mobile:66px;
+}
+/* Matches Nav.astro's own <=760px band, where .bar wraps to a 44px brand row,
+   a 41px tab row, and the bar's own 1px border-bottom (measured with
+   Playwright: getBoundingClientRect().height is 86px total, so 42px beyond
+   --bar-h). */
+@media (max-width: 760px){
+  :root{ --bar-total-h:calc(var(--bar-h) + 42px); }
 }
 
 .pane{ display:flex; flex-direction:column; min-width:0; min-height:0; background:var(--panel); color:var(--text); font-family:var(--font-ui); }
@@ -75,7 +88,7 @@
 .props a{ color:var(--text); text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
 .props a:hover{ text-decoration-color:var(--mango); }
 
-section[id]{ scroll-margin-top:var(--bar-h); }
+section[id]{ scroll-margin-top:var(--bar-total-h); }
 
 .work-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:28px 18px; }
 .work-item{ display:block; min-width:0; color:var(--text); }

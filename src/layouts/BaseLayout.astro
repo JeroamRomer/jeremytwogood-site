@@ -10,6 +10,9 @@ interface Props {
   description?: string;
   ogImage?: string;
   pageType?: 'home' | 'reel' | 'ai-builds' | 'mcp';
+  /** False on pages with no panel bar (e.g. /logo-preview), so the docked
+   * trigger doesn't float over content with nothing to dock into. */
+  chat?: boolean;
 }
 
 const bioText = Array.isArray(profile.bio) ? profile.bio.join(' ') : profile.bio;
@@ -21,6 +24,7 @@ const {
   description = metaDescription,
   ogImage = '/og-image.jpg',
   pageType = 'home',
+  chat = true,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, profile.website).href;
@@ -93,7 +97,7 @@ const personSchema = {
   </head>
   <body>
     <slot />
-    <ChatWidget />
+    {chat && <ChatWidget />}
     <Analytics />
     <SpeedInsights />
   </body>

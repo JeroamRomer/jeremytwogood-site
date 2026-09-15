@@ -148,3 +148,18 @@ export function rulerMarks(totalSeconds: number, maxMarks = 6): RulerMark[] {
   }
   return marks;
 }
+
+/**
+ * Ruler marks for a sequence, with invented time labels removed: every timecode
+ * must come from data. Tick lines still render at every mark (the tick is the
+ * mark's own left border in Sequence.astro, independent of its label), but the
+ * label text is blanked wherever it isn't backed by a known duration — either
+ * because an online clip's duration is unknown at all (`!sequence.allKnown`),
+ * or because the mark falls past the known clips' span, inside an offline
+ * clip's placeholder width (which is a layout width, not a real time).
+ */
+export function visibleRulerMarks(sequence: Sequence, maxMarks = 6): RulerMark[] {
+  const marks = rulerMarks(sequence.layoutSeconds, maxMarks);
+  if (!sequence.allKnown) return marks.map((m) => ({ ...m, label: '' }));
+  return marks.map((m) => (m.seconds <= sequence.knownSeconds ? m : { ...m, label: '' }));
+}

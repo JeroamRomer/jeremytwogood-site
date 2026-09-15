@@ -46,6 +46,7 @@ const bins = [
 
 <style>
   .bins{ border-right:1px solid var(--hair); overflow:hidden; }
+  .bins :focus-visible, .bins__clips :focus-visible{ outline-offset:-2px; }
   .bins__list{ padding:8px 0; }
   .bins__list a{ display:grid; grid-template-columns:18px 1fr auto; gap:10px; align-items:center; padding:8px 14px; font-size:14px; }
   .bins__list a:hover{ background:var(--lane); }

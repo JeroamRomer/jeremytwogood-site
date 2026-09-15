@@ -21,7 +21,7 @@ import reelIndex from '../data/reel-index.json';
     </div>
   </div>
 
-  <script id="reel-index-data" type="application/json" set:html={JSON.stringify(reelIndex)} />
+  <script id="reel-index-data" type="application/json" set:html={JSON.stringify(reelIndex).replace(/</g, '\\u003c')} />
 </section>
 
 <style>

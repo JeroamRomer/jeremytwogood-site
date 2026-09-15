@@ -48,11 +48,11 @@ const faqSchema = {
   <Nav />
   <main class="mcp">
     <section class="bin mcp__intro">
-      <div class="bin__head">
-        <span class="readout">Model Context Protocol</span>
-      </div>
       <div class="bin__body">
-        <h1 class="mcp__title">This website is an MCP server.</h1>
+        <div class="mcp__title-row">
+          <h1 class="mcp__title">This website is an MCP server.</h1>
+          <span class="readout">Model Context Protocol</span>
+        </div>
         <p class="mcp__lede">
           If you're an AI agent, or you're using one, this whole portfolio is queryable.
           An agent can read my work history, watch descriptions of every video, check my
@@ -138,7 +138,9 @@ const faqSchema = {
 <style>
   .mcp{ font-family:var(--font-ui); }
   .mcp .bin__body{ max-width:860px; padding-bottom:36px; }
-  .mcp__title{ margin:0 0 14px; font-family:var(--font-display); font-size:clamp(26px, 4vw, 40px); font-variation-settings:'wdth' 118; font-weight:800; line-height:1.05; }
+  .mcp .mcp__intro .bin__body{ padding-top:28px; }
+  .mcp__title-row{ display:flex; align-items:baseline; flex-wrap:wrap; gap:6px 18px; margin-bottom:14px; }
+  .mcp__title{ margin:0; font-family:var(--font-display); font-size:clamp(26px, 4vw, 40px); font-variation-settings:'wdth' 118; font-weight:800; line-height:1.05; }
   .mcp__lede{ margin:0; max-width:62ch; font-size:17px; line-height:1.6; color:var(--muted); }
   .mcp__section p{ max-width:65ch; line-height:1.6; }
   .mcp__section a{ text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
@@ -146,7 +148,7 @@ const faqSchema = {
   .mcp__section code{ font-family:var(--font-readout); font-size:.9em; }
   .mcp__table{ width:100%; border-collapse:collapse; font-size:14px; }
   .mcp__table td{ padding:10px 14px 10px 0; border-top:1px solid var(--hair); vertical-align:top; line-height:1.5; }
-  .mcp__table td:first-child{ white-space:nowrap; color:var(--mango); }
+  .mcp__table td:first-child{ white-space:nowrap; font-family:var(--font-readout); color:var(--text); }
   .mcp__note{ font-size:14px; color:var(--muted); }
   .mcp__faq{ padding:12px 0; border-top:1px solid var(--hair); }
   .mcp__faq summary{ cursor:pointer; font-weight:600; }

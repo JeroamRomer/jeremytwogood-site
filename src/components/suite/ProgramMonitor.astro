@@ -26,9 +26,9 @@ const { lead, sequence } = Astro.props;
     <button type="button" class="transport__btn" data-transport="next" aria-label="Next clip">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11 3h2v10h-2zM3 3v10l7-5z" /></svg>
     </button>
-    <span class="readout transport__tc" data-monitor-tc>00:00:00:00</span>
+    {sequence.allKnown && <span class="readout transport__tc" data-monitor-tc>00:00:00:00</span>}
     <a class="transport__clip" data-monitor-link href={lead.href ?? '#work'}>{lead.roleLabel ? `${lead.name} · ${lead.roleLabel}` : lead.name}</a>
-    {sequence.allKnown && <span class="readout transport__total">{mmss(sequence.layoutSeconds)}</span>}
+    {sequence.allKnown && <span class="readout transport__total">{mmss(sequence.knownSeconds)}</span>}
   </div>
 </section>
 

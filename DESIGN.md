@@ -215,6 +215,8 @@ Square. Panels, buttons, thumbnails and the monitor have 0 radius; clips have 2p
 - **Don't** set any functional text below 11px or in monospace unless it is a measured value (time, count, format, year, coordinate).
 - **Don't** reintroduce the incumbent pattern: eyebrow labels above headings, kickers, tiny section numbers, right-aligned meta stats, a spotlight behind the hero, pulsing dots.
 - **Don't** put a panel inside a panel; a bin opens as a full-width panel, never as a card grid of cards.
+
+#### Named divergence
 - **Don't** burn a timecode into the program monitor frame; the FIRST VIEWPORT block of the direction contract names a burn-in, but the Global Constraint "footage untouched" overrides it in the shipped build — this is a named, deliberate divergence between contract and build, not an omission.
 - **Don't** extend Caveat, or invent a second script/display face, beyond the one sanctioned hint use.
 

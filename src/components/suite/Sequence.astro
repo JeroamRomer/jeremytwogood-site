@@ -1,9 +1,9 @@
 ---
-import { rulerMarks, type Sequence } from '../../lib/sequence';
+import { visibleRulerMarks, type Sequence } from '../../lib/sequence';
 
 interface Props { sequence: Sequence; peaks: number[]; trackTitle: string }
 const { sequence, peaks, trackTitle } = Astro.props;
-const marks = rulerMarks(sequence.layoutSeconds);
+const marks = visibleRulerMarks(sequence);
 const W = Math.max(peaks.length, 1) * 4;
 ---
 <div class="seq" data-sequence role="group" aria-label="Selected work, as a sequence">
@@ -22,7 +22,6 @@ const W = Math.max(peaks.length, 1) * 4;
       <ol class="seq__lane seq__lane--v">
         {sequence.clips.map((c) => {
           const style = `--start:${c.startPct}%;--len:${c.widthPct}%;--rel:${c.relPct}%`;
-          const narrow = c.widthPct < 7.5;
           const body = (
             <>
               <span class="seq__clip-name"><span>{c.name}</span>{c.durationLabel && <small class="readout">{c.durationLabel}</small>}</span>
@@ -36,14 +35,17 @@ const W = Math.max(peaks.length, 1) * 4;
             </>
           );
           return (
-            <li class:list={['seq__clip', { 'is-offline': c.offline, 'is-narrow': narrow }]} style={style}>
-              {c.href
-                ? <a class="seq__clip-link" href={c.href} data-clip={c.index} draggable="false">{body}</a>
-                : <span class="seq__clip-link" data-clip={c.index} aria-disabled="true">{body}</span>}
+            <li class:list={['seq__clip', { 'is-offline': c.offline }]} style={style}>
+              {c.offline
+                ? <span class="seq__clip-link" data-clip={c.index} aria-disabled="true">{body}</span>
+                : c.href
+                  ? <a class="seq__clip-link" href={c.href} data-clip={c.index} draggable="false" aria-describedby="seq-hint">{body}</a>
+                  : <span class="seq__clip-link" data-clip={c.index} role="button" tabindex="0" aria-label={`Preview ${c.name}`}>{body}</span>}
             </li>
           );
         })}
       </ol>
+      <span id="seq-hint" class="seq__sr-only">Press again to open the case study</span>
       {peaks.length > 0 && (
         <div class="seq__lane seq__lane--a" aria-hidden="true">
           <div class="seq__aclip">
@@ -72,6 +74,11 @@ const W = Math.max(peaks.length, 1) * 4;
   .seq__th--a{ height:74px; }
   .seq__lanes{ position:relative; overflow:hidden; }
   .seq__lanes.is-scrubbing{ cursor:col-resize; }
+  .seq__lanes :focus-visible{ outline-offset:-2px; }
+  .seq__sr-only{
+    position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden;
+    clip-path:inset(50%); white-space:nowrap; border:0;
+  }
   .seq__lane{ position:relative; margin:0; padding:0; list-style:none; border-bottom:1px solid var(--hair); }
   .seq__lane--v{ height:120px; }
   .seq__lane--a{ height:74px; background:var(--lane-alt); }
@@ -85,7 +92,7 @@ const W = Math.max(peaks.length, 1) * 4;
   .seq__clip-link.is-current{ box-shadow:inset 0 0 0 2px var(--mango); }
   .seq__clip-name{ display:block; min-width:0; padding:6px 8px; font-size:12px; font-weight:600; line-height:1.3; white-space:normal; }
   .seq__clip-name > span{ min-width:0; overflow-wrap:break-word; }
-  .seq__clip-name small{ display:none; flex-shrink:0; font-size:11px; color:inherit; opacity:.85; margin-left:6px; }
+  .seq__clip-name small{ display:none; font-size:11px; color:inherit; opacity:.85; margin-left:6px; }
   .seq__clip-thumb{ position:relative; overflow:hidden; background:#000; min-height:0; }
   .seq__clip-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:left center; }
   .seq__clip-meta, .seq__clip-bar{ display:none; }

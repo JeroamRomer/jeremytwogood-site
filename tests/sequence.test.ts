@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { loopFor, PREVIEW_LOOPS } from '../src/lib/media.ts';
-import { buildSequence, hasCaseStudy, mmss, orderOnlineFirst, roleLabel, rulerMarks } from '../src/lib/sequence.ts';
+import { buildSequence, hasCaseStudy, mmss, orderOnlineFirst, roleLabel, rulerMarks, visibleRulerMarks } from '../src/lib/sequence.ts';
 
 const base = { client: 'C', year: '2020', type: 'T', thumbnail: '/t.jpg' };
 
@@ -96,4 +96,38 @@ test('rulerMarks: picks a step giving at most maxMarks marks', () => {
   assert.ok(marks.length <= 6);
   assert.equal(marks[1].seconds, 300);
   assert.deepEqual(rulerMarks(0), []);
+});
+
+test('visibleRulerMarks: blanks every label when an online clip has no known duration', () => {
+  const seq = buildSequence([
+    { ...base, id: 'a', name: 'A', duration_seconds: 100 },
+    { ...base, id: 'b', name: 'B' },
+  ], () => null);
+  assert.equal(seq.allKnown, false);
+  const marks = visibleRulerMarks(seq);
+  assert.ok(marks.length > 0, 'tick lines must still be produced');
+  assert.ok(marks.every((m) => m.label === ''), 'no label may be invented while a duration is unknown');
+});
+
+test('visibleRulerMarks: blanks labels that fall inside an offline clip\'s placeholder span', () => {
+  const seq = buildSequence([
+    { ...base, id: 'a', name: 'A', duration_seconds: 100 },
+    { ...base, id: 'soon', name: 'Soon', coming_soon: true },
+  ], () => null);
+  assert.equal(seq.allKnown, true);
+  assert.ok(seq.layoutSeconds > seq.knownSeconds, 'offline placeholder must pad the layout past the known span');
+  const marks = visibleRulerMarks(seq);
+  const within = marks.filter((m) => m.seconds <= seq.knownSeconds);
+  const beyond = marks.filter((m) => m.seconds > seq.knownSeconds);
+  assert.ok(within.some((m) => m.label !== ''), 'marks inside the known span keep their real label');
+  assert.ok(beyond.length > 0, 'test must actually exercise a mark past the known span');
+  assert.ok(beyond.every((m) => m.label === ''), 'marks inside the offline placeholder span must not show a label');
+});
+
+test('visibleRulerMarks: shows every label when every clip has a known duration', () => {
+  const seq = buildSequence([
+    { ...base, id: 'a', name: 'A', duration_seconds: 300 },
+    { ...base, id: 'b', name: 'B', duration_seconds: 100 },
+  ], () => null);
+  assert.deepEqual(visibleRulerMarks(seq), rulerMarks(seq.layoutSeconds));
 });

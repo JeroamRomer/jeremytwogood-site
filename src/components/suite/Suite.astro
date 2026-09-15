@@ -16,6 +16,7 @@ const peaks = (waveforms as Record<string, number[]>)[firstTrack.num] ?? [];
 
 const payload = {
   total: sequence.layoutSeconds,
+  allKnown: sequence.allKnown,
   clips: sequence.clips.map((c) => ({
     name: c.name,
     client: c.client,
@@ -38,7 +39,7 @@ const payload = {
     <InfoPane />
   </div>
   <Sequence sequence={sequence} peaks={peaks} trackTitle={firstTrack.title} />
-  <script type="application/json" id="sequence-data" set:html={JSON.stringify(payload)} />
+  <script type="application/json" id="sequence-data" set:html={JSON.stringify(payload).replace(/</g, '\\u003c')} />
 </section>
 
 <style>

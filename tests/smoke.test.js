@@ -102,6 +102,17 @@ test('smoke: suite renders the monitor, info pane and sequence', () => {
   assert.ok(!html.includes('hero__meta'), 'old hero is gone');
 });
 
+test('smoke: sequence ruler shows no invented time labels and the transport hides its timecode while a duration is unknown', () => {
+  const html = getHtml('index.html');
+  const rulerStart = html.indexOf('seq__ruler');
+  const rulerEnd = html.indexOf('seq__tracks', rulerStart);
+  const ruler = html.slice(rulerStart, rulerEnd);
+  const labels = [...ruler.matchAll(/<span class="readout" style="left:[^"]*"[^>]*>([^<]*)<\/span>/g)].map((m) => m[1]);
+  assert.ok(labels.length > 0, 'ruler tick lines must still render');
+  assert.ok(labels.every((l) => l === ''), 'no ruler tick may show an invented time label while a duration is unknown (real data: Simbility/Thales)');
+  assert.ok(!html.includes('data-monitor-tc'), 'transport timecode must not render while a duration is unknown');
+});
+
 test('smoke: sequence clips link to case studies and the offline clip comes last', () => {
   const html = getHtml('index.html');
   const seqStart = html.indexOf('data-sequence');

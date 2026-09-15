@@ -16,6 +16,7 @@ interface PlayerClip {
 
 interface PlayerData {
   total: number;
+  allKnown: boolean;
   clips: PlayerClip[];
 }
 
@@ -33,13 +34,16 @@ export function initSequencePlayer(root: HTMLElement): void {
   const tagYearEl = q<HTMLElement>('[data-monitor-tag-year]');
   const nameEl = q<HTMLElement>('[data-monitor-name]');
   const linkEl = q<HTMLAnchorElement>('[data-monitor-link]');
+  // Absent whenever a clip's duration is unknown (ProgramMonitor.astro), since
+  // the transport must never show an invented timecode. The player tolerates
+  // its absence rather than requiring it.
   const tcEl = q<HTMLElement>('[data-monitor-tc]');
   const playBtn = q<HTMLButtonElement>('[data-transport="play"]');
   const prevBtn = q<HTMLButtonElement>('[data-transport="prev"]');
   const nextBtn = q<HTMLButtonElement>('[data-transport="next"]');
   const lanes = q<HTMLElement>('[data-seq-lanes]');
   const playhead = q<HTMLElement>('[data-seq-playhead]');
-  if (!dataEl || !video || !tagClientEl || !tagYearEl || !nameEl || !linkEl || !tcEl || !playBtn || !prevBtn || !nextBtn || !lanes || !playhead) return;
+  if (!dataEl || !video || !tagClientEl || !tagYearEl || !nameEl || !linkEl || !playBtn || !prevBtn || !nextBtn || !lanes || !playhead) return;
 
   let data: PlayerData;
   try { data = JSON.parse(dataEl.textContent || '{}'); } catch { return; }
@@ -74,7 +78,7 @@ export function initSequencePlayer(root: HTMLElement): void {
     if (!c) return;
     const t = c.start + Math.min(Math.max(frac, 0), 1) * c.layout;
     playhead!.style.left = `${(t / data.total) * 100}%`;
-    tcEl!.textContent = tcFormat(t);
+    if (tcEl && data.allKnown) tcEl.textContent = tcFormat(t);
   }
 
   function select(i: number) {
@@ -95,9 +99,18 @@ export function initSequencePlayer(root: HTMLElement): void {
     else linkEl!.removeAttribute('href');
     const src = canWebm && c.webm ? c.webm : c.mp4;
     video!.poster = c.poster;
-    if (src && video!.getAttribute('src') !== src) video!.src = src;
-    place(0);
-    resume();
+    if (src) {
+      if (video!.getAttribute('src') !== src) video!.src = src;
+      place(0);
+      resume();
+    } else {
+      // No loop for this clip: clear the previous clip's footage rather than
+      // leaving it playing under the new client/year tag, and don't play.
+      video!.removeAttribute('src');
+      video!.load();
+      video!.pause();
+      place(0);
+    }
   }
 
   function step(dir: 1 | -1) {
@@ -125,6 +138,20 @@ export function initSequencePlayer(root: HTMLElement): void {
       e.preventDefault();
       select(i);
     });
+    // A clip without a case study (e.g. the Thales comparison) renders as
+    // role="button" instead of a link, so Enter/Space need to be handled here;
+    // an <a> already fires a click for Enter natively, so it's covered above.
+    if (el.tagName !== 'A') {
+      el.addEventListener('keydown', (e) => {
+        const ke = e as KeyboardEvent;
+        if (ke.key !== 'Enter' && ke.key !== ' ') return;
+        if (!desktop.matches) return;
+        ke.preventDefault();
+        const i = Number(el.dataset.clip);
+        if (data.clips[i]?.offline) return;
+        select(i);
+      });
+    }
   });
 
   // Scrub: a drag across the lanes (beyond 4px) seeks; a plain click falls through to the clip.
