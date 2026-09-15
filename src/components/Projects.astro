@@ -9,13 +9,12 @@ const years = projects.map((p) => Number(p.year));
 const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.max(...years)}`;
 ---
 <section id="work" class="bin" aria-labelledby="work-title">
-  <div class="bin__inner">
-    <div class="bin__head">
-      <h2 id="work-title">Work</h2>
-      <span class="readout">{summary}</span>
-    </div>
+  <div class="bin__head">
+    <h2 id="work-title">Work</h2>
+    <span class="readout">{summary}</span>
+  </div>
 
-    <div class="bin__body">
+  <div class="bin__body">
     <div class="work-grid">
       {ordered.map((project, i) => {
         const position = String(i + 1).padStart(2, '0');
@@ -51,7 +50,6 @@ const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.
           </Tag>
         );
       })}
-    </div>
     </div>
   </div>
 </section>

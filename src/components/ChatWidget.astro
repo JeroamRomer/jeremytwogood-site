@@ -104,10 +104,18 @@ const STARTERS = [
 
   @keyframes cw-blink{ 50%{ opacity:0; } }
 
-  @media (max-width: 760px){
+  /* Matches Nav.astro's ≤1100px band: the bar can't fit the full "Ask about
+     my work" label alongside brand + tabs + status on one nowrap row, so the
+     trigger shortens to "Ask" (aria-label keeps the full accessible name,
+     still containing the visible word). The bar itself doesn't wrap into two
+     rows until ≤760px, so the panel's top offset stays tied to that
+     separate, narrower breakpoint below. */
+  @media (max-width: 1100px){
     .cw__trigger{ padding:0 12px; }
     .cw__trigger-label--full{ display:none; }
     .cw__trigger-label--short{ display:inline; }
+  }
+  @media (max-width: 760px){
     .cw__panel{ top:calc(var(--bar-h) + 41px); max-height:calc(100svh - var(--bar-h) - 41px - 12px); }
   }
   @media (max-width: 560px){

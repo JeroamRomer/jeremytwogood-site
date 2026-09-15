@@ -3,12 +3,11 @@ import profile from '../data/profile.json';
 const social = profile.social as Record<string, string>;
 ---
 <section id="contact" class="bin contact" aria-labelledby="contact-title">
-  <div class="bin__inner">
-    <div class="bin__head">
-      <h2 id="contact-title">Contact</h2>
-      <span>Available · <span class="readout">2026</span></span>
-    </div>
-    <div class="bin__body">
+  <div class="bin__head">
+    <h2 id="contact-title">Contact</h2>
+    <span>Available · <span class="readout">2026</span></span>
+  </div>
+  <div class="bin__body">
     <div class="contact__grid">
       <div>
         <p class="contact__statement">Let's make something.</p>
@@ -21,7 +20,6 @@ const social = profile.social as Record<string, string>;
         <dt>Reel</dt><dd><a href="/reel">jeremytwogood.com/reel</a></dd>
       </dl>
     </div>
-    </div>
   </div>
 </section>
 
@@ -30,6 +28,9 @@ const social = profile.social as Record<string, string>;
   .contact__grid{ display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(260px, 1fr); gap:32px; align-items:start; }
   .contact__statement{ margin:0 0 10px; font-family:var(--font-display); font-variation-settings:'wdth' 118; font-weight:800; font-size:clamp(28px, 4vw, 48px); line-height:1.05; }
   .contact__line{ margin:0; max-width:46ch; color:var(--muted); }
-  .contact__props{ padding:14px; background:var(--lane); border:1px solid var(--hair); font-size:15px; }
-  @media (max-width: 760px){ .contact__grid{ grid-template-columns:1fr; } }
+  .contact__props{ padding-left:24px; border-left:1px solid var(--hair); font-size:15px; }
+  @media (max-width: 760px){
+    .contact__grid{ grid-template-columns:1fr; }
+    .contact__props{ padding:20px 0 0; border-left:0; border-top:1px solid var(--hair); }
+  }
 </style>

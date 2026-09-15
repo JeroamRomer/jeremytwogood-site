@@ -59,7 +59,17 @@ const tabs = [
   .bar__status{ margin:0 0 0 auto; display:flex; align-items:center; gap:20px; padding:0 18px; padding-right:calc(18px + var(--chat-trigger-w)); font-size:13px; color:var(--muted); white-space:nowrap; }
   .bar__avail{ color:var(--text); font-weight:500; }
 
-  @media (max-width: 900px){ .bar__status .readout{ display:none; } }
+  /* 761-1100px: brand + tabs + status no longer all fit on one nowrap row at
+     the full trigger width, so shed content in the order the ruling allows:
+     the EST readout first (was already hidden below 900; now earlier), then
+     the reservation shrinks to match the trigger's short "Ask" label (see
+     ChatWidget.astro's matching breakpoint), then in the tightest band the
+     availability line itself steps aside (it still shows in the Contact bin). */
+  @media (max-width: 1100px){
+    .bar__status .readout{ display:none; }
+    .bar__status{ padding-right:calc(14px + var(--chat-trigger-w-mobile)); gap:14px; }
+  }
+  @media (max-width: 840px){ .bar__avail{ display:none; } }
   @media (max-width: 760px){
     .bar{ height:auto; flex-wrap:wrap; }
     .bar__brand{ flex:1 1 auto; height:var(--bar-h); border-right:0; padding:0 14px; padding-right:calc(14px + var(--chat-trigger-w-mobile)); }

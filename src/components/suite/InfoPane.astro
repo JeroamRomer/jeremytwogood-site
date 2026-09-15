@@ -10,7 +10,7 @@ const liveBuilds = aiBuilds.filter((b) => b.status === 'live').map((b) => b.name
 const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_id}?autoplay=1&rel=0`;
 ---
 <aside class="pane info" aria-label="About Jeremy Twogood">
-  <div class="pane-head"><span>Info</span><span class="readout">Toronto, ON · 43.65°N</span></div>
+  <div class="pane-head"><span>Info</span><span>Toronto, ON · <span class="readout">43.65°N</span></span></div>
   <div class="info__body">
     <h1 class="info__name">Jeremy Twogood<span class="info__dot">.</span></h1>
     <p class="info__role">{profile.title}</p>
@@ -34,7 +34,6 @@ const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_
 
 <style>
   .info{ border-left:1px solid var(--hair); }
-  .info .pane-head .readout{ font-size:11px; text-transform:none; }
   .info__body{ padding:18px 18px 22px; display:flex; flex-direction:column; gap:14px; overflow:auto; min-height:0; }
   .info__name{ margin:0; font-family:var(--font-display); font-variation-settings:'wdth' 118; font-weight:800; font-size:34px; line-height:1; }
   .info__dot{ color:var(--mango); }

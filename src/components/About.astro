@@ -3,13 +3,12 @@ import profile from '../data/profile.json';
 const clients = profile.clients as string[];
 ---
 <section id="about" class="bin about" aria-labelledby="about-title">
-  <div class="bin__inner">
-    <div class="bin__head">
-      <h2 id="about-title">About</h2>
-      <span class="bin__head-meta">Toronto, ON · <span class="readout">43.65°N</span> · <span class="readout">EST · GMT−5</span></span>
-    </div>
+  <div class="bin__head">
+    <h2 id="about-title">About</h2>
+    <span>Toronto, ON · <span class="readout">43.65°N</span> · <span class="readout">EST · GMT−5</span></span>
+  </div>
 
-    <div class="bin__body">
+  <div class="bin__body">
     <div class="about__grid">
       <figure class="about__frame">
         <img src="/assets/portrait.jpg" alt="Jeremy Twogood" width="2316" height="3088" loading="lazy" decoding="async" />
@@ -33,7 +32,6 @@ const clients = profile.clients as string[];
         <dd><ul class="about__clients">{clients.map((c) => <li>{c}</li>)}</ul></dd>
       </dl>
     </div>
-    </div>
   </div>
 </section>
 
@@ -48,14 +46,14 @@ const clients = profile.clients as string[];
   .about__sub{ margin:22px 0 8px; font-size:13px; font-weight:600; color:var(--muted); }
   .about__text a{ text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
   .about__text a:hover{ text-decoration-color:var(--mango); }
-  .about__props{ padding:14px; background:var(--lane); border:1px solid var(--hair); }
+  .about__props{ padding-left:24px; border-left:1px solid var(--hair); }
   .about__props .readout{ font-size:13px; color:var(--text); }
   .about__clients{ list-style:none; margin:0; padding:0; columns:2; column-gap:16px; }
   .about__clients li{ break-inside:avoid; padding:1px 0; }
   #clients{ scroll-margin-top:calc(var(--bar-h) + 16px); }
   @media (max-width: 1100px){
     .about__grid{ grid-template-columns:minmax(180px, 260px) minmax(0, 1fr); }
-    .about__props{ grid-column:1 / -1; }
+    .about__props{ grid-column:1 / -1; padding:20px 0 0; border-left:0; border-top:1px solid var(--hair); }
   }
   @media (max-width: 640px){
     .about__grid{ grid-template-columns:1fr; }

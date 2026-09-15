@@ -40,19 +40,18 @@
   text-transform:uppercase; color:var(--muted); white-space:nowrap;
 }
 .pane-head > *{ overflow:hidden; text-overflow:ellipsis; }
+.pane-head .readout{ font-size:11px; }
 
-.bin{ position:relative; background:var(--panel); color:var(--text); padding:40px var(--pad) 64px; font-family:var(--font-ui); font-size:15px; line-height:1.5; }
-.bin__inner{ max-width:var(--max); margin:0 auto; border:1px solid var(--hair); }
+.bin{ position:relative; background:var(--panel); color:var(--text); border-top:1px solid var(--hair); font-family:var(--font-ui); font-size:15px; line-height:1.5; }
 .bin__head{
   display:flex; flex-wrap:wrap; align-items:center; gap:6px 18px;
   min-height:var(--pane-head-h); padding:0 var(--pad);
   background:var(--panel-head); border-bottom:1px solid var(--hair);
-  font-family:var(--font-ui); font-weight:600; font-size:12px; letter-spacing:.02em;
-  text-transform:uppercase; color:var(--muted);
+  font-family:var(--font-ui); font-weight:600; font-size:12px; color:var(--muted);
 }
-.bin__head h1, .bin__head h2{ margin:0; font:inherit; letter-spacing:inherit; }
-.bin__head-meta{ text-transform:none; letter-spacing:0; }
-.bin__body{ padding:28px var(--pad) 40px; }
+.bin__head h1, .bin__head h2{ margin:0; font-family:var(--font-display); font-variation-settings:'wdth' 112; font-weight:700; font-size:16px; line-height:1; color:var(--text); }
+.bin__head .readout{ font-size:11px; }
+.bin__body{ max-width:var(--max); margin:0 auto; padding:28px var(--pad) 40px; }
 .bin__lede{ margin:0 0 24px; max-width:65ch; color:var(--muted); }
 .bin__link{ margin-left:auto; font-size:12px; color:var(--muted); text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
 .bin__link:hover{ color:var(--text); text-decoration-color:var(--mango); }

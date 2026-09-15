@@ -3,14 +3,12 @@ import BuildsList from './BuildsList.astro';
 import aiBuilds from '../data/ai-builds.json';
 ---
 <section id="builds" class="bin" aria-labelledby="builds-title">
-  <div class="bin__inner">
-    <div class="bin__head">
-      <h2 id="builds-title">AI builds</h2>
-      <span class="readout">{aiBuilds.length} builds</span>
-      <a class="bin__link" href="/ai-builds">Open as a page</a>
-    </div>
-    <div class="bin__body">
-      <BuildsList level="h3" />
-    </div>
+  <div class="bin__head">
+    <h2 id="builds-title">AI builds</h2>
+    <span class="readout">{aiBuilds.length} builds</span>
+    <a class="bin__link" href="/ai-builds">Open as a page</a>
+  </div>
+  <div class="bin__body">
+    <BuildsList level="h3" />
   </div>
 </section>
