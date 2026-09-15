@@ -15,9 +15,9 @@
   .status a{ color:var(--text); text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
   .status a:hover{ text-decoration-color:var(--mango); }
 
-  /* The pinned page timeline bar (40px, fixed to the viewport bottom on desktop)
+  /* The pinned page timeline bar (28px, fixed to the viewport bottom on desktop)
      otherwise sits directly on top of this shorter footer and swallows its links
      (the old, taller footer escaped it by sheer padding). Lift clear of the bar
      itself; see task-4-report.md for a residual cosmetic note re: its chip. */
-  :global(body.has-tlbar) .status{ padding-bottom:calc(12px + 40px + env(safe-area-inset-bottom)); }
+  :global(body.has-tlbar) .status{ padding-bottom:calc(12px + 28px + env(safe-area-inset-bottom)); }
 </style>

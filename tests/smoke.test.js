@@ -268,6 +268,13 @@ test('smoke: timeline bar is homepage-only', () => {
   assert.ok(!caseStudy.includes('data-tlbar'), 'case-study pages must not mount the bar');
 });
 
+test('smoke: page timeline bar shows no invented timecode', () => {
+  const html = getHtml('index.html');
+  assert.ok(!html.includes('data-tlbar-tc'), 'fictional program timecode is retired');
+  assert.ok(!html.includes('DURATION'), 'nominal duration constant is retired');
+  assert.ok(html.includes('>Top<'), 'first clip is labelled Top');
+});
+
 // ── Sound waveforms ─────────────────────────────────────────────────────────
 
 test('smoke: sound waveform click-to-seek is wired for the active track', () => {
