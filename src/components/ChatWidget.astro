@@ -83,11 +83,14 @@ const STARTERS = [
 
   .cw__msgs{ flex:1 1 auto; min-height:60px; overflow-y:auto; padding:12px 14px; display:flex; flex-direction:column; gap:12px; }
   .cw__msgs:empty{ display:none; }
-  .cw__bubble{ max-width:90%; font-size:14px; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
-  .cw__bubble--user{ align-self:flex-end; padding:8px 12px; background:var(--lane-alt); border:1px solid var(--hair-strong); border-radius:2px; }
-  .cw__bubble--bot{ align-self:flex-start; }
-  .cw__bubble--error{ align-self:flex-start; color:var(--clip-offline-ink); font-size:13px; }
-  .cw__caret{ display:inline-block; width:7px; height:15px; margin-left:1px; vertical-align:-2px; background:var(--mango); animation:cw-blink 1s steps(2) infinite; }
+  /* Bubbles and the caret are appended by the script after hydration, so they
+     never carry Astro's scoping attribute. Hang these off the scoped
+     .cw__msgs container with :global() so the rules still reach them. */
+  .cw__msgs :global(.cw__bubble){ max-width:90%; font-size:14px; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .cw__msgs :global(.cw__bubble--user){ align-self:flex-end; padding:8px 12px; background:var(--lane-alt); border:1px solid var(--hair-strong); border-radius:2px; }
+  .cw__msgs :global(.cw__bubble--bot){ align-self:flex-start; }
+  .cw__msgs :global(.cw__bubble--error){ align-self:flex-start; color:var(--clip-offline-ink); font-size:13px; }
+  .cw__msgs :global(.cw__caret){ display:inline-block; width:7px; height:15px; margin-left:1px; vertical-align:-2px; background:var(--mango); animation:cw-blink 1s steps(2) infinite; }
 
   .cw__form{ display:flex; align-items:center; gap:8px; margin:0; padding:8px; border-top:1px solid var(--hair); }
   .cw__form:focus-within{ box-shadow:inset 0 2px 0 var(--mango); }
@@ -108,7 +111,9 @@ const STARTERS = [
   }
   @media (prefers-reduced-motion: reduce){
     .cw__trigger{ transition:none; }
-    .cw__caret{ animation:none; }
+    /* Same .cw__msgs :global() prefix as the base rule, so specificity ties
+       and this override actually wins the cascade instead of losing to it. */
+    .cw__msgs :global(.cw__caret){ animation:none; }
   }
 </style>
 
