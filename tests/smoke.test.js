@@ -442,3 +442,14 @@ test('smoke: /reel is a styled program monitor, /mcp uses bins', () => {
   assert.ok(mcp.includes('class="bin'), 'mcp page renders bins');
   assert.ok(!mcp.includes('class="eyebrow"'), 'mcp eyebrow is retired');
 });
+
+test('smoke: the old visual system is fully removed', () => {
+  const css = getBundledCss();
+  for (const old of ['--dark-bg', '--light-bg', '--amber', '.section-title', '.eyebrow', '.hero', '.work-card', '.grain']) {
+    assert.ok(!css.includes(old), `old CSS ${old} must be gone`);
+  }
+  const html = getHtml('index.html');
+  for (const family of ['family=Syne', 'family=Inter', 'family=Montserrat', 'family=JetBrains']) {
+    assert.ok(!html.includes(family), `${family} must no longer load`);
+  }
+});

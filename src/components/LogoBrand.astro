@@ -31,7 +31,7 @@ const uid      = `bl-${Math.random().toString(36).slice(2, 7)}`;
     <circle cx="19" cy="12" r="2" fill="currentColor"/>
     <circle cx="12" cy="19" r="2" fill="currentColor"/>
     <circle cx="5"  cy="12" r="2" fill="currentColor"/>
-    <circle cx="12" cy="12" r="2.6" fill="var(--amber)"/>
+    <circle cx="12" cy="12" r="2.6" fill="#c8922a"/>
   </svg>
 
   <span class="brand-logo__text">
@@ -55,12 +55,13 @@ const uid      = `bl-${Math.random().toString(36).slice(2, 7)}`;
 </script>
 
 <style>
+  @font-face { font-family: 'Syne'; src: url('/assets/Syne-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
   .brand-logo {
     display: inline-flex;
     align-items: center;
     gap: .2em;
     position: relative;
-    font-family: var(--display, 'Syne', sans-serif);
+    font-family: 'Syne', sans-serif;
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -99,6 +100,6 @@ const uid      = `bl-${Math.random().toString(36).slice(2, 7)}`;
   }
 
   .dot {
-    color: var(--amber);
+    color: #c8922a;
   }
 </style>

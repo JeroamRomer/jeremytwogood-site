@@ -5,6 +5,16 @@
     "ignoreFiles": [
       ".impeccable/mocks/proto/*"
     ],
-    "ignoreValues": []
+    "ignoreValues": [
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "src/components/suite/Sequence.astro"
+        ],
+        "createdAt": "2026-09-15T03:55:17.569Z",
+        "reason": "facelift plan: offline-media hatch is a clip state code on chrome (DESIGN.md Media Colour Rule), never over footage"
+      }
+    ]
   }
 }
