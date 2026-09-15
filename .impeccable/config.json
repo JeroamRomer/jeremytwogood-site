@@ -14,6 +14,60 @@
         ],
         "createdAt": "2026-09-15T03:55:17.569Z",
         "reason": "facelift plan: offline-media hatch is a clip state code on chrome (DESIGN.md Media Colour Rule), never over footage"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "caveat",
+        "files": [
+          "src/components/ComparisonCard.astro"
+        ],
+        "createdAt": "2026-09-15T08:53:41.522Z",
+        "reason": "facelift plan Global Constraints (Fonts): Caveat is the sanctioned exception for the single Thales 'Slide me!' hint; DESIGN.md Do/Don't records it"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "syne",
+        "files": [
+          "src/components/LogoBrand.astro"
+        ],
+        "createdAt": "2026-09-15T08:53:51.988Z",
+        "reason": "facelift plan Task 15: the logo is a brand commitment that must look exactly as today (Syne wordmark, self-contained @font-face); OG image restyle is out of Phase 2 scope"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "syne",
+        "files": [
+          "src/pages/logo-export.astro"
+        ],
+        "createdAt": "2026-09-15T08:53:52.007Z",
+        "reason": "facelift plan Task 15: the logo is a brand commitment that must look exactly as today (Syne wordmark, self-contained @font-face); OG image restyle is out of Phase 2 scope"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "syne",
+        "files": [
+          "src/pages/logo-export-light.astro"
+        ],
+        "createdAt": "2026-09-15T08:53:52.023Z",
+        "reason": "facelift plan Task 15: the logo is a brand commitment that must look exactly as today (Syne wordmark, self-contained @font-face); OG image restyle is out of Phase 2 scope"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "syne",
+        "files": [
+          "src/pages/logo-export-dark.astro"
+        ],
+        "createdAt": "2026-09-15T08:53:52.040Z",
+        "reason": "facelift plan Task 15: the logo is a brand commitment that must look exactly as today (Syne wordmark, self-contained @font-face); OG image restyle is out of Phase 2 scope"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "syne",
+        "files": [
+          "src/pages/og-image.astro"
+        ],
+        "createdAt": "2026-09-15T08:53:52.057Z",
+        "reason": "facelift plan Task 15: the logo is a brand commitment that must look exactly as today (Syne wordmark, self-contained @font-face); OG image restyle is out of Phase 2 scope"
       }
     ]
   }

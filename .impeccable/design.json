@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T00:00:00.000Z",
+  "title": "Design System: jeremytwogood.com",
+  "extensions": {
+    "colorMeta": {
+      "mango": { "role": "primary", "displayName": "Mango", "canonical": "#f4a23b", "tonalRamp": ["#1a1206", "#3d2708", "#63400d", "#8f5c13", "#c37e22", "#f4a23b", "#ffb457", "#ffd8a3"] },
+      "clip-video": { "role": "secondary", "displayName": "Clip Teal", "canonical": "#2c6b67", "tonalRamp": ["#0d201f", "#153634", "#1d4b48", "#25605c", "#2c6b67", "#3f8783", "#6bb0ac", "#a6d9d6"] },
+      "clip-audio": { "role": "secondary", "displayName": "Clip Green", "canonical": "#3c6a41", "tonalRamp": ["#101f12", "#1c351f", "#284a2c", "#325a37", "#3c6a41", "#528958", "#7aab7e", "#b0d3b3"] },
+      "clip-offline": { "role": "state", "displayName": "Offline Red (hatch, chrome only)", "canonical": "#7a2e2e", "tonalRamp": ["#1f0c0c", "#341414", "#4a1d1d", "#5e2323", "#7a2e2e", "#9a4141", "#c06f6f", "#e3aeae"] },
+      "panel": { "role": "neutral", "displayName": "Panel", "canonical": "#171719", "tonalRamp": ["#0a0a0b", "#0f0f11", "#171719", "#1c1c1f", "#232327", "#2c2c32", "#3b3b43", "#5a5a63"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#2c2c32", "tonalRamp": ["#171719", "#1c1c1f", "#232327", "#2c2c32", "#3b3b43", "#4c4c56", "#63636e", "#8b8b94"] },
+      "text": { "role": "neutral", "displayName": "Text", "canonical": "#e9e7e0", "tonalRamp": ["#8b8b94", "#a3a2aa", "#bcbbc2", "#d3d2cd", "#e9e7e0", "#f0efe9", "#f6f5f1", "#fbfaf8"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Archivo)", "purpose": "The name in the info pane only (.info__name)." },
+      "headingBin": { "displayName": "Bin heading (Archivo, wordmark scale)", "purpose": "Bin/pane h1-h2 inside the 32px head strip, and the panel-bar wordmark. Not the larger size the direction contract's FIRST VIEWPORT block implies." },
+      "readout": { "displayName": "Readout (Martian Mono)", "purpose": "Timecode, durations, counts, years, coordinates, offsets only. Never labels or names." }
+    },
+    "shadows": [
+      { "name": "flat-underline-active-tab", "value": "inset 0 -2px 0 var(--mango)", "purpose": "Active tab state, zero blur — not a shadow under the No Shadow Rule." },
+      { "name": "flat-ring-current-clip", "value": "inset 0 0 0 2px var(--mango)", "purpose": "Current-clip indicator on the sequence, zero blur — not a shadow under the No Shadow Rule." },
+      { "name": "flat-underline-chat-focus", "value": "inset 0 2px 0 var(--mango)", "purpose": "Chat form focus-within state, zero blur — not a shadow under the No Shadow Rule." }
+    ],
+    "motion": [
+      { "name": "playhead-linear", "value": "no easing, direct transform", "purpose": "The only authored motion: sequence playhead and page timeline bar playhead. Chrome never eases." },
+      { "name": "clip-hover-brighten", "value": "filter: brightness(1.12); transition: filter .15s", "purpose": "Hover state on sequence clips." },
+      { "name": "reduced-motion-drop", "value": "transition: none under prefers-reduced-motion", "purpose": "Applied to .tlbar, .work-item__preview, .cw__caret, .seq__clip-link, .cc-thumb/.cc-slide-hint." }
+    ],
+    "breakpoints": [
+      { "name": "desktop-max", "value": "1600px (--max container)" },
+      { "name": "info-drop", "value": "1100px" },
+      { "name": "mobile-stack", "value": "760px" },
+      { "name": "chat-panel-full", "value": "560px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per viewport (Watch Sizzle, case-study Play, chat send fill rule).",
+      "html": "<a class=\"ds-pbtn ds-pbtn--primary\" href=\"#\">Watch Sizzle</a>",
+      "css": ".ds-pbtn{ display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 14px; font-family:'Barlow',sans-serif; font-weight:600; font-size:13px; line-height:1; color:#e9e7e0; background:#1f1f23; border:1px solid #3b3b43; text-decoration:none; cursor:pointer; transition:border-color .15s, background-color .15s; } .ds-pbtn:hover{ border-color:#a3a2aa; } .ds-pbtn--primary{ background:#f4a23b; border-color:#f4a23b; color:#1a1206; } .ds-pbtn--primary:hover{ background:#ffb457; border-color:#ffb457; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ghost/secondary action (Email).",
+      "html": "<a class=\"ds-pbtn\" href=\"#\">Email</a>",
+      "css": ".ds-pbtn{ display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 14px; font-family:'Barlow',sans-serif; font-weight:600; font-size:13px; color:#e9e7e0; background:#1f1f23; border:1px solid #3b3b43; text-decoration:none; cursor:pointer; transition:border-color .15s; } .ds-pbtn:hover{ border-color:#a3a2aa; }"
+    },
+    {
+      "name": "Pane / Bin head strip",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The 32px header strip shared by first-viewport panes and below-the-fold bins: uppercase 12px Barlow label, 11px readout, bottom hairline.",
+      "html": "<div class=\"ds-pane-head\"><span>Program</span><span class=\"ds-readout\">00:00:12:04</span></div>",
+      "css": ".ds-pane-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:32px; padding:0 14px; background:#1c1c1f; border-bottom:1px solid #2c2c32; font-family:'Barlow',sans-serif; font-weight:600; font-size:12px; letter-spacing:.02em; text-transform:uppercase; color:#a3a2aa; } .ds-readout{ font-family:'Martian Mono',monospace; font-size:11px; color:#8b8b94; font-variant-numeric:tabular-nums; }"
+    },
+    {
+      "name": "Sequence Clip (video)",
+      "kind": "custom",
+      "refersTo": "clip-video",
+      "description": "Signature component: a V1 clip on the sequence, teal fill, current-clip mango ring, 12% hover brighten.",
+      "html": "<a class=\"ds-clip ds-clip--current\" href=\"#\"><span class=\"ds-clip-name\">Thales &middot; <small>2:14</small></span></a>",
+      "css": ".ds-clip{ display:grid; height:120px; padding:8px; background:#2c6b67; color:#dff5f2; border:1px solid rgba(0,0,0,.35); border-radius:2px; transition:filter .15s; text-decoration:none; } .ds-clip:hover{ filter:brightness(1.12); } .ds-clip--current{ box-shadow:inset 0 0 0 2px #f4a23b; } .ds-clip-name{ font-family:'Barlow',sans-serif; font-size:12px; font-weight:600; } .ds-clip-name small{ font-family:'Martian Mono',monospace; font-size:11px; opacity:.85; }"
+    },
+    {
+      "name": "Sequence Clip (offline)",
+      "kind": "custom",
+      "refersTo": "clip-offline",
+      "description": "The offline-hatch clip-state code, chrome only, never over footage. Sanctioned in .impeccable/config.json detector ignore.",
+      "html": "<span class=\"ds-clip ds-clip--offline\">Offline &middot; <small>2026</small></span>",
+      "css": ".ds-clip--offline{ display:grid; place-items:center; height:120px; padding:8px; background:repeating-linear-gradient(135deg, #7a2e2e 0 8px, #5e2323 8px 16px); color:#fbdcdc; border:1px solid rgba(0,0,0,.35); border-radius:2px; font-family:'Barlow',sans-serif; font-size:11px; font-weight:600; } .ds-clip--offline small{ font-family:'Martian Mono',monospace; font-weight:400; }"
+    },
+    {
+      "name": "Active tab",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Panel-bar section tab with the mango zero-blur inset underline for the active state.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab\" href=\"#\">Work</a><a class=\"ds-tab ds-tab--active\" href=\"#\">About</a></nav>",
+      "css": ".ds-tabs{ display:flex; } .ds-tab{ display:flex; align-items:center; padding:0 16px; height:44px; border-right:1px solid #2c2c32; color:#a3a2aa; font-family:'Barlow',sans-serif; font-size:13px; font-weight:500; text-decoration:none; transition:color .15s, background-color .15s; } .ds-tab:hover{ color:#e9e7e0; background:#1f1f23; } .ds-tab--active{ color:#e9e7e0; box-shadow:inset 0 -2px 0 #f4a23b; }"
+    },
+    {
+      "name": "Docked chat trigger",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Signature component: the chat trigger docked in the panel bar itself (top-right), not a floating FAB.",
+      "html": "<button class=\"ds-cw-trigger\">Ask about my work</button>",
+      "css": ".ds-cw-trigger{ display:flex; align-items:center; justify-content:center; height:44px; padding:0 16px; background:#1c1c1f; color:#a3a2aa; border:0; border-left:1px solid #2c2c32; font-family:'Barlow',sans-serif; font-weight:500; font-size:13px; cursor:pointer; transition:color .15s, background-color .15s; } .ds-cw-trigger:hover{ color:#e9e7e0; background:#1f1f23; } .ds-cw-trigger:focus-visible{ outline:2px solid #f4a23b; outline-offset:-2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Open Sequence",
+    "overview": "The whole site is an edit in progress. The visitor lands inside Jeremy's suite: a program monitor playing the work, a sequence beneath it with every project as a clip sized by its real running time, bins for the rest of the site, and an info panel that says who he is. Nothing is decorated; every surface is a panel doing a job, and the work is the only colour on the page.\n\nChosen 2026-09-14 (direction round, seed f102dfc2) over Mezzotint Velvet Night and the incumbent Cutting Room system, now anti-reference. Built on branch facelift (5dc5139) against the approved prototype at .impeccable/mocks/proto/seq.html.\n\nMotion grammar: one authored motion, the playhead (sequence and page timeline bar). It advances as the monitor previews each clip; drag to scrub; chrome never eases. Scroll-in reveals are retired: the playhead is the only authored motion left in the shipped build.",
+    "keyCharacteristics": [
+      "Every region is a named panel: a 32px pane-head/bin-head strip, panels separated by hairlines, never shadows or space alone",
+      "One accent (mango) for the playhead, the active tab, the one primary action, the wordmark period, and two playhead-state indicators (transport timecode, current-clip ring)",
+      "Durations, timecodes and counts are true values from the data, set in the readout face; the running time lives in the transport timecode, not burned into the frame",
+      "Titles, clients and years are visible at rest on every clip and bin item",
+      "Square corners (clips 2px), flat surfaces, dense but legible chrome with an 11px floor on functional text",
+      "The offline-media hatch is a clip-state code on chrome only; it never touches footage"
+    ],
+    "rules": [
+      { "name": "The One Warm Rule", "body": "Mango marks the playhead (sequence and page timeline bar), the active tab, the one primary action, the wordmark period, and the two playhead-state indicators (transport timecode, current-clip ring). If a second, unlisted mango element appears in a viewport, it is wrong.", "section": "colors" },
+      { "name": "The Media Colour Rule", "body": "Teal means video, green means audio, red hatch means offline. Colour on a clip states what it is, never how important it is. The hatch is chrome only.", "section": "colors" },
+      { "name": "The Eleven Rule", "body": "No functional text below 11px, in any panel, at any viewport.", "section": "typography" },
+      { "name": "The Measurement Rule", "body": "Monospace appears only where a value is measured (time, count, format, year, coordinate). Labels and names are never set in it.", "section": "typography" },
+      { "name": "The No Shadow Rule", "body": "Nothing casts a shadow. A zero-blur inset box-shadow used as a flat underline or ring (active tab, current clip, chat form focus) is not a shadow under this rule.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every timecode, duration and count true to the data; a readout that lies breaks the world.",
+      "Do show title, client and year at rest on every clip and every bin item.",
+      "Do keep footage untouched; the monitor and thumbnails show frames as shot, with the running time carried by the transport timecode, never burned into the frame.",
+      "Do keep the whole first-viewport suite inside one screen at desktop widths (1440x900 down to 1100).",
+      "Do honour reduced motion: no auto-advance, no auto-play, playhead at rest.",
+      "Do treat the offline hatch as chrome-only clip-state code, never as a texture on footage.",
+      "Do confine Caveat to the single Slide me! hint on the Thales comparison card; no other use is sanctioned."
+    ],
+    "donts": [
+      "Don't add a second accent, a gradient, a glow, or a shadow with blur or offset.",
+      "Don't set any functional text below 11px or in monospace unless it is a measured value.",
+      "Don't reintroduce the incumbent pattern: eyebrow labels above headings, kickers, tiny section numbers, right-aligned meta stats, a spotlight behind the hero, pulsing dots.",
+      "Don't put a panel inside a panel; a bin opens as a full-width panel, never as a card grid of cards.",
+      "Don't burn a timecode into the program monitor frame; the direction contract names a burn-in but the footage-untouched constraint overrides it in the shipped build.",
+      "Don't extend Caveat, or invent a second script/display face, beyond the one sanctioned hint use."
+    ]
+  }
+}

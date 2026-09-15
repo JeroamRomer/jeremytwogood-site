@@ -174,3 +174,12 @@ Other film-adjacent worlds seen in the catalog, available if Jeremy wants to rer
 ## Handoff
 
 Phase 2, in this or a new session: "Read the facelift spec's Phase 1 outcome, the homepage surface brief and DESIGN.md, then run writing-plans for Phase 2."
+
+## Phase 2 outcome
+
+- Plan: `docs/superpowers/plans/2026-09-14-facelift-phase-2.md`, executed on `facelift`.
+- Finish review disposition: fix (2026-09-15), screenshots in `.impeccable/review/`.
+- Detector: 10 findings on `src/` and the five rendered pages (src/: 0); sanctioned ignores listed in `.impeccable/config.json`.
+- Open after the two-round finish-review cap (for Jeremy / Phase 3): mono readouts in mixed Barlow/mono head strips render optically larger than the Barlow run (INFO, About, Contact heads; About head dot spacing); the Sound bin renders one column at 1440 with coarse stretched waveforms (restore two columns); the Production Intelligence logo on a white square (content decision); no burned-in monitor timecode (ruled against the footage-untouched constraint, recorded in DESIGN.md).
+- DESIGN.md carbonized from the build by the documenter.
+- Next: Phase 3 (live-mode tweaks with Jeremy, `/impeccable audit`, `/impeccable polish`, merge to `main` after checking divergence both ways, deploy, verify production) before 2026-09-19.
