@@ -56,7 +56,7 @@ const WAVE_H = 32;
 </section>
 
 <style>
-  .tracks{ list-style:none; margin:0; padding:0; border-top:1px solid var(--hair); }
+  .tracks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); column-gap:18px; border-top:1px solid var(--hair); }
   .tracks li{ padding:12px 4px; border-bottom:1px solid var(--hair); }
   .tracks li.is-playing{ background:var(--lane-alt); }
   .tracks__row{ display:grid; grid-template-columns:3.2em minmax(0, 1fr) auto; gap:10px; align-items:baseline; margin-bottom:8px; }
@@ -74,6 +74,7 @@ const WAVE_H = 32;
   .sound__player iframe{ display:block; width:100%; height:166px; }
   .sound__foot{ margin:18px 0 0; font-size:13px; color:var(--muted); }
   .sound__foot a{ color:var(--text); text-decoration:underline; text-decoration-color:var(--hair-strong); text-underline-offset:3px; }
+  @media (max-width:760px){ .tracks{ grid-template-columns:1fr; } }
 </style>
 
 <script>
