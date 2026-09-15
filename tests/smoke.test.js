@@ -131,7 +131,20 @@ test('smoke: case-study page has VideoObject, breadcrumb, content, and lightbox'
   assert.ok(html.includes('"@type": "BreadcrumbList"'), 'BreadcrumbList JSON-LD must be present');
   assert.ok(html.includes('John Williams'), 'summary content must render');
   assert.ok(html.includes('id="lightbox"'), 'lightbox must be present on detail page');
-  assert.ok(html.includes('Selected Work'), 'back link must be present');
+  assert.ok(html.includes('Selected work'), 'back link must be present');
+});
+
+test('smoke: case study reads as source monitor + clip properties with prev/next', () => {
+  const html = getHtml('work/shell-john-williams/index.html');
+  assert.match(html, /<h1[^>]*>Shell × John Williams<\/h1>/, 'h1 is the project name');
+  assert.ok(!html.includes('class="eyebrow"'), 'eyebrow is retired');
+  assert.ok(!html.includes('border-left: 3px'), 'side-tab quote is retired');
+  assert.ok(html.includes('Running time'), 'running time property renders');
+  assert.ok(html.includes('07:17'), 'running time is the real duration');
+  assert.ok(html.includes('rel="next"'), 'next clip link renders');
+  const last = getHtml('work/ns-health-westray/index.html');
+  assert.ok(last.includes('rel="prev"'), 'last case study links back');
+  assert.ok(!last.includes('rel="next"'), 'last case study has no next link');
 });
 
 test('smoke: all six case-study pages are generated', () => {

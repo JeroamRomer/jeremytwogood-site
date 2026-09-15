@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import { hasCaseStudy, mmss, orderOnlineFirst } from '../../lib/sequence';
 import projects from '../../data/projects.json';
 import videoContent from '../../data/video-content.json';
 import profile from '../../data/profile.json';
@@ -11,7 +12,7 @@ export function getStaticPaths() {
   // A case-study page exists for every project that has a real video (i.e. not
   // Coming Soon, and not the Thales before/after comparison card).
   return projects
-    .filter((p) => !p.coming_soon && !p.comparison)
+    .filter((p) => hasCaseStudy(p))
     .map((project) => ({ params: { id: project.id }, props: { project } }));
 }
 
@@ -36,6 +37,12 @@ const excerpt: string = content.transcript_excerpt || '';
 const mood: string = content.mood || '';
 const themes: string[] = content.themes || [];
 const subjects: string[] = content.subjects || [];
+
+const sequenceOrder = orderOnlineFirst(projects).filter((p) => hasCaseStudy(p));
+const position = sequenceOrder.findIndex((p) => p.id === project.id);
+const prev = position > 0 ? sequenceOrder[position - 1] : null;
+const next = position >= 0 && position < sequenceOrder.length - 1 ? sequenceOrder[position + 1] : null;
+const runningTime = typeof (project as any).duration_seconds === 'number' ? mmss((project as any).duration_seconds) : '';
 
 const metaDesc = (summary || `${project.type} by ${profile.name}.`).slice(0, 200);
 const thumbAbs = new URL(project.thumbnail, profile.website).href;
@@ -74,125 +81,96 @@ const breadcrumbSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema, null, 2)} />
   </Fragment>
   <Nav />
-  <main class="section--light case">
-    <article class="wrap case__wrap">
-      <a class="case__back" href="/#work">← Selected Work</a>
+  <main class="case">
+    <div class="case__head">
+      <a class="case__back" href="/#work">← Selected work</a>
+      <h1 class="case__title">{project.name}</h1>
+      <p class="case__type">{project.type}</p>
+    </div>
 
-      <header class="case__head">
-        <span class="eyebrow">{project.client} · {project.year}</span>
-        <h1 class="case__title">{project.name}</h1>
-        <p class="case__type">{project.type}</p>
-      </header>
-
-      <a
-        class="case__player"
-        href={watchUrl ?? '#'}
-        target={watchUrl ? '_blank' : undefined}
-        rel={watchUrl ? 'noopener' : undefined}
-        data-video-embed={embed ?? undefined}
-        data-video-title={`${project.name} · ${project.type}`}
-        aria-label={`Play ${project.name}`}
-        style={`view-transition-name:work-${project.id};background-image:url('${project.thumbnail}')`}
-      >
-        <span class="case__play" aria-hidden="true">▶</span>
-      </a>
-
-      <div class="case__grid">
-        <div class="case__body">
-          {summary && <p class="case__summary">{summary}</p>}
-          {excerpt && <blockquote class="case__quote">{excerpt}</blockquote>}
-          {watchUrl && platform && (
-            <a class="case__watch" href={watchUrl} target="_blank" rel="noopener">Watch on {platform} ↗</a>
-          )}
+    <div class="case__grid">
+      <section class="pane case__monitor" aria-label="Source monitor">
+        <div class="pane-head"><span>Source</span><span class="readout">{project.client} · {project.year}</span></div>
+        <div class="case__stage">
+          <a
+            class="case__player"
+            href={watchUrl ?? '#'}
+            target={watchUrl ? '_blank' : undefined}
+            rel={watchUrl ? 'noopener' : undefined}
+            data-video-embed={embed ?? undefined}
+            data-video-title={`${project.name} · ${project.type}`}
+            aria-label={`Play ${project.name}`}
+            style={`view-transition-name:work-${project.id};background-image:url('${project.thumbnail}')`}
+          >
+            <span class="case__play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z" /></svg>Play</span>
+          </a>
         </div>
+      </section>
 
-        <aside class="case__meta">
-          {roleList.length > 0 && (
-            <div class="case__metablock">
-              <span class="case__metalabel">Role</span>
-              <span class="case__metaval">{roleList.join(' · ')}</span>
-            </div>
-          )}
-          {project.disciplines && (
-            <div class="case__metablock">
-              <span class="case__metalabel">Disciplines</span>
-              <span class="case__metaval">{project.disciplines}</span>
-            </div>
-          )}
-          {mood && (
-            <div class="case__metablock">
-              <span class="case__metalabel">Mood</span>
-              <span class="case__metaval">{mood}</span>
-            </div>
-          )}
-          {themes.length > 0 && (
-            <div class="case__metablock">
-              <span class="case__metalabel">Themes</span>
-              <div class="case__pills">
-                {themes.map((t) => <span class="case__pill">{t}</span>)}
-              </div>
-            </div>
-          )}
-          {subjects.length > 0 && (
-            <div class="case__metablock">
-              <span class="case__metalabel">Subjects</span>
-              <span class="case__metaval">{subjects.join(', ')}</span>
-            </div>
-          )}
-        </aside>
-      </div>
-    </article>
+      <aside class="pane case__props-pane" aria-label="Clip properties">
+        <div class="pane-head"><span>Properties</span></div>
+        <dl class="props case__props">
+          <dt>Client</dt><dd>{project.client}</dd>
+          <dt>Year</dt><dd><span class="readout">{project.year}</span></dd>
+          {runningTime && <><dt>Running time</dt><dd><span class="readout">{runningTime}</span></dd></>}
+          {roleList.length > 0 && <><dt>Role</dt><dd>{roleList.join(', ')}</dd></>}
+          {project.disciplines && <><dt>Disciplines</dt><dd>{project.disciplines}</dd></>}
+          {mood && <><dt>Mood</dt><dd>{mood}</dd></>}
+          {themes.length > 0 && <><dt>Themes</dt><dd>{themes.join(', ')}</dd></>}
+          {subjects.length > 0 && <><dt>Subjects</dt><dd>{subjects.join(', ')}</dd></>}
+        </dl>
+      </aside>
+    </div>
+
+    <div class="case__body">
+      {summary && <p class="case__summary">{summary}</p>}
+      {excerpt && <blockquote class="case__quote"><p>{excerpt}</p></blockquote>}
+      {watchUrl && platform && <a class="pbtn" href={watchUrl} target="_blank" rel="noopener">Watch on {platform}</a>}
+    </div>
+
+    <nav class="case__nav" aria-label="More work">
+      {prev ? <a rel="prev" href={`/work/${prev.id}`}><span class="readout">Previous clip</span><span>{prev.name}</span></a> : <span></span>}
+      {next && <a rel="next" href={`/work/${next.id}`}><span class="readout">Next clip</span><span>{next.name}</span></a>}
+    </nav>
   </main>
   <Lightbox />
   <Footer />
 </BaseLayout>
 
 <style>
-  /* Relies on global tokens: --display, --body, --mono, --amber. */
-  .case { padding: 120px 0 100px; min-height: 70vh; }
-  .case__wrap { max-width: 1100px; }
-  .case__back {
-    font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
-    text-transform: uppercase; opacity: .55; text-decoration: none;
-    transition: opacity .15s ease, color .15s ease;
-  }
-  .case__back:hover { opacity: 1; color: var(--amber); }
-  .case__head { margin: 30px 0 28px; }
-  .case__title { font-family: var(--display); font-size: clamp(40px, 7vw, 84px); line-height: .98; margin: 12px 0 0; }
-  .case__type { font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; font-size: 13px; opacity: .6; margin-top: 14px; }
+  .case{ max-width:1320px; margin:0 auto; padding:28px var(--pad) 80px; font-family:var(--font-ui); color:var(--text); }
+  .case__head{ margin-bottom:22px; }
+  .case__back{ font-size:13px; color:var(--muted); }
+  .case__back:hover{ color:var(--text); text-decoration:underline; text-underline-offset:3px; }
+  .case__title{ margin:14px 0 4px; font-family:var(--font-display); font-variation-settings:'wdth' 118; font-weight:800; font-size:clamp(30px, 5vw, 56px); line-height:1.02; }
+  .case__type{ margin:0; font-size:15px; color:var(--muted); }
 
-  .case__player {
-    position: relative; display: block; aspect-ratio: 16 / 9;
-    border-radius: 8px; overflow: hidden; cursor: pointer;
-    background-size: cover; background-position: center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, .22);
-  }
-  .case__player::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .18); transition: background .25s ease; }
-  .case__player:hover::after { background: rgba(0, 0, 0, .04); }
-  .case__play { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26px; padding-left: 5px; text-shadow: 0 1px 6px rgba(0, 0, 0, .5); }
-  .case__play::before {
-    content: ''; position: absolute; z-index: -1; width: 84px; height: 84px; border-radius: 50%;
-    background: rgba(0, 0, 0, .5); border: 1px solid rgba(255, 255, 255, .35);
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-    transition: transform .2s ease, background .2s ease;
-  }
-  .case__player:hover .case__play::before { transform: scale(1.08); background: rgba(0, 0, 0, .62); }
+  .case__grid{ display:grid; grid-template-columns:minmax(0, 1fr) 340px; border:1px solid var(--hair); }
+  .case__props-pane{ border-left:1px solid var(--hair); }
+  .case__props{ padding:14px; }
+  .case__stage{ padding:18px; background:var(--stage); }
+  .case__player{ position:relative; display:block; aspect-ratio:16 / 9; background-size:cover; background-position:center; background-color:#000; outline:1px solid var(--hair-strong); }
+  .case__play{ position:absolute; left:14px; bottom:14px; display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:0 16px; background:var(--mango); color:var(--mango-ink); font-weight:600; font-size:14px; }
+  .case__play svg{ width:14px; height:14px; fill:currentColor; }
+  .case__player:hover .case__play{ background:var(--mango-hover); }
 
-  .case__grid { display: grid; grid-template-columns: 1fr 300px; gap: 48px; margin-top: 48px; }
-  .case__summary { font-size: clamp(17px, 2vw, 21px); line-height: 1.65; }
-  .case__quote { border-left: 3px solid var(--amber); padding-left: 20px; margin: 28px 0 0; font-style: italic; opacity: .82; line-height: 1.55; }
-  .case__watch { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--amber); text-decoration: none; }
-  .case__watch:hover { text-decoration: underline; }
+  .case__body{ max-width:70ch; margin:28px 0 0; }
+  .case__summary{ margin:0 0 18px; font-size:clamp(17px, 2vw, 20px); line-height:1.6; }
+  .case__quote{ margin:0 0 22px; padding:0; color:var(--muted); font-size:16px; line-height:1.6; }
+  .case__quote p{ margin:0; }
+  .case__quote p::before{ content:"“"; }
+  .case__quote p::after{ content:"”"; }
 
-  .case__meta { display: flex; flex-direction: column; gap: 22px; }
-  .case__metablock { display: flex; flex-direction: column; gap: 6px; }
-  .case__metalabel { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .42; }
-  .case__metaval { font-size: 14px; line-height: 1.5; }
-  .case__pills { display: flex; flex-wrap: wrap; gap: 7px; }
-  .case__pill { font-family: var(--mono); font-size: 11px; letter-spacing: .03em; padding: 5px 10px; border: 1px solid rgba(0, 0, 0, .14); border-radius: 999px; }
+  .case__nav{ display:flex; justify-content:space-between; gap:16px; margin-top:40px; padding-top:16px; border-top:1px solid var(--hair); }
+  .case__nav a{ display:flex; flex-direction:column; gap:2px; font-weight:600; }
+  .case__nav a[rel="next"]{ text-align:right; margin-left:auto; }
+  .case__nav a:hover span:last-child{ text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--mango); }
+  .case__nav .readout{ font-size:11px; font-weight:400; }
 
-  @media (max-width: 820px) {
-    .case { padding: 100px 0 70px; }
-    .case__grid { grid-template-columns: 1fr; gap: 34px; }
+  @media (max-width: 900px){
+    .case__grid{ grid-template-columns:1fr; }
+    .case__props-pane{ border-left:0; border-top:1px solid var(--hair); }
+    .case__stage{ padding:0; }
+    .case__player{ outline:0; }
   }
 </style>
