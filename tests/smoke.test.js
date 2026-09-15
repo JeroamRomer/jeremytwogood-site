@@ -97,7 +97,8 @@ test('smoke: suite renders the monitor, info pane and sequence', () => {
   assert.ok(html.includes('data-sequence'), 'sequence must render');
   assert.ok(html.includes('id="sequence-data"'), 'player payload must render');
   assert.ok(html.includes('07:17'), 'Shell clip must show its real running time');
-  assert.ok(html.includes('Toronto, ON · 43.65°N'), 'location readout keeps its place');
+  assert.ok(html.includes('Toronto, ON'), 'location label keeps its place');
+  assert.ok(html.includes('43.65°N'), 'location coordinate keeps its place');
   assert.ok(!html.includes('hero__meta'), 'old hero is gone');
 });
 
@@ -345,7 +346,7 @@ test('smoke: contact bin lists every way to reach Jeremy', () => {
   const html = getHtml('index.html');
   const contact = html.slice(html.indexOf('id="contact"'));
   assert.ok(contact.includes('class="bin contact"'), 'contact must be a bin');
-  for (const needle of ['mailto:', 'linkedin.com', 'soundcloud.com/j-twogood', 'href="/reel"', 'Available · 2026']) {
+  for (const needle of ['mailto:', 'linkedin.com', 'soundcloud.com/j-twogood', 'href="/reel"', 'Available', '2026']) {
     assert.ok(contact.includes(needle), `contact must include ${needle}`);
   }
 });

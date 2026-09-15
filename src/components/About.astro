@@ -6,13 +6,14 @@ const clients = profile.clients as string[];
   <div class="bin__inner">
     <div class="bin__head">
       <h2 id="about-title">About</h2>
-      <span class="readout">Toronto, ON · 43.65°N · EST · GMT−5</span>
+      <span class="bin__head-meta">Toronto, ON · <span class="readout">43.65°N</span> · <span class="readout">EST · GMT−5</span></span>
     </div>
 
+    <div class="bin__body">
     <div class="about__grid">
       <figure class="about__frame">
         <img src="/assets/portrait.jpg" alt="Jeremy Twogood" width="2316" height="3088" loading="lazy" decoding="async" />
-        <figcaption class="readout">Jeremy Twogood · Toronto · 2026</figcaption>
+        <figcaption>Jeremy Twogood · Toronto · <span class="readout">2026</span></figcaption>
       </figure>
 
       <div class="about__text">
@@ -32,13 +33,14 @@ const clients = profile.clients as string[];
         <dd><ul class="about__clients">{clients.map((c) => <li>{c}</li>)}</ul></dd>
       </dl>
     </div>
+    </div>
   </div>
 </section>
 
 <style>
   .about__grid{ display:grid; grid-template-columns:minmax(200px, 300px) minmax(0, 1fr) minmax(240px, 340px); gap:32px; align-items:start; }
   .about__frame{ margin:0; }
-  .about__frame img{ width:100%; aspect-ratio:3/4; object-fit:cover; border:1px solid var(--hair-strong); }
+  .about__frame img{ width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; border:1px solid var(--hair-strong); }
   .about__frame figcaption{ margin-top:8px; font-size:11px; }
   .about__text{ max-width:65ch; }
   .about__text p{ margin:0 0 14px; }

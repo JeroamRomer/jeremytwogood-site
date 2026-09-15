@@ -90,7 +90,7 @@ const breadcrumbSchema = {
 
     <div class="case__grid">
       <section class="pane case__monitor" aria-label="Source monitor">
-        <div class="pane-head"><span>Source</span><span class="readout">{project.client} · {project.year}</span></div>
+        <div class="pane-head"><span>Source</span><span>{project.client} · <span class="readout">{project.year}</span></span></div>
         <div class="case__stage">
           <a
             class="case__player"
@@ -129,8 +129,8 @@ const breadcrumbSchema = {
     </div>
 
     <nav class="case__nav" aria-label="More work">
-      {prev ? <a rel="prev" href={`/work/${prev.id}`}><span class="readout">Previous clip</span><span>{prev.name}</span></a> : <span></span>}
-      {next && <a rel="next" href={`/work/${next.id}`}><span class="readout">Next clip</span><span>{next.name}</span></a>}
+      {prev ? <a rel="prev" href={`/work/${prev.id}`}><span class="case__nav-label">Previous clip</span><span>{prev.name}</span></a> : <span></span>}
+      {next && <a rel="next" href={`/work/${next.id}`}><span class="case__nav-label">Next clip</span><span>{next.name}</span></a>}
     </nav>
   </main>
   <Lightbox />
@@ -165,7 +165,7 @@ const breadcrumbSchema = {
   .case__nav a{ display:flex; flex-direction:column; gap:2px; font-weight:600; }
   .case__nav a[rel="next"]{ text-align:right; margin-left:auto; }
   .case__nav a:hover span:last-child{ text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--mango); }
-  .case__nav .readout{ font-size:11px; font-weight:400; }
+  .case__nav-label{ font-family:var(--font-ui); font-size:11px; font-weight:400; color:var(--dim); }
 
   @media (max-width: 900px){
     .case__grid{ grid-template-columns:1fr; }

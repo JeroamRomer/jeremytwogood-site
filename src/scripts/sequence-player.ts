@@ -2,7 +2,8 @@ import { tcFormat } from './timecode';
 
 interface PlayerClip {
   name: string;
-  tag: string;
+  client: string;
+  year: string;
   label: string;
   href: string | null;
   poster: string;
@@ -28,7 +29,8 @@ export function initSequencePlayer(root: HTMLElement): void {
   const q = <T extends Element>(sel: string) => root.querySelector<T>(sel);
   const dataEl = q<HTMLScriptElement>('#sequence-data');
   const video = q<HTMLVideoElement>('[data-monitor]');
-  const tagEl = q<HTMLElement>('[data-monitor-tag]');
+  const tagClientEl = q<HTMLElement>('[data-monitor-tag-client]');
+  const tagYearEl = q<HTMLElement>('[data-monitor-tag-year]');
   const nameEl = q<HTMLElement>('[data-monitor-name]');
   const linkEl = q<HTMLAnchorElement>('[data-monitor-link]');
   const tcEl = q<HTMLElement>('[data-monitor-tc]');
@@ -37,7 +39,7 @@ export function initSequencePlayer(root: HTMLElement): void {
   const nextBtn = q<HTMLButtonElement>('[data-transport="next"]');
   const lanes = q<HTMLElement>('[data-seq-lanes]');
   const playhead = q<HTMLElement>('[data-seq-playhead]');
-  if (!dataEl || !video || !tagEl || !nameEl || !linkEl || !tcEl || !playBtn || !prevBtn || !nextBtn || !lanes || !playhead) return;
+  if (!dataEl || !video || !tagClientEl || !tagYearEl || !nameEl || !linkEl || !tcEl || !playBtn || !prevBtn || !nextBtn || !lanes || !playhead) return;
 
   let data: PlayerData;
   try { data = JSON.parse(dataEl.textContent || '{}'); } catch { return; }
@@ -85,7 +87,8 @@ export function initSequencePlayer(root: HTMLElement): void {
       if (on) el.setAttribute('aria-current', 'true');
       else el.removeAttribute('aria-current');
     });
-    tagEl!.textContent = c.tag;
+    tagClientEl!.textContent = c.client;
+    tagYearEl!.textContent = c.year;
     nameEl!.textContent = c.name;
     linkEl!.textContent = c.label;
     if (c.href) linkEl!.href = c.href;

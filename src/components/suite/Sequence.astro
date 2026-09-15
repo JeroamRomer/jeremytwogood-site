@@ -27,7 +27,9 @@ const W = Math.max(peaks.length, 1) * 4;
             <>
               <span class="seq__clip-name"><span>{c.name}</span>{c.durationLabel && <small class="readout">{c.durationLabel}</small>}</span>
               <span class="seq__clip-thumb">
-                {c.offline ? <span class="readout">Offline · {c.year}</span> : <img src={c.thumbnail} alt="" loading="lazy" decoding="async" draggable="false" />}
+                {c.offline
+                  ? <span class="seq__offline-label">Offline · <span class="readout">{c.year}</span></span>
+                  : <img src={c.thumbnail} alt="" loading="lazy" decoding="async" draggable="false" />}
               </span>
               <span class="seq__clip-meta">{c.client} · {c.year}</span>
               {c.durationSeconds !== null && <span class="seq__clip-bar" aria-hidden="true"><i></i></span>}
@@ -75,22 +77,22 @@ const W = Math.max(peaks.length, 1) * 4;
   .seq__lane--a{ height:74px; background:var(--lane-alt); }
   .seq__clip{ position:absolute; top:8px; bottom:8px; left:var(--start); width:var(--len); padding-right:2px; }
   .seq__clip-link{
-    display:grid; grid-template-rows:20px 1fr; height:100%; overflow:hidden;
+    display:grid; grid-template-rows:auto minmax(0,1fr); height:100%; overflow:hidden;
     background:var(--clip-video); color:var(--clip-video-ink); border:1px solid rgba(0,0,0,.35); border-radius:2px;
     transition:filter .15s;
   }
   a.seq__clip-link:hover{ filter:brightness(1.12); }
   .seq__clip-link.is-current{ box-shadow:inset 0 0 0 2px var(--mango); }
-  .seq__clip-name{ display:flex; align-items:center; gap:8px; min-width:0; padding:0 8px; font-size:12px; font-weight:600; white-space:nowrap; }
-  .seq__clip-name > span{ min-width:0; overflow:hidden; text-overflow:ellipsis; }
-  .seq__clip-name small{ flex-shrink:0; font-size:11px; color:inherit; opacity:.85; }
-  .is-narrow .seq__clip-name small{ display:none; }
-  .seq__clip-thumb{ position:relative; overflow:hidden; background:#000; }
+  .seq__clip-name{ display:block; min-width:0; padding:6px 8px; font-size:12px; font-weight:600; line-height:1.3; white-space:normal; }
+  .seq__clip-name > span{ min-width:0; overflow-wrap:break-word; }
+  .seq__clip-name small{ display:none; flex-shrink:0; font-size:11px; color:inherit; opacity:.85; margin-left:6px; }
+  .seq__clip-thumb{ position:relative; overflow:hidden; background:#000; min-height:0; }
   .seq__clip-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:left center; }
   .seq__clip-meta, .seq__clip-bar{ display:none; }
   .is-offline .seq__clip-link{ background:repeating-linear-gradient(135deg, var(--clip-offline) 0 8px, var(--clip-offline-alt) 8px 16px); color:var(--clip-offline-ink); }
   .is-offline .seq__clip-thumb{ display:grid; place-items:center; background:transparent; }
-  .is-offline .seq__clip-thumb .readout{ color:var(--clip-offline-ink); font-size:11px; }
+  .is-offline .seq__clip-thumb .seq__offline-label{ display:inline-flex; align-items:baseline; gap:4px; font-family:var(--font-ui); color:var(--clip-offline-ink); font-size:11px; font-weight:600; }
+  .is-offline .seq__clip-thumb .seq__offline-label .readout{ font-size:inherit; color:inherit; font-weight:400; }
   .seq__aclip{ position:absolute; inset:8px 0; display:grid; grid-template-rows:20px 1fr; overflow:hidden; background:var(--clip-audio); color:var(--clip-audio-ink); border:1px solid rgba(0,0,0,.35); border-radius:2px; }
   .seq__aclip svg{ width:100%; height:100%; display:block; }
   .seq__aclip rect{ fill:var(--clip-audio-ink); opacity:.85; }
@@ -109,8 +111,8 @@ const W = Math.max(peaks.length, 1) * 4;
       padding:10px 14px; background:transparent; color:var(--text); border:0; border-radius:0;
     }
     .seq__clip-thumb{ grid-column:1; grid-row:1 / span 3; aspect-ratio:16/9; border:1px solid var(--hair-strong); }
-    .seq__clip-name{ grid-column:2; padding:0; font-size:14px; }
-    .is-narrow .seq__clip-name small{ display:inline; }
+    .seq__clip-name{ grid-column:2; padding:0; font-size:14px; white-space:normal; }
+    .seq__clip-name small{ display:inline; }
     .seq__clip-meta{ display:block; grid-column:2; font-size:13px; color:var(--muted); }
     .seq__clip-bar{ display:block; grid-column:2; align-self:end; height:6px; background:var(--lane-alt); }
     .seq__clip-bar i{ display:block; height:100%; width:var(--rel); background:var(--clip-video); }

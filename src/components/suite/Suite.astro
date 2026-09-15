@@ -18,7 +18,8 @@ const payload = {
   total: sequence.layoutSeconds,
   clips: sequence.clips.map((c) => ({
     name: c.name,
-    tag: `${c.client} · ${c.year}`,
+    client: c.client,
+    year: c.year,
     label: c.roleLabel ? `${c.name} · ${c.roleLabel}` : c.name,
     href: c.href,
     poster: c.thumbnail,

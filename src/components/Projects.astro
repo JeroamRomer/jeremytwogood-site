@@ -15,6 +15,7 @@ const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.
       <span class="readout">{summary}</span>
     </div>
 
+    <div class="bin__body">
     <div class="work-grid">
       {ordered.map((project, i) => {
         const position = String(i + 1).padStart(2, '0');
@@ -39,7 +40,7 @@ const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.
                 </video>
               )}
               {project.coming_soon
-                ? <span class="work-item__tc readout">In progress</span>
+                ? <span class="work-item__tc">In progress</span>
                 : (duration || preview) && <span class="work-item__tc readout" data-duration={duration} hidden={!duration}>{duration}</span>}
             </div>
             <div class="work-item__meta">
@@ -50,6 +51,7 @@ const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.
           </Tag>
         );
       })}
+    </div>
     </div>
   </div>
 </section>

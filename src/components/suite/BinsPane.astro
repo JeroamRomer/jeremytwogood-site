@@ -30,8 +30,13 @@ const bins = [
       const inner = (
         <>
           <img src={c.thumbnail} alt="" loading="lazy" decoding="async" />
-          <span class="bins__clip-name">{c.name}</span>
-          <span class="readout">{c.offline ? 'offline' : c.durationLabel}</span>
+          <span class="bins__clip-meta">
+            <span class="bins__clip-name">{c.name}</span>
+            <span class="bins__clip-type">{c.type}</span>
+          </span>
+          {c.offline
+            ? <span class="bins__offline">offline</span>
+            : <span class="readout">{c.durationLabel}</span>}
         </>
       );
       return <li>{c.href ? <a href={c.href}>{inner}</a> : <span class="bins__clip-static">{inner}</span>}</li>;
@@ -49,8 +54,11 @@ const bins = [
   .bins__clips a, .bins__clip-static{ display:grid; grid-template-columns:52px minmax(0,1fr) auto; gap:10px; align-items:center; padding:6px 14px; font-size:13px; }
   .bins__clips a:hover{ background:var(--lane); }
   .bins__clips img{ width:52px; aspect-ratio:16/9; object-fit:cover; border:1px solid var(--hair-strong); }
-  .bins__clip-name{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bins__clip-meta{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .bins__clip-name{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.25; }
+  .bins__clip-type{ font-size:11px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .bins__clip-static{ color:var(--muted); }
-  .bins .readout{ font-size:11px; }
+  .bins .readout, .bins .bins__offline{ font-size:11px; }
+  .bins__offline{ font-family:var(--font-ui); color:var(--dim); }
   @media (max-width: 760px){ .bins{ display:none; } }
 </style>

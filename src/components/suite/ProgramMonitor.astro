@@ -12,7 +12,7 @@ const { lead, sequence } = Astro.props;
   <div class="monitor-pane__stage">
     <div class="monitor">
       <video data-monitor muted playsinline preload="none" poster={lead.thumbnail} aria-hidden="true"></video>
-      <span class="monitor__tag readout" data-monitor-tag>{lead.client} · {lead.year}</span>
+      <span class="monitor__tag" data-monitor-tag><span data-monitor-tag-client>{lead.client}</span> · <span class="readout" data-monitor-tag-year>{lead.year}</span></span>
     </div>
   </div>
   <div class="transport">
@@ -41,7 +41,8 @@ const { lead, sequence } = Astro.props;
     max-width:calc((100svh - var(--bar-h) - 228px - var(--pane-head-h) - 44px - 44px) * 16 / 9);
   }
   .monitor video{ width:100%; height:100%; object-fit:cover; }
-  .monitor__tag{ position:absolute; left:10px; top:10px; padding:3px 7px; font-size:11px; color:#fff; background:rgba(0,0,0,.6); }
+  .monitor__tag{ position:absolute; left:10px; top:10px; padding:3px 7px; font-family:var(--font-ui); font-size:11px; color:#fff; background:rgba(0,0,0,.6); }
+  .monitor__tag .readout{ font-size:inherit; color:inherit; }
   .transport{ display:flex; align-items:center; gap:12px; min-height:44px; padding:0 14px; background:var(--panel-head); border-top:1px solid var(--hair); }
   .transport__btn{ display:grid; place-items:center; width:30px; height:30px; padding:0; background:none; border:0; color:var(--text); cursor:pointer; }
   .transport__btn:hover{ background:var(--lane-alt); }

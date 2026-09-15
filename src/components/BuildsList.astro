@@ -13,7 +13,9 @@ const linkLabel = (url: string) => (url.includes('apps.apple.com') ? 'App Store'
     return (
       <li class="build-row" id={`build-${b.id}`}>
         <div class="build-row__shot">
-          {shot && <img src={shot} alt={b.shot_alts?.[0] || b.name} loading="lazy" decoding="async" />}
+          {shot
+            ? <img src={shot} alt={b.shot_alts?.[0] || b.name} loading="lazy" decoding="async" />
+            : <span class="build-row__noshot" aria-hidden="true">No capture</span>}
         </div>
         <div class="build-row__main">
           <Heading class="build-row__name">{b.name}</Heading>
@@ -37,9 +39,14 @@ const linkLabel = (url: string) => (url.includes('apps.apple.com') ? 'App Store'
 
 <style>
   .builds{ list-style:none; margin:0; padding:0; border-top:1px solid var(--hair); }
-  .build-row{ display:grid; grid-template-columns:160px minmax(0, 1fr) minmax(220px, 300px) auto; gap:20px; align-items:start; padding:16px 0; border-bottom:1px solid var(--hair); }
-  .build-row__shot{ aspect-ratio:16/10; background:var(--lane); border:1px solid var(--hair); overflow:hidden; }
+  .build-row{ display:grid; grid-template-columns:160px minmax(0, 1fr) minmax(220px, 300px) 140px; gap:20px; align-items:start; padding:16px 0; border-bottom:1px solid var(--hair); }
+  .build-row__shot{ position:relative; aspect-ratio:16/10; background:var(--lane); border:1px solid var(--hair); overflow:hidden; }
   .build-row__shot img{ width:100%; height:100%; object-fit:contain; }
+  .build-row__noshot{
+    position:absolute; inset:0; display:grid; place-items:center; padding:8px; text-align:center;
+    background:repeating-linear-gradient(135deg, var(--clip-offline) 0 8px, var(--clip-offline-alt) 8px 16px);
+    color:var(--clip-offline-ink); font-family:var(--font-ui); font-weight:600; font-size:11px;
+  }
   .build-row__name{ margin:0 0 6px; font-family:var(--font-ui); font-weight:600; font-size:17px; line-height:1.3; }
   .build-row__desc{ margin:0; max-width:65ch; color:var(--muted); }
   .build-row__props{ font-size:13px; }

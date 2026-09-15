@@ -11,7 +11,8 @@ const STARTERS = [
 ---
 <div class="cw" data-chat-widget>
   <button class="cw__trigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="cw-panel" aria-label="Ask about my work">
-    <span class="cw__trigger-label">Ask about my work</span>
+    <span class="cw__trigger-label cw__trigger-label--full">Ask about my work</span>
+    <span class="cw__trigger-label cw__trigger-label--short">Ask</span>
   </button>
 
   <section id="cw-panel" class="cw__panel" role="dialog" aria-label="Ask about Jeremy Twogood's work" hidden>
@@ -49,23 +50,22 @@ const STARTERS = [
   .cw{ font-family:var(--font-ui); }
 
   .cw__trigger{
-    position:fixed; right:18px; bottom:18px; z-index:900;
-    display:inline-flex; align-items:center; min-height:40px; padding:0 14px;
-    background:var(--panel-head); color:var(--text); border:1px solid var(--hair-strong);
-    font:600 13px/1 var(--font-ui); cursor:pointer; transition:border-color .15s, bottom .15s linear;
+    position:fixed; top:0; right:0; z-index:900;
+    display:flex; align-items:center; justify-content:center; height:var(--bar-h); padding:0 16px;
+    background:var(--panel-head); color:var(--muted); border:0; border-left:1px solid var(--hair);
+    font:500 13px/1 var(--font-ui); cursor:pointer; transition:color .15s, background-color .15s;
   }
-  .cw__trigger:hover{ border-color:var(--mango); }
-  .cw__trigger:focus-visible{ outline:2px solid var(--mango); outline-offset:2px; }
-  :global(body.has-tlbar) .cw__trigger{ bottom:44px; }
-  .cw[data-open] .cw__trigger{ opacity:.5; }
+  .cw__trigger:hover{ color:var(--text); background:var(--lane); }
+  .cw__trigger:focus-visible{ outline:2px solid var(--mango); outline-offset:-2px; }
+  .cw[data-open] .cw__trigger{ color:var(--text); background:var(--lane); }
+  .cw__trigger-label--short{ display:none; }
 
   .cw__panel{
-    position:fixed; right:18px; bottom:66px; z-index:901;
-    width:380px; max-width:calc(100vw - 32px); max-height:min(620px, calc(100vh - 120px));
+    position:fixed; top:var(--bar-h); right:0; z-index:901;
+    width:380px; max-width:calc(100vw - 32px); max-height:calc(100svh - var(--bar-h) - 24px);
     display:flex; flex-direction:column; overflow:hidden;
-    background:var(--panel); color:var(--text); border:1px solid var(--hair-strong);
+    background:var(--panel); color:var(--text); border:1px solid var(--hair-strong); border-top:0;
   }
-  :global(body.has-tlbar) .cw__panel{ bottom:92px; }
   .cw__panel[hidden]{ display:none; }
 
   .cw__head{ display:flex; align-items:center; gap:10px; min-height:var(--pane-head-h); padding:0 6px 0 14px; background:var(--panel-head); border-bottom:1px solid var(--hair); }
@@ -104,10 +104,14 @@ const STARTERS = [
 
   @keyframes cw-blink{ 50%{ opacity:0; } }
 
+  @media (max-width: 760px){
+    .cw__trigger{ padding:0 12px; }
+    .cw__trigger-label--full{ display:none; }
+    .cw__trigger-label--short{ display:inline; }
+    .cw__panel{ top:calc(var(--bar-h) + 41px); max-height:calc(100svh - var(--bar-h) - 41px - 12px); }
+  }
   @media (max-width: 560px){
-    .cw__panel{ right:0; left:0; bottom:0; width:100%; max-width:100%; max-height:82vh; border-left:0; border-right:0; border-bottom:0; }
-    .cw__trigger{ right:12px; bottom:12px; }
-    .cw[data-open] .cw__trigger{ opacity:0; pointer-events:none; }
+    .cw__panel{ right:0; left:0; width:100%; max-width:100%; border-left:0; border-right:0; }
   }
   @media (prefers-reduced-motion: reduce){
     .cw__trigger{ transition:none; }
