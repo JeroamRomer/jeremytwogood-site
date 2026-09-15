@@ -1,36 +1,36 @@
 ---
 import reelIndex from '../data/reel-index.json';
 ---
-<section id="reel" class="reel" aria-label="Demo reel">
-  <div class="reel__container">
-    <h2 class="reel__heading">Reel</h2>
-    <div class="reel__embed-wrapper">
-      <iframe
-        class="reel__embed"
-        src={`https://www.youtube.com/embed/${reelIndex.reel_youtube_id}`}
-        title="Jeremy Twogood Demo Sizzle"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        loading="lazy"
-        aria-label="Demo sizzle reel by Jeremy Twogood"
-      ></iframe>
+<section id="reel" class="reel" aria-labelledby="reel-title">
+  <div class="reel__head">
+    <h1 id="reel-title" class="reel__title">Demo sizzle</h1>
+    <a class="pbtn" href={reelIndex.reel_url} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+  </div>
+  <div class="pane reel__pane">
+    <div class="pane-head"><span>Program</span><span class="readout">00:40</span></div>
+    <div class="reel__stage">
+      <div class="reel__frame">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${reelIndex.reel_youtube_id}?rel=0`}
+          title="Jeremy Twogood demo sizzle"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
     </div>
-    <p class="reel__link-out">
-      <a
-        href={reelIndex.reel_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Watch full reel on YouTube (opens in new tab)"
-      >
-        Watch on YouTube ↗
-      </a>
-    </p>
   </div>
 
-  <!-- Machine-readable reel index for AI agents -->
-  <script
-    id="reel-index-data"
-    type="application/json"
-    set:html={JSON.stringify(reelIndex)}
-  />
+  <script id="reel-index-data" type="application/json" set:html={JSON.stringify(reelIndex)} />
 </section>
+
+<style>
+  .reel{ max-width:1320px; margin:0 auto; padding:28px var(--pad) 80px; font-family:var(--font-ui); color:var(--text); }
+  .reel__head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+  .reel__title{ margin:0; font-family:var(--font-display); font-variation-settings:'wdth' 118; font-weight:800; font-size:clamp(28px, 4vw, 44px); line-height:1.05; }
+  .reel__pane{ border:1px solid var(--hair); }
+  .reel__stage{ padding:18px; background:var(--stage); }
+  .reel__frame{ position:relative; aspect-ratio:16 / 9; background:#000; outline:1px solid var(--hair-strong); }
+  .reel__frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  @media (max-width: 760px){ .reel__stage{ padding:0; } .reel__frame{ outline:0; } }
+</style>

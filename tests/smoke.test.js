@@ -433,3 +433,12 @@ test('smoke: pages load Archivo, Barlow and Martian Mono', () => {
     assert.ok(html.includes(family), `${family} must be requested`);
   }
 });
+
+test('smoke: /reel is a styled program monitor, /mcp uses bins', () => {
+  const reel = getHtml('reel/index.html');
+  assert.ok(reel.includes('class="pane-head"'), 'reel page renders a pane head');
+  assert.ok(reel.includes('youtube-nocookie.com/embed/Tl1n3hu4e8I'), 'reel embed uses the no-cookie host');
+  const mcp = getHtml('mcp/index.html');
+  assert.ok(mcp.includes('class="bin'), 'mcp page renders bins');
+  assert.ok(!mcp.includes('class="eyebrow"'), 'mcp eyebrow is retired');
+});
