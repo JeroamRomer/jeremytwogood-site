@@ -47,13 +47,23 @@ test('smoke: index.html mounts the chat widget with trigger and starters', () =>
   const html = getHtml('index.html');
   assert.ok(html.includes('data-chat-widget'), 'chat widget root must be present');
   assert.ok(html.includes('Ask about my work'), 'panel title must render');
-  assert.ok(html.includes("aria-label=\"Ask about Jeremy's work\""), 'trigger must be labelled');
+  assert.ok(html.includes('aria-label="Ask about my work"'), 'trigger must be labelled');
   assert.ok(html.includes('colour-grading experience'), 'starter question must render');
 });
 
 test('smoke: chat widget is mounted site-wide (case-study page too)', () => {
   const html = getHtml('work/shell-john-williams/index.html');
   assert.ok(html.includes('data-chat-widget'), 'widget must appear on all pages via BaseLayout');
+});
+
+test('smoke: chat trigger has a visible label and panels carry no glow or shadow', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('cw__trigger-label'), 'trigger must show its label');
+  assert.ok(html.includes('aria-label="Ask about my work"'), 'accessible name must match the visible label');
+  assert.ok(!html.includes('cw__trigger-dot'), 'glowing dot is retired');
+  const chat = html.slice(html.indexOf('data-chat-widget'));
+  assert.ok(!/box-shadow:\s*0 0 \d/.test(chat), 'no zero-offset glows in the widget');
+  assert.ok(!html.includes('backdrop-filter: blur'), 'no blur on overlays');
 });
 
 // ── Nav ─────────────────────────────────────────────────────────────────────
