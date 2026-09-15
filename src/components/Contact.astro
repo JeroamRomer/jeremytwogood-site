@@ -2,29 +2,32 @@
 import profile from '../data/profile.json';
 const social = profile.social as Record<string, string>;
 ---
-<section id="contact" class="contact" aria-label="Contact Jeremy Twogood">
-  <div class="contact__inner">
-    <div>
-      <h2>Let's make<br/>something<span class="amber">.</span></h2>
-      <p class="contact__line">Available for broadcast, corporate, and documentary projects. Edits, productions, and the occasional AI build.</p>
+<section id="contact" class="bin contact" aria-labelledby="contact-title">
+  <div class="bin__inner">
+    <div class="bin__head">
+      <h2 id="contact-title">Contact</h2>
+      <span class="readout">Available · 2026</span>
     </div>
-    <div class="contact__links">
-      <div class="contact__row">
-        <span class="label">Email</span>
-        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+    <div class="contact__grid">
+      <div>
+        <p class="contact__statement">Let's make something.</p>
+        <p class="contact__line">Available for broadcast, corporate, and documentary projects. Edits, productions, and the occasional AI build.</p>
       </div>
-      <div class="contact__row">
-        <span class="label">LinkedIn</span>
-        <a href={social.linkedin} target="_blank" rel="noopener">/in/jeremy-twogood</a>
-      </div>
-      <div class="contact__row">
-        <span class="label">SoundCloud</span>
-        <a href="https://soundcloud.com/j-twogood/tracks" target="_blank" rel="noopener">/j-twogood</a>
-      </div>
-      <div class="contact__row">
-        <span class="label">Reel</span>
-        <a href="/reel">jeremytwogood.com/reel</a>
-      </div>
+      <dl class="props contact__props">
+        <dt>Email</dt><dd><a href={`mailto:${profile.email}`}>{profile.email}</a></dd>
+        <dt>LinkedIn</dt><dd><a href={social.linkedin} target="_blank" rel="noopener">/in/jeremy-twogood</a></dd>
+        <dt>SoundCloud</dt><dd><a href="https://soundcloud.com/j-twogood/tracks" target="_blank" rel="noopener">/j-twogood</a></dd>
+        <dt>Reel</dt><dd><a href="/reel">jeremytwogood.com/reel</a></dd>
+      </dl>
     </div>
   </div>
 </section>
+
+<style>
+  .contact{ padding-bottom:96px; }
+  .contact__grid{ display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(260px, 1fr); gap:32px; align-items:start; }
+  .contact__statement{ margin:0 0 10px; font-family:var(--font-display); font-variation-settings:'wdth' 118; font-weight:800; font-size:clamp(28px, 4vw, 48px); line-height:1.05; }
+  .contact__line{ margin:0; max-width:46ch; color:var(--muted); }
+  .contact__props{ padding:14px; background:var(--lane); border:1px solid var(--hair); font-size:15px; }
+  @media (max-width: 760px){ .contact__grid{ grid-template-columns:1fr; } }
+</style>

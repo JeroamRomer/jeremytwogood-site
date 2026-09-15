@@ -38,7 +38,7 @@ Supporting fact, not the lead: he also builds and ships AI tools (three live pro
 
 - Astro 6 multi-page site, no client-side router. Progressive enhancement: every page must read fully without JavaScript, and `prefers-reduced-motion` is respected everywhere.
 - Content is data-driven from `src/data/*.json` (`profile`, `projects`, `ai-builds`, `video-content`, `reel-index`, `waveforms`, `resume`). Copy changes go through those files or the components, never invented at design time.
-- Signature interactive features that must keep working through any redesign: the NLE-style scroll timeline bar with timecode (`TimelineBar.astro`, homepage, desktop), hover-to-play silent loops on work cards (`Projects.astro`), SVG waveforms cut from Jeremy's own audio and lit by SoundCloud playback (`Sound.astro`), the chat widget (`ChatWidget.astro`), the inline video lightbox, card-to-case-study View Transitions, and scroll-in reveals.
+- Signature interactive features that must keep working through any redesign: the NLE-style scroll timeline bar with timecode (`TimelineBar.astro`, homepage, desktop), hover-to-play silent loops on work cards (`Projects.astro`), SVG waveforms cut from Jeremy's own audio and lit by SoundCloud playback (`Sound.astro`), the chat widget (`ChatWidget.astro`), the inline video lightbox, and card-to-case-study View Transitions. Scroll-in reveals were retired in the facelift (2026-09-14): the only authored motion is the sequence playhead.
 - Footage fidelity: no tints, washes, or heavy overlays on video or stills. It is a video portfolio; colour accuracy is part of the proof.
 - Fonts must be free to use (Google Fonts or an open license); self-hosting is fine.
 - Must work at roughly 400px wide.

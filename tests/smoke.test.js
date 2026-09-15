@@ -302,20 +302,22 @@ test('smoke: sound section track rows are restructured for waveforms', () => {
 
 // ── Scroll-in reveals ───────────────────────────────────────────────────────
 
-test('smoke: reveal styles are gated behind html.js', () => {
-  const css = getBundledCss();
-  assert.ok(css.includes('.is-inview'), 'reveal CSS must be present');
-  assert.ok(css.includes('html.js'), 'reveal CSS must be js-gated');
-  assert.ok(css.includes('.contact__inner.is-inview'), 'contact reveal rule must be present');
-});
-
-test('smoke: pages add the js class before paint', () => {
+test('smoke: scroll reveals are retired; the js class still lands before paint', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes("classList.add('js')"), 'inline js-class script must be present');
-  assert.ok(html.includes('IntersectionObserver'), 'reveal observer script must ship');
-  assert.ok(html.includes('is-inview'), 'observer must add the is-inview class');
+  assert.ok(!getBundledCss().includes('is-inview'), 'reveal CSS is retired');
+  assert.ok(!html.includes('revealTargets'), 'reveal observer is retired');
   const caseStudy = getHtml('work/shell-john-williams/index.html');
   assert.ok(caseStudy.includes("classList.add('js')"), 'js-class script must be on case-study pages too');
+});
+
+test('smoke: contact bin lists every way to reach Jeremy', () => {
+  const html = getHtml('index.html');
+  const contact = html.slice(html.indexOf('id="contact"'));
+  assert.ok(contact.includes('class="bin contact"'), 'contact must be a bin');
+  for (const needle of ['mailto:', 'linkedin.com', 'soundcloud.com/j-twogood', 'href="/reel"', 'Available · 2026']) {
+    assert.ok(contact.includes(needle), `contact must include ${needle}`);
+  }
 });
 
 // ── Hover timecodes ─────────────────────────────────────────────────────────
