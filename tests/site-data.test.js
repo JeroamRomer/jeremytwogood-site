@@ -7,6 +7,7 @@ const ROOT = new URL('..', import.meta.url).pathname;
 const read = (p) => readFileSync(join(ROOT, p), 'utf-8');
 const profile = JSON.parse(read('src/data/profile.json'));
 const projects = JSON.parse(read('src/data/projects.json'));
+const agentData = JSON.parse(read('public/agent-data.json'));
 
 const ALL_CLIENTS = [
   'Google', 'Microsoft Xbox', 'Shell', 'Sony Ericsson', 'Sobeys',
@@ -36,4 +37,14 @@ test('site-data: durations, when present, are positive integers', () => {
     if (p.duration_seconds === undefined) continue;
     assert.ok(Number.isInteger(p.duration_seconds) && p.duration_seconds > 0, `${p.id} has a bad duration`);
   }
+});
+
+test('site-data: Simbility credits list editing without a producer credit', () => {
+  const simbility = projects.find((project) => project.id === 'simbility-desk-series');
+  const agentSimbility = agentData.projects.find((project) => project.id === 'simbility-desk-series');
+  assert.ok(simbility, 'Simbility must remain in the selected projects');
+  assert.ok(agentSimbility, 'Simbility must remain in the public agent data');
+  assert.deepEqual(simbility.role, ['Editor']);
+  assert.equal(simbility.disciplines, 'Directing · Editing');
+  assert.deepEqual(agentSimbility.role, ['Editor']);
 });

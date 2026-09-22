@@ -1,51 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import { createServer } from 'node:http';
-import { relative, resolve } from 'node:path';
 import test from 'node:test';
 import { chromium } from 'playwright';
-
-const DIST = resolve(process.cwd(), 'dist');
-
-function contentType(path: string) {
-  if (path.endsWith('.css')) return 'text/css';
-  if (path.endsWith('.js')) return 'text/javascript';
-  if (path.endsWith('.svg')) return 'image/svg+xml';
-  if (path.endsWith('.png')) return 'image/png';
-  if (path.endsWith('.webp')) return 'image/webp';
-  if (path.endsWith('.woff2')) return 'font/woff2';
-  return 'text/html';
-}
-
-async function startDistServer() {
-  const server = createServer(async (request, response) => {
-    const pathname = new URL(request.url ?? '/', 'http://localhost').pathname;
-    const relativePath = pathname === '/' ? 'index.html' : decodeURIComponent(pathname).replace(/^\/+/, '');
-    const file = resolve(DIST, relativePath);
-
-    if (relative(DIST, file).startsWith('..')) {
-      response.writeHead(403).end();
-      return;
-    }
-
-    try {
-      const body = await readFile(file);
-      response.writeHead(200, { 'content-type': contentType(file) });
-      response.end(body);
-    } catch {
-      response.writeHead(404).end();
-    }
-  });
-
-  await new Promise<void>((resolveServer, rejectServer) => {
-    server.once('error', rejectServer);
-    server.listen(0, '127.0.0.1', resolveServer);
-  });
-
-  const address = server.address();
-  assert.ok(address && typeof address !== 'string', 'test server must bind a TCP port');
-  return { server, url: `http://127.0.0.1:${address.port}` };
-}
+import { startDistServer } from './helpers/dist-server.ts';
 
 async function firstTrackPositions(url: string, width: number) {
   const browser = await chromium.launch();

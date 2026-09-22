@@ -90,7 +90,7 @@ const breadcrumbSchema = {
 
     <div class="case__grid">
       <section class="pane case__monitor" aria-label="Source monitor">
-        <div class="pane-head"><span>Source</span><span>{project.client} · <span class="readout">{project.year}</span></span></div>
+        <div class="pane-head"><span>Source</span><span>{project.client}</span></div>
         <div class="case__stage">
           <a
             class="case__player"
@@ -111,7 +111,6 @@ const breadcrumbSchema = {
         <div class="pane-head"><span>Properties</span></div>
         <dl class="props case__props">
           <dt>Client</dt><dd>{project.client}</dd>
-          <dt>Year</dt><dd><span class="readout">{project.year}</span></dd>
           {runningTime && <><dt>Running time</dt><dd><span class="readout">{runningTime}</span></dd></>}
           {roleList.length > 0 && <><dt>Role</dt><dd>{roleList.join(', ')}</dd></>}
           {project.disciplines && <><dt>Disciplines</dt><dd>{project.disciplines}</dd></>}

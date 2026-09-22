@@ -14,7 +14,7 @@ const bins = [
   { href: '#contact', label: 'Contact', count: null },
 ];
 ---
-<aside class="pane bins" aria-label="Project bins">
+<aside class="pane bins" data-mobile-rail aria-label="Project bins">
   <div class="pane-head"><span>Project</span></div>
   <nav class="bins__list" aria-label="Bins">
     {bins.map((b) => (
@@ -61,5 +61,11 @@ const bins = [
   .bins__clip-static{ color:var(--muted); }
   .bins .readout, .bins .bins__offline{ font-size:11px; }
   .bins__offline{ font-family:var(--font-ui); color:var(--dim); }
-  @media (max-width: 760px){ .bins{ display:none; } }
+  @media (max-width: 760px){
+    .bins{ display:flex; flex-direction:column; grid-row:3; border-right:0; border-bottom:1px solid var(--hair); }
+    .bins .pane-head{ min-height:30px; }
+    .bins__list{ display:flex; overflow-x:auto; padding:0; }
+    .bins__list a{ flex:0 0 auto; grid-template-columns:18px auto auto; padding:8px 12px; border-right:1px solid var(--hair); font-size:12px; }
+    .bins__clips{ display:none; }
+  }
 </style>

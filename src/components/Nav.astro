@@ -12,15 +12,20 @@ const tabs = [
 ---
 <header class="bar" id="nav">
   <a class="bar__brand" href={onHome ? '#top' : '/'} aria-label="Jeremy Twogood, home">
-    <svg class="bar__mark" viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2" />
-      <circle cx="12" cy="12" r="2.6" class="bar__hub" />
-      <circle cx="12" cy="5" r="2" fill="currentColor" />
-      <circle cx="19" cy="12" r="2" fill="currentColor" />
-      <circle cx="12" cy="19" r="2" fill="currentColor" />
-      <circle cx="5" cy="12" r="2" fill="currentColor" />
-    </svg>
-    <span class="bar__name">Jeremy Twogood<span class="bar__dot">.</span></span>
+    <span class="bar__lockup">
+      <span class="bar__mark-wrap">
+        <svg class="bar__mark bar__mark-roll" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2" />
+          <circle cx="12" cy="12" r="2.6" class="bar__hub" />
+          <circle cx="12" cy="5" r="2" fill="currentColor" />
+          <circle cx="19" cy="12" r="2" fill="currentColor" />
+          <circle cx="12" cy="19" r="2" fill="currentColor" />
+          <circle cx="5" cy="12" r="2" fill="currentColor" />
+        </svg>
+      </span>
+      <span class="bar__name">Jeremy Twogood<span class="bar__dot">.</span></span>
+      <span class="bar__rollout" aria-hidden="true"></span>
+    </span>
   </a>
   <nav class="bar__tabs" aria-label="Primary">
     {tabs.map((t) => (
@@ -37,12 +42,28 @@ const tabs = [
   .bar{
     position:sticky; top:0; z-index:50;
     display:flex; align-items:stretch; height:var(--bar-h);
-    background:var(--panel-head); border-bottom:1px solid var(--hair);
+    background:rgba(28,28,31,.78); border-bottom:1px solid rgba(59,59,67,.72);
+    backdrop-filter:blur(14px) saturate(1.12); -webkit-backdrop-filter:blur(14px) saturate(1.12);
     font-family:var(--font-ui); color:var(--text);
   }
   .bar__brand{
     display:flex; align-items:center; gap:10px; padding:0 18px;
     border-right:1px solid var(--hair); white-space:nowrap;
+    position:relative;
+  }
+  .bar__lockup{ position:relative; display:flex; align-items:center; gap:10px; }
+  .bar__rollout{ position:absolute; left:13px; right:0; bottom:-5px; height:2px; background:currentColor; transform:scaleX(0); transform-origin:left center; animation:bar-reel-line 1.6s ease-in-out both; pointer-events:none; }
+  .bar__brand:hover .bar__rollout, .bar__brand:focus-visible .bar__rollout{ animation:bar-reel-line-loop 2.8s ease-in-out infinite; }
+  .bar__mark-wrap{ display:grid; place-items:center; flex:0 0 20px; }
+  .bar__mark-roll{ transform-origin:center; animation:bar-reel-roll 1.6s ease-in-out; }
+  .bar__brand:hover .bar__mark-roll, .bar__brand:focus-visible .bar__mark-roll{ animation:bar-reel-roll-loop 2.8s ease-in-out infinite; }
+  @keyframes bar-reel-line{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
+  @keyframes bar-reel-line-loop{ 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(0)} }
+  @keyframes bar-reel-roll{ from{transform:rotate(120deg)} to{transform:rotate(0)} }
+  @keyframes bar-reel-roll-loop{ 0%,100%{transform:rotate(0)} 50%{transform:rotate(120deg)} }
+  @media (prefers-reduced-motion: reduce){
+    .bar__rollout{ animation:none; transform:scaleX(1); }
+    .bar__mark-roll{ animation:none; }
   }
   .bar__mark{ width:20px; height:20px; color:var(--text); }
   .bar__hub{ fill:var(--mango); }
@@ -73,6 +94,7 @@ const tabs = [
   @media (max-width: 760px){
     .bar{ height:auto; flex-wrap:wrap; }
     .bar__brand{ flex:1 1 auto; height:var(--bar-h); border-right:0; padding:0 14px; padding-right:calc(14px + var(--chat-trigger-w-mobile)); }
+    .bar__rollout{ left:10px; bottom:1px; }
     .bar__status{ display:none; }
     .bar__tabs{ flex:1 1 100%; border-top:1px solid var(--hair); }
     .bar__tab{ flex:1 1 0; justify-content:center; padding:0 4px; min-height:40px; }

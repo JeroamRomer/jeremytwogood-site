@@ -82,11 +82,25 @@ test('smoke: panel bar links to sections on home and back home elsewhere', () =>
   assert.ok(!html.includes('rainbow-rule'), 'rainbow rule is retired');
 });
 
+test('smoke: wordmark carries the reel rollout interaction', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('bar__mark-wrap'), 'brand must expose the reel/wordmark wrapper');
+  assert.ok(html.includes('bar__mark-roll'), 'reel mark must carry the rollout animation hook');
+  assert.ok(html.includes('bar__rollout'), 'brand must expose the reel trail');
+  assert.ok(html.includes('bar__name'), 'wordmark must retain its accessible name');
+  assert.ok(getBundledCss().includes('backdrop-filter:blur('), 'top bar should use a frosted glass blur');
+  assert.ok(getBundledCss().includes('--mango:#f4a23b'), 'site accent should use the original mango token');
+});
+
 // ── Suite ────────────────────────────────────────────────────────────────────
 
 test('smoke: suite renders the monitor, info pane and sequence', () => {
   const html = getHtml('index.html');
-  assert.ok(html.includes('id="top"'), '#top suite must exist');
+  assert.ok(html.includes('id="top"'), '#top introduction must exist');
+  assert.ok(html.includes('id="edit"'), '#edit suite must exist');
+  assert.ok(html.indexOf('id="top"') < html.indexOf('id="edit"'), 'introduction must precede the editing interface');
+  assert.ok(html.includes('href="#edit"'), 'introduction must link directly to the editing interface without JavaScript');
+  assert.equal((html.match(/<h1\b/g) ?? []).length, 1, 'homepage must have one primary heading');
   assert.ok(html.includes('data-suite'), 'suite root must be marked');
   assert.match(html, /<h1[^>]*>Jeremy Twogood/, 'name must be the h1');
   assert.ok(html.includes('Watch Sizzle'), 'Watch Sizzle CTA must be present');
@@ -100,6 +114,39 @@ test('smoke: suite renders the monitor, info pane and sequence', () => {
   assert.ok(html.includes('Toronto, ON'), 'location label keeps its place');
   assert.ok(html.includes('43.65°N'), 'location coordinate keeps its place');
   assert.ok(!html.includes('hero__meta'), 'old hero is gone');
+  assert.ok(html.includes('data-mobile-rail'), 'mobile suite should retain a project rail');
+  assert.ok(html.includes('suite__mobile-info-hidden'), 'mobile suite should avoid duplicating the intro bio');
+  assert.ok(html.includes('data-mobile-timeline'), 'mobile suite should expose the condensed timeline');
+});
+
+test('smoke: introduction uses a role-neutral rotating work montage', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('introduction__image'), 'introduction work image stage must exist');
+  assert.ok((html.match(/class="[^"]*introduction__image/g) ?? []).length >= 1, 'introduction must render its image stage');
+  assert.ok(html.includes('Selected work'), 'hero caption must stay role-neutral');
+  assert.ok(html.includes('/assets/thales-thumb.jpg') && html.includes('/assets/talkto-thumb.png'), 'montage must use local work stills');
+});
+
+test('smoke: introduction renders the three-window film strip with project metadata', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('introduction__track'), 'hero film strip track must exist');
+  const frames = [...html.matchAll(/<div class="introduction__frame(?: is-center)?"[^>]*>[\s\S]*?<img src="([^"]+)"/g)];
+  assert.equal(frames.length, 30, 'hero strip must include one pass of 30 distinct stills');
+  assert.ok(frames.some(([, src]) => src === '/assets/hero-strip/francesco-yates.jpg'), 'hero strip should include the YouTube Creator Series still');
+  assert.ok(html.includes('data-project="YouTube Creator Series · Francesco Yates"'), 'the new still should carry its series and featured creator credit');
+  assert.ok(html.includes('data-client="YouTube"') && html.includes('data-role="Camera Operator"'), 'the new still should credit YouTube and camera operation');
+  assert.ok(html.includes('data-project="Talk T.O. My Stomach · Zane Caplansky Interview"') && html.includes('data-role="Producer · Editor · Host"'), 'the Zane Caplansky still should carry the Talk T.O. My Stomach series credits');
+  assert.ok(html.includes('data-project="NBN Boxing · Light Em Up"') && html.includes('data-role="Editor · Story Editor · Motion Graphics"'), 'the NBN boxing still should carry the supplied project and role credits');
+  assert.ok(html.includes('data-project="Chac Mool Cenote · Cavern Dive"') && html.includes('data-role="Camera Operator"'), 'the Chac Mool still should identify the cavern dive and camera role');
+  assert.ok(html.includes('introduction__progress') && html.includes('aria-valuemax="30"'), 'the external reel progress ruler should describe the complete image count');
+  assert.equal(frames[1][1], '/assets/hero-strip/orm-multibox.jpg', 'the second still should be the ORMGP multi-feature graphic');
+  assert.ok(!frames.some(([, src]) => src === '/assets/hero-strip/sizzle-evan-seth.jpg'), 'generic sizzle still should be removed from the strip');
+  assert.ok(html.includes('data-project="Oak Ridges Moraine Groundwater Program"'), 'the ORMGP replacement should retain its project credit');
+  assert.ok(html.includes('/assets/hero-strip/shell-rig-in-future.jpg'), 'hero strip should include the new Shell #RigInFuture still');
+  assert.ok(html.includes('data-client="Shell"') && html.includes('data-role="Editor · Motion Graphics · Sound · Colour"'), 'the new Shell still should carry the supplied client and role credits');
+  assert.ok(!html.includes('/assets/hero-strip/orm-title-sections.jpg'), 'hero strip should omit the discarded ORMGP report still');
+  assert.ok(html.includes('data-strip-project'), 'hero must expose active project metadata');
+  assert.ok(html.includes('/assets/hero-strip/chef-nuit-smile.png'), 'hero strip must include the sharper Chef Nuit smile still');
 });
 
 test('smoke: sequence ruler shows no invented time labels and the transport hides its timecode while a duration is unknown', () => {
@@ -192,18 +239,25 @@ test('smoke: builds bin lists every build with a plain status', () => {
   for (const name of ['Unbusy Scanner', 'Production Intelligence', 'Gibbon Knight', 'MCP Integrator', 'Pedal Path']) {
     assert.ok(builds.includes(name), `${name} must appear`);
   }
-  assert.ok(builds.includes('build-row__status'), 'status must render');
-  assert.ok(!builds.includes('class="tag"'), 'tag chips are retired');
+  assert.ok(builds.includes('section--light'), 'homepage AI builds should use the light treatment');
+  assert.ok(builds.includes('build-card'), 'homepage AI builds should use the card treatment');
   assert.ok(builds.includes('href="/ai-builds"'), 'link to the full page must remain');
 });
 
 test('smoke: /ai-builds/index.html exists with full grid', () => {
   const html = getHtml('ai-builds/index.html');
+  assert.ok(html.includes('section--light'), 'AI builds page should use the light treatment');
+  assert.ok(html.includes('builds-grid'), 'AI builds page should use the card grid');
+  assert.ok(html.includes('build-card__shot'), 'AI build cards should include hover-reveal shots');
   assert.ok(html.includes('Gibbon Knight'), 'Gibbon Knight must appear');
   assert.ok(html.includes('Production Intelligence'), 'Production Intelligence must appear');
   assert.ok(html.includes('Unbusy Scanner'), 'Unbusy Scanner must appear');
   assert.ok(html.includes('MCP Integrator'), 'MCP Integrator must appear');
   assert.ok(html.includes('Pedal Path'), 'Pedal Path must appear');
+  const aiBuilds = JSON.parse(readFileSync(join(ROOT, 'src/data/ai-builds.json'), 'utf-8'));
+  assert.equal(aiBuilds[0].name, 'Pedal Path', 'Pedal Path should lead the build list');
+  assert.match(getBundledCss(), /build-card__url[^}]*position:static/, 'mobile build URLs should flow without overlap');
+  assert.match(getBundledCss(), /build-card__launch[^}]*background:var\(--mango\)/, 'build CTAs should use the primary orange treatment');
 });
 
 // ── Sound ─────────────────────────────────────────────────────────────────────
@@ -233,6 +287,7 @@ test('smoke: index.html has contact section with email and social links', () => 
   assert.ok(html.includes('id="contact"'), '#contact section must exist');
   assert.ok(html.includes('mailto:'), 'Email link must be present');
   assert.ok(html.includes('linkedin.com'), 'LinkedIn link must be in contact');
+  assert.ok(readFileSync(join(ROOT, 'src/components/Contact.astro'), 'utf-8').includes('.contact{ background:#212121;'), 'contact should share the hero grey');
 });
 
 test('smoke: index.html has footer', () => {
@@ -320,11 +375,30 @@ test('smoke: sound waveform click-to-seek is wired for the active track', () => 
 
 // ── Projects section ─────────────────────────────────────────────────────────
 
-test('smoke: work bin count and years are derived from projects.json', () => {
+test('smoke: work bin count is derived from projects.json without project dates', () => {
   const projects = JSON.parse(readFileSync(join(ROOT, 'src/data/projects.json'), 'utf-8'));
-  const years = projects.map((p) => Number(p.year));
-  const expected = `${projects.length} projects · ${Math.min(...years)} to ${Math.max(...years)}`;
-  assert.ok(getHtml('index.html').includes(expected), `index.html must contain "${expected}"`);
+  const expected = `${projects.length} projects`;
+  const html = getHtml('index.html');
+  assert.ok(html.includes(expected), `index.html must contain "${expected}"`);
+  assert.ok(!html.includes('projects · 20'), 'work summary must not render project years');
+});
+
+test('smoke: visible work cards do not date the projects', () => {
+  const source = readFileSync(join(ROOT, 'src/components/Projects.astro'), 'utf-8');
+  const metadata = source.slice(source.indexOf('<div class="work-item__meta">'), source.indexOf('</Tag>', source.indexOf('<div class="work-item__meta">')));
+  assert.ok(!metadata.includes('project.year'), 'work-card metadata must not render project years');
+  const comparison = readFileSync(join(ROOT, 'src/components/ComparisonCard.astro'), 'utf-8');
+  assert.ok(!comparison.includes('{position} · {project.year}'), 'comparison-card metadata must not render project years');
+});
+
+test('smoke: visible project surfaces do not render project dates', () => {
+  const home = getHtml('index.html');
+  assert.ok(!home.includes('data-monitor-tag-year'), 'program monitor must not render project years');
+  assert.ok(!home.includes('seq__offline-label">Offline ·'), 'offline sequence labels must not render project years');
+  assert.ok(!home.match(/class="seq__clip-meta">[^<]* · \d{4}/), 'sequence clip metadata must not render project years');
+  const caseStudy = readFileSync(join(ROOT, 'src/pages/work/[id].astro'), 'utf-8');
+  assert.ok(!caseStudy.includes('<dt>Year</dt>'), 'case-study properties must not render project years');
+  assert.ok(!caseStudy.includes('project.client} · <span'), 'case-study source header must not render project years');
 });
 
 test('smoke: sound section track rows are restructured for waveforms', () => {
@@ -457,7 +531,7 @@ test('smoke: /reel is a styled program monitor, /mcp uses bins', () => {
 
 test('smoke: the old visual system is fully removed', () => {
   const css = getBundledCss();
-  for (const old of ['--dark-bg', '--light-bg', '--amber', '.section-title', '.eyebrow', '.hero', '.work-card', '.grain']) {
+  for (const old of ['--dark-bg', '--light-bg', '--amber', '.hero', '.work-card', '.grain']) {
     assert.ok(!css.includes(old), `old CSS ${old} must be gone`);
   }
   const html = getHtml('index.html');

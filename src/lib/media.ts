@@ -9,6 +9,7 @@ export const PREVIEW_LOOPS: Record<string, string> = {
   'simbility-desk-series': 'simbility-loop',
   'ttms-chef-nuit': 'chefnuit-loop',
   'xbox-forza-5': 'xbox-loop',
+  'thales-rcn': 'thales-loop',
   'ttms-5-points': 'fivepoints-loop',
   'ns-health-westray': 'nshealth-loop',
 };

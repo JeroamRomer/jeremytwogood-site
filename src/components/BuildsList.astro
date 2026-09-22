@@ -4,62 +4,86 @@ import aiBuilds from '../data/ai-builds.json';
 interface Props { level?: 'h2' | 'h3' }
 const { level = 'h3' } = Astro.props;
 const Heading = level;
-const STATUS: Record<string, string> = { live: 'Live', internal: 'Internal', beta: 'Beta', 'in-dev': 'Private beta' };
-const linkLabel = (url: string) => (url.includes('apps.apple.com') ? 'App Store' : 'Open app');
+const statusLabel = (status: string) => ({ live: 'Live', internal: 'Internal · Rome Brone', beta: 'Beta', 'in-dev': 'Private beta' }[status] ?? status);
+const statusClass = (status: string) => status === 'live' ? 'build-card__status is-live' : 'build-card__status';
 ---
-<ol class="builds">
-  {aiBuilds.map((b) => {
-    const shot = b.shot_images?.[0];
+<div class="builds-grid">
+  {aiBuilds.map((build, index) => {
+    const hasShot = Boolean(build.shot_images?.length);
+    const spanStyle = build.span === 2 ? 'grid-column:span 2' : undefined;
     return (
-      <li class="build-row" id={`build-${b.id}`}>
-        <div class="build-row__shot">
-          {shot
-            ? <img src={shot} alt={b.shot_alts?.[0] || b.name} loading="lazy" decoding="async" />
-            : <span class="build-row__noshot" aria-hidden="true">No capture</span>}
+      <article class="build-card" style={spanStyle} id={`build-${build.id}`}>
+        {hasShot && (
+          <div class={`build-card__shot ${build.shot_class ?? ''}`} aria-hidden="true">
+            {build.shot_images.map((src, shotIndex) => (
+              <img src={src} alt={build.shot_alts?.[shotIndex] || build.name} loading="lazy" decoding="async" />
+            ))}
+          </div>
+        )}
+        {build.live_url && <a class="build-card__url" href={build.live_url} target="_blank" rel="noopener">{build.live_url.replace('https://', '')}</a>}
+        <div class="build-card__top"><Heading class="build-card__name">{build.name}</Heading></div>
+        <p class="build-card__desc">{build.description}</p>
+        <div class="build-card__bottom">
+          <span class="build-card__index">{String(index + 1).padStart(2, '0')}</span>
+          <span class={statusClass(build.status)}>{statusLabel(build.status)}</span>
         </div>
-        <div class="build-row__main">
-          <Heading class="build-row__name">{b.name}</Heading>
-          <p class="build-row__desc">{b.description}</p>
+        <div class="build-card__stack">{build.tech_stack.map((tech) => <span class="tag">{tech}</span>)}</div>
+        <div class="build-card__cta">
+          {build.live_url
+            ? <a class="build-card__launch" href={build.live_url} target="_blank" rel="noopener">Try it out <span class="arrow">↗</span></a>
+            : build.status === 'in-dev' ? <span class="build-card__coming-soon">Coming soon</span> : null}
         </div>
-        <dl class="props build-row__props">
-          <dt>Status</dt><dd class:list={['build-row__status', `is-${b.status}`]}>{STATUS[b.status] ?? b.status}</dd>
-          <dt>Stack</dt><dd>{b.tech_stack.join(', ')}</dd>
-        </dl>
-        <div class="build-row__cta">
-          {b.live_url && (
-            <a class="pbtn" href={b.live_url} target="_blank" rel="noopener">
-              {linkLabel(b.live_url)} <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 2h7v7H8.5V4.6L3.1 10 2 8.9 7.4 3.5H3z" /></svg>
-            </a>
-          )}
-        </div>
-      </li>
+      </article>
     );
   })}
-</ol>
+</div>
+
+<script>
+  if (window.matchMedia('(hover: none)').matches) {
+    document.querySelectorAll('.build-card').forEach((card) => {
+      card.addEventListener('click', (event) => {
+        const target = event.target as Element;
+        if (target.closest('a, button')) return;
+        const active = card.classList.contains('is-active');
+        document.querySelectorAll('.build-card').forEach((item) => item.classList.remove('is-active'));
+        if (!active) card.classList.add('is-active');
+      });
+    });
+  }
+</script>
 
 <style>
-  .builds{ list-style:none; margin:0; padding:0; border-top:1px solid var(--hair); }
-  .build-row{ display:grid; grid-template-columns:160px minmax(0, 1fr) minmax(220px, 300px) 140px; gap:20px; align-items:start; padding:16px 0; border-bottom:1px solid var(--hair); }
-  .build-row__shot{ position:relative; aspect-ratio:16/10; background:var(--lane); border:1px solid var(--hair); overflow:hidden; }
-  .build-row__shot img{ width:100%; height:100%; object-fit:contain; }
-  .build-row__noshot{
-    position:absolute; inset:0; display:grid; place-items:center; padding:8px; text-align:center;
-    background:repeating-linear-gradient(135deg, var(--clip-offline) 0 8px, var(--clip-offline-alt) 8px 16px);
-    color:var(--clip-offline-ink); font-family:var(--font-ui); font-weight:600; font-size:11px;
-  }
-  .build-row__name{ margin:0 0 6px; font-family:var(--font-ui); font-weight:600; font-size:20px; line-height:1.25; }
-  .build-row__desc{ margin:0; max-width:65ch; color:var(--muted); }
-  .build-row__props{ font-size:13px; }
-  .build-row__status{ color:var(--muted); }
-  .build-row__status.is-live{ color:var(--text); font-weight:600; }
-  .build-row__cta{ justify-self:end; }
-  @media (max-width: 1000px){
-    .build-row{ grid-template-columns:120px minmax(0, 1fr); }
-    .build-row__props, .build-row__cta{ grid-column:2; justify-self:start; }
-  }
-  @media (max-width: 560px){
-    .build-row{ grid-template-columns:1fr; }
-    .build-row__shot{ max-width:220px; }
-    .build-row__props, .build-row__cta{ grid-column:1; }
-  }
+  .builds-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px; }
+  .build-card{ position:relative; min-width:0; min-height:320px; padding:32px 28px 28px; display:flex; flex-direction:column; overflow:hidden; background:#fff; border:1px solid #dcd6cb; transition:border-color .2s ease; }
+  .build-card:hover{ border-color:var(--mango); }
+  .build-card__top{ display:flex; gap:16px; margin-bottom:14px; }
+  .build-card__name{ margin:0; color:#1a1a1a; font-family:var(--font-display); font-weight:600; font-size:22px; line-height:1.15; }
+  .build-card__desc{ max-width:46ch; margin:0 0 22px; color:#34322d; font-size:15px; line-height:1.55; }
+  .build-card__bottom{ display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-bottom:12px; border-bottom:1px dashed #dcd6cb; }
+  .build-card__index{ color:#77736c; font-family:var(--font-readout); font-size:10px; letter-spacing:.12em; }
+  .build-card__status{ display:inline-flex; align-items:center; gap:8px; color:#6b6b63; font-family:var(--font-readout); font-size:10px; letter-spacing:.18em; text-transform:uppercase; white-space:nowrap; }
+  .build-card__status.is-live{ color:var(--mango); }
+  .build-card__status.is-live::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--mango); }
+  .build-card__stack{ display:flex; flex-wrap:wrap; gap:6px; padding-top:18px; }
+  .tag{ padding:4px 9px; border:1px solid #dcd6cb; border-radius:2px; color:#6b6b63; font-family:var(--font-readout); font-size:10.5px; letter-spacing:.06em; }
+  .build-card__url{ position:absolute; top:32px; right:28px; max-width:48%; overflow:hidden; color:#8a867d; font-family:var(--font-readout); font-size:10px; letter-spacing:.1em; text-overflow:ellipsis; white-space:nowrap; }
+  .build-card__cta{ min-height:36px; padding-top:16px; }
+  .build-card__launch{ display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 14px; border:1px solid var(--mango); background:var(--mango); color:var(--mango-ink); font-family:var(--font-ui); font-weight:600; font-size:13px; line-height:1; }
+  .build-card__launch:hover{ border-color:var(--mango-hover); background:var(--mango-hover); }
+  .build-card__coming-soon{ color:#8a867d; font-family:var(--font-readout); font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+  .build-card__shot{ position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; background:rgba(244,241,236,.94); transition:opacity .35s ease; }
+  .build-card__shot--web{ padding:18px; background:linear-gradient(135deg, rgba(244,241,236,.97), rgba(244,241,236,.88)); }
+  .build-card__shot--web img{ width:100%; max-height:100%; border-radius:10px; object-fit:cover; object-position:top; }
+  .build-card__shot--phones{ gap:14px; padding:24px; background:linear-gradient(135deg, rgba(244,241,236,.97), rgba(244,241,236,.88)); }
+  .build-card__shot--phones img{ width:auto; height:100%; max-width:46%; max-height:100%; border-radius:18px; object-fit:cover; }
+  .build-card__shot--four{ gap:8px; padding:16px; }
+  .build-card__shot--four img{ width:auto; height:auto; max-width:23%; max-height:80%; border-radius:12px; object-fit:contain; }
+  .build-card__shot--icon{ inset:24px 24px auto auto; width:80px; height:80px; opacity:.35; background:none; }
+  .build-card__shot--icon img{ width:100%; height:auto; mix-blend-mode:multiply; }
+  .build-card:hover .build-card__shot:not(.build-card__shot--icon), .build-card.is-active .build-card__shot:not(.build-card__shot--icon){ opacity:1; pointer-events:auto; }
+  .build-card:hover .build-card__shot--icon{ opacity:1; }
+  @media (max-width:900px){ .builds-grid{ grid-template-columns:1fr; } .build-card[style*="span 2"]{ grid-column:span 1 !important; } }
+  @media (max-width:720px){ .build-card{ min-height:280px; } .build-card__shot:not(.build-card__shot--icon){ display:none; } .build-card.is-active .build-card__shot:not(.build-card__shot--icon){ display:flex; } .build-card__shot--icon{ inset:16px 16px auto auto; width:54px; height:54px; opacity:1; } }
+  @media (max-width:640px){ .build-card__url{ position:static; display:block; max-width:100%; margin:0 0 12px; text-align:right; } }
+  @media (prefers-reduced-motion: reduce){ .build-card, .build-card__shot{ transition:none; } }
 </style>

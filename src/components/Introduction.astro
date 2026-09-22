@@ -1,0 +1,321 @@
+---
+import profile from '../data/profile.json';
+import reel from '../data/reel-index.json';
+
+const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_id}?autoplay=1&rel=0`;
+
+const stripImages = [
+  { src: '/assets/hero-strip/shell-1.jpg', project: 'Shell × John Williams', client: 'Shell', year: '2023', role: 'Editor · Colour Grade' },
+  { src: '/assets/hero-strip/caot-still.jpg', project: 'Canadian Association of Occupational Therapists', client: 'CAOT', year: '2026', role: 'Editor · Motion GFX' },
+  { src: '/assets/fivepoints-thumb.png', project: '5 Points Nashville Hot Chicken', client: 'Talk T.O. My Stomach', year: '2018', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/simbility-1.jpg', project: 'Simbility Desk Series', client: 'Simbility', year: '2017', role: 'Editor' },
+  { src: '/assets/hero-strip/simbility-2.jpg', project: 'Simbility Desk Series', client: 'Simbility', year: '2017', role: 'Editor' },
+  { src: '/assets/hero-strip/simbility-3.jpg', project: 'Simbility Desk Series', client: 'Simbility', year: '2017', role: 'Editor' },
+  { src: '/assets/hero-strip/chefnuit-1.jpg', project: 'Chef Nuit', client: 'Talk T.O. My Stomach', year: '2016', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/chef-nuit-smile.png', project: 'Chef Nuit', client: 'Talk T.O. My Stomach', year: '2016', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/chefnuit-2.jpg', project: 'Chef Nuit', client: 'Talk T.O. My Stomach', year: '2016', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/xbox-1.jpg', project: 'Xbox / Forza 5', client: 'Microsoft Xbox', year: '2021', role: 'Aerial · Drone Operation' },
+  { src: '/assets/hero-strip/xbox-2.jpg', project: 'Xbox / Forza 5', client: 'Microsoft Xbox', year: '2021', role: 'Aerial · Drone Operation' },
+  { src: '/assets/hero-strip/xbox-3.jpg', project: 'Xbox / Forza 5', client: 'Microsoft Xbox', year: '2021', role: 'Aerial · Drone Operation' },
+  { src: '/assets/hero-strip/thales-1.jpg', project: 'Thales Canada · RCN', client: 'Thales Canada', year: '2021', role: 'Full Post-Production' },
+  { src: '/assets/hero-strip/thales-2.jpg', project: 'Thales Canada · RCN', client: 'Thales Canada', year: '2021', role: 'Full Post-Production' },
+  { src: '/assets/hero-strip/thales-3.jpg', project: 'Thales Canada · RCN', client: 'Thales Canada', year: '2021', role: 'Full Post-Production' },
+  { src: '/assets/hero-strip/fivepoints-1.jpg', project: '5 Points Nashville Hot Chicken', client: 'Talk T.O. My Stomach', year: '2018', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/fivepoints-2.jpg', project: '5 Points Nashville Hot Chicken', client: 'Talk T.O. My Stomach', year: '2018', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/fivepoints-3.jpg', project: '5 Points Nashville Hot Chicken', client: 'Talk T.O. My Stomach', year: '2018', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/nshealth-wide.jpg', project: 'NS Health · Westray', client: 'NS Health', year: '2020', role: 'Editor' },
+  { src: '/assets/simbility-thumb.png', project: 'Simbility Desk Series', client: 'Simbility', year: '2017', role: 'Editor' },
+  { src: '/assets/hero-strip/orm-title-program.jpg', project: 'Oak Ridges Moraine Groundwater Program', client: 'Oak Ridges Moraine Groundwater Program', year: '2024', role: 'Editor · Motion Graphics · Sound · Colour' },
+  { src: '/assets/hero-strip/orm-title-geology.jpg', project: 'Oak Ridges Moraine Groundwater Program', client: 'Oak Ridges Moraine Groundwater Program', year: '2024', role: 'Editor · Motion Graphics · Sound · Colour' },
+  { src: '/assets/hero-strip/orm-multibox.jpg', project: 'Oak Ridges Moraine Groundwater Program', client: 'Oak Ridges Moraine Groundwater Program', year: '2024', role: 'Editor · Motion Graphics · Sound · Colour' },
+  { src: '/assets/hero-strip/sizzle-lake.jpg', project: 'Xbox / Forza 5', client: 'Microsoft Xbox', year: '2021', role: 'Aerial · Drone Operation' },
+  { src: '/assets/hero-strip/sizzle-title.jpg', project: 'Demo Sizzle', client: 'Selected Work', year: '2026', role: 'Producer · Editor' },
+  { src: '/assets/hero-strip/shell-rig-in-future.jpg', project: 'Shell · #RigInFuture', client: 'Shell', year: '', role: 'Editor · Motion Graphics · Sound · Colour' },
+  { src: '/assets/hero-strip/francesco-yates.jpg', project: 'YouTube Creator Series · Francesco Yates', client: 'YouTube', year: '', role: 'Camera Operator' },
+  { src: '/assets/hero-strip/zane-caplansky.jpg', project: 'Zane Caplansky Interview', client: 'Talk T.O. My Stomach', year: '', role: 'Producer · Editor · Host' },
+  { src: '/assets/hero-strip/nbn-light-em-up.jpg', project: 'NBN Boxing · Light Em Up', client: 'NBN', year: '', role: 'Editor · Story Editor · Motion Graphics' },
+  { src: '/assets/hero-strip/chac-mool-cenote.jpg', project: 'Chac Mool Cenote · Cavern Dive', client: '', year: '', role: 'Camera Operator' },
+];
+
+// Interleave projects so adjacent windows always show a different piece of work.
+const stripOrder = [0, 22, 3, 6, 9, 12, 25, 26, 15, 18, 20, 1, 4, 7, 10, 13, 16, 19, 21, 2, 23, 5, 8, 11, 14, 17, 24, 27, 28, 29];
+const orderedStripImages = stripOrder.map((index) => stripImages[index]);
+const fillerWords = new Set(['a', 'an', 'and', 'for', 'of', 'the', 'to']);
+const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
+  const projectWords = project.toLocaleLowerCase().match(/[a-z0-9]+/g) ?? [];
+  const clientWords = client.toLocaleLowerCase().match(/[a-z0-9]+/g) ?? [];
+  const clientKey = clientWords.join('');
+  const projectAcronym = projectWords.filter((word) => !fillerWords.has(word)).map((word) => word[0]).join('');
+  const alreadyIdentified = projectWords.join(' ') === clientWords.join(' ')
+    || project.toLocaleLowerCase().includes(client.toLocaleLowerCase())
+    || clientWords.some((word) => word.length >= 4 && projectWords.includes(word))
+    || projectAcronym === clientKey;
+
+  return client.toLocaleLowerCase() === 'selected work' || alreadyIdentified
+    ? project
+    : `${client} · ${project}`;
+};
+---
+<section id="top" class="introduction" aria-labelledby="introduction-title">
+  <div class="introduction__body">
+    <div class="introduction__copy">
+      <h1 id="introduction-title">{profile.name}<span class="introduction__dot">.</span></h1>
+      <p class="introduction__role">{profile.title.split(' & ')[0]} <span>&amp; {profile.title.split(' & ')[1]}</span></p>
+      <p class="introduction__bio">{profile.bio[0]}</p>
+      <div class="introduction__actions">
+        <a class="pbtn pbtn--primary" href="#edit">Explore the edit <span aria-hidden="true">↓</span></a>
+        <a class="pbtn" href={reel.reel_url} target="_blank" rel="noopener" data-video-embed={sizzleEmbed} data-video-title="Demo sizzle">
+          Watch Sizzle <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" /></svg>
+        </a>
+      </div>
+      <a class="introduction__contact" href={`mailto:${profile.email}`}>Get in touch <span aria-hidden="true">↗</span></a>
+    </div>
+    <figure class="introduction__work">
+      <div class="introduction__media">
+        <div class="introduction__mobile-strip">
+          <div class="introduction__mobile-track">
+            <img class="introduction__mobile-side introduction__mobile-side--prev" src={orderedStripImages[orderedStripImages.length - 1].src} alt="" width="960" height="540" aria-hidden="true" />
+            <img class="introduction__mobile-still" src={orderedStripImages[0].src} alt={`${projectInfo(orderedStripImages[0])} — ${orderedStripImages[0].role}`} width="960" height="540" fetchpriority="high" />
+            <img class="introduction__mobile-side introduction__mobile-side--next" src={orderedStripImages[1].src} alt="" width="960" height="540" aria-hidden="true" />
+            <img class="introduction__mobile-side introduction__mobile-side--after" src={orderedStripImages[2].src} alt="" width="960" height="540" aria-hidden="true" />
+          </div>
+          <div class="introduction__mobile-chrome" aria-hidden="true">
+            <span class="introduction__frame-corner introduction__frame-corner--tl"></span>
+            <span class="introduction__frame-corner introduction__frame-corner--tr"></span>
+            <span class="introduction__frame-corner introduction__frame-corner--br"></span>
+            <span class="introduction__frame-corner introduction__frame-corner--bl"></span>
+          </div>
+        </div>
+        <div class="introduction__image" aria-label="Selected work film strip">
+          <div class="introduction__track">
+            {orderedStripImages.map((image, index) => (
+              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} style={`background-image:url('${image.src}')`}>
+                <img src={image.src} alt={`${projectInfo(image)} — ${image.role}`} width="960" height="540" loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+              </div>
+            ))}
+          </div>
+          <div class="introduction__frame-chrome" aria-hidden="true">
+            <span class="introduction__frame-corner introduction__frame-corner--tl"></span>
+            <span class="introduction__frame-corner introduction__frame-corner--tr"></span>
+            <span class="introduction__frame-corner introduction__frame-corner--br"></span>
+            <span class="introduction__frame-corner introduction__frame-corner--bl"></span>
+          </div>
+          <div class="introduction__shade" aria-hidden="true"></div>
+        </div>
+        <div class="introduction__progress" role="progressbar" aria-label="Reel progress" aria-valuemin="1" aria-valuemax={orderedStripImages.length} aria-valuenow="1" aria-valuetext={`1 of ${orderedStripImages.length}`}>
+          <span class="introduction__progress-track" aria-hidden="true"></span>
+          <span class="introduction__progress-mark" data-ruler-mark="top" aria-hidden="true"></span>
+          <span class="introduction__progress-mark introduction__progress-mark--quarter" data-ruler-mark="quarter" aria-hidden="true"></span>
+          <span class="introduction__progress-mark introduction__progress-mark--half" data-ruler-mark="half" aria-hidden="true"></span>
+          <span class="introduction__progress-mark introduction__progress-mark--quarter" data-ruler-mark="three-quarter" aria-hidden="true"></span>
+          <span class="introduction__progress-mark" data-ruler-mark="bottom" aria-hidden="true"></span>
+          <span class="introduction__progress-playhead" aria-hidden="true"></span>
+        </div>
+      </div>
+      <figcaption>
+        <span data-strip-project>{projectInfo(orderedStripImages[0])}</span>
+        <span data-strip-role>Editor · Colour Grade</span>
+      </figcaption>
+    </figure>
+  </div>
+  <a class="introduction__next" href="#edit"><span>Selected work</span><span>Explore the timeline <span aria-hidden="true">↓</span></span></a>
+</section>
+
+<style>
+  .introduction{ display:flex; flex-direction:column; min-height:calc(100svh - var(--bar-total-h)); background:#212121; }
+  .introduction__body{ flex:1; width:100%; max-width:var(--max); margin:0 auto; padding:clamp(40px, 6vw, 88px) var(--pad); display:grid; grid-template-columns:minmax(0, .76fr) minmax(0, 1.24fr); align-items:center; gap:clamp(32px, 3.5vw, 56px); }
+  .introduction__copy{ min-width:0; }
+  h1{ margin:0 0 24px; max-width:8ch; font-family:var(--font-display); font-variation-settings:'wdth' 112; font-size:clamp(64px, 6.8vw, 104px); font-weight:800; line-height:.96; letter-spacing:-.045em; }
+  .introduction__dot{ color:var(--mango); }
+  .introduction__role{ margin:0 0 20px; max-width:25ch; font-size:clamp(20px, 2vw, 28px); font-weight:500; line-height:1.2; }
+  .introduction__role span{ display:block; }
+  .introduction__bio{ margin:0; max-width:43ch; font-size:17px; line-height:1.6; color:var(--muted); }
+  .introduction__actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:32px; }
+  .introduction__actions .pbtn{ min-height:46px; padding:0 18px; font-size:15px; }
+  .introduction__contact{ display:inline-block; margin-top:22px; font-size:14px; color:var(--muted); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--hair-strong); }
+  .introduction__contact:hover{ color:var(--text); }
+  .introduction__work{ min-width:0; margin:0; }
+  .introduction__media{ position:relative; display:grid; grid-template-columns:minmax(0, 1fr) 5px; align-items:stretch; column-gap:16px; }
+  .introduction__mobile-strip{ display:none; }
+  .introduction__mobile-track{ position:absolute; z-index:1; left:50%; top:0; display:flex; width:225%; height:100%; transform:translateX(-37.5%); }
+  .introduction__mobile-track.is-sliding{ transform:translateX(calc(-37.5% - 25%)); transition:transform .8s cubic-bezier(.22,.61,.36,1); }
+  .introduction__mobile-still, .introduction__mobile-side{ position:static; flex:0 0 25%; width:25%; height:100%; object-fit:cover; }
+  .introduction__mobile-still, .introduction__mobile-side{ transition:filter .8s ease, transform .8s ease; }
+  .introduction__mobile-track.is-sliding .introduction__mobile-still{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
+  .introduction__mobile-track.is-sliding .introduction__mobile-side--next{ filter:none; transform:scale(1); }
+  .introduction__mobile-side{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
+  .introduction__mobile-chrome{ display:none; }
+  .introduction__image{ position:relative; display:block; aspect-ratio:3.16/1; overflow:hidden; background:var(--panel); }
+  .introduction__track{ display:flex; align-items:center; height:100%; width:100%; transform:translateX(calc(50% - 28.125%)); transition:transform .8s cubic-bezier(.22,.61,.36,1); will-change:transform; }
+  .introduction__frame{ position:relative; flex:0 0 56.25%; height:100%; aspect-ratio:16/9; overflow:hidden; background:var(--panel); }
+  .introduction__frame img{ display:block; width:100%; height:100%; object-fit:cover; filter:brightness(.58) blur(1.8px); transform:scale(1.035); transition:filter .8s ease, transform .8s ease; }
+  .introduction__frame.is-center img{ filter:none; transform:scale(1); }
+  .introduction__frame-chrome{ position:absolute; z-index:3; inset:0; pointer-events:none; }
+  .introduction__frame-corner{ position:absolute; width:14px; height:14px; border-color:var(--text); border-style:solid; opacity:.82; }
+  .introduction__frame-corner--tl{ top:0; left:21.875%; border-width:1px 0 0 1px; }
+  .introduction__frame-corner--tr{ top:0; right:21.875%; border-width:1px 1px 0 0; }
+  .introduction__frame-corner--br{ right:21.875%; bottom:0; border-width:0 1px 1px 0; }
+  .introduction__frame-corner--bl{ bottom:0; left:21.875%; border-width:0 0 1px 1px; }
+  .introduction__progress{ position:relative; min-width:5px; min-height:0; align-self:stretch; pointer-events:none; }
+  .introduction__progress-track{ position:absolute; inset:0 auto 0 2px; width:1px; background:var(--hair-strong); }
+  .introduction__progress-mark{ position:absolute; z-index:2; top:50%; left:2px; width:9px; height:1px; background:var(--text); opacity:.82; transform:translate(-50%,-50%); }
+  .introduction__progress-mark--quarter{ width:4px; }
+  .introduction__progress-mark--half{ width:7px; }
+  [data-ruler-mark="top"]{ top:0; transform:translateX(-50%); }
+  [data-ruler-mark="quarter"]{ top:25%; }
+  [data-ruler-mark="half"]{ top:50%; }
+  [data-ruler-mark="three-quarter"]{ top:75%; }
+  [data-ruler-mark="bottom"]{ top:100%; transform:translate(-50%,-100%); }
+  .introduction__progress-playhead{ position:absolute; top:0; left:-2px; width:9px; height:2px; background:var(--mango); transition:top .8s cubic-bezier(.22,.61,.36,1); }
+  .introduction__shade{ position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, rgba(23,23,25,.78) 0%, rgba(23,23,25,.46) 18%, rgba(23,23,25,.04) 45%, transparent 66%); }
+  figcaption{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 16px; padding-top:12px; font-size:13px; }
+  figcaption > span{ color:var(--muted); }
+  figcaption > span:last-child,
+  figcaption > span:last-child *{ font-weight:600; color:var(--text); }
+  figcaption a:hover{ text-decoration:underline; text-underline-offset:3px; }
+  .introduction__next{ display:flex; justify-content:space-between; gap:16px; padding:18px var(--pad); border-top:1px solid var(--hair); font-size:14px; }
+  .introduction__next > span:last-child{ color:var(--muted); }
+  .introduction__next:hover > span:last-child{ color:var(--text); }
+  [data-strip-role]{ color:var(--muted); }
+  @media (prefers-reduced-motion: reduce){ .introduction__track, .introduction__frame img, .introduction__progress-playhead{ transition:none; } }
+  @media (max-width:900px){
+    .introduction__body{ grid-template-columns:1fr; gap:32px; padding-top:40px; padding-bottom:32px; }
+    h1{ max-width:12ch; font-size:clamp(56px, 10vw, 88px); }
+    .introduction__role{ max-width:none; }
+    .introduction__bio{ max-width:52ch; }
+    .introduction__work{ width:100%; max-width:680px; }
+  }
+  @media (max-width:760px){
+    .introduction__body{ display:flex; flex-direction:column; align-items:stretch; }
+    .introduction__work{ order:-1; width:100%; margin-inline:auto; }
+    .introduction__copy{ order:1; }
+    .introduction__shade{ display:none; }
+    .introduction__image{ display:none; }
+    .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
+    .introduction__mobile-still{ display:block; background:var(--panel); }
+    .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
+    .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
+    .introduction__mobile-chrome .introduction__frame-corner--tr{ top:0; right:0; }
+    .introduction__mobile-chrome .introduction__frame-corner--br{ right:0; bottom:0; }
+    .introduction__mobile-chrome .introduction__frame-corner--bl{ bottom:0; left:0; }
+  }
+  @media (max-width:480px){
+    h1{ max-width:8ch; font-size:clamp(52px, 14vw, 66px); }
+    .introduction__role{ font-size:21px; max-width:24ch; }
+    .introduction__bio{ font-size:16px; }
+    .introduction__actions{ margin-top:24px; gap:10px; }
+    .introduction__actions .pbtn{ padding:0 14px; font-size:14px; }
+    .introduction__next{ font-size:13px; }
+  }
+</style>
+
+<script>
+  const track = document.querySelector<HTMLElement>('.introduction__track');
+  const frames = Array.from(document.querySelectorAll<HTMLElement>('.introduction__frame'));
+  const project = document.querySelector<HTMLElement>('[data-strip-project]');
+  const role = document.querySelector<HTMLElement>('[data-strip-role]');
+  const mobileStill = document.querySelector<HTMLImageElement>('.introduction__mobile-still');
+  const mobilePrev = document.querySelector<HTMLImageElement>('.introduction__mobile-side--prev');
+  const mobileNext = document.querySelector<HTMLImageElement>('.introduction__mobile-side--next');
+  const mobileAfter = document.querySelector<HTMLImageElement>('.introduction__mobile-side--after');
+  const mobileTrack = document.querySelector<HTMLElement>('.introduction__mobile-track');
+  let mobileIndex: number | null = null;
+  let mobileSlideTimer = 0;
+  let mobileSlideToken = 0;
+  const syncMobileSources = (index: number) => {
+    const previous = frames[(index - 1 + frames.length) % frames.length]?.querySelector<HTMLImageElement>('img');
+    const next = frames[(index + 1) % frames.length]?.querySelector<HTMLImageElement>('img');
+    const after = frames[(index + 2) % frames.length]?.querySelector<HTMLImageElement>('img');
+    if (mobilePrev && previous) mobilePrev.src = previous.src;
+    if (mobileNext && next) mobileNext.src = next.src;
+    if (mobileAfter && after) mobileAfter.src = after.src;
+    if (mobileStill) {
+      const source = frames[index]?.querySelector<HTMLImageElement>('img');
+      if (source) mobileStill.src = source.src;
+    }
+  };
+  const updateMobileStrip = (index: number) => {
+    if (!mobileTrack || mobileIndex === null || index === mobileIndex) {
+      syncMobileSources(index);
+      mobileIndex = index;
+      return;
+    }
+    const token = ++mobileSlideToken;
+    mobileTrack.classList.add('is-sliding');
+    const finish = () => {
+      if (token !== mobileSlideToken) return;
+      window.clearTimeout(mobileSlideTimer);
+      const mobileImages = [...mobileTrack.querySelectorAll<HTMLImageElement>('img')];
+      mobileTrack.style.transition = 'none';
+      mobileImages.forEach(image => { image.style.transition = 'none'; });
+      syncMobileSources(index);
+      mobileTrack.classList.remove('is-sliding');
+      mobileTrack.getBoundingClientRect();
+      mobileImages.forEach(image => { image.getBoundingClientRect(); });
+      mobileTrack.style.transition = '';
+      mobileImages.forEach(image => { image.style.transition = ''; });
+      mobileIndex = index;
+    };
+    mobileTrack.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'transform') finish();
+    }, { once: true });
+    mobileSlideTimer = window.setTimeout(finish, 900);
+  };
+  const progress = document.querySelector<HTMLElement>('.introduction__progress');
+  const progressTrack = document.querySelector<HTMLElement>('.introduction__progress-track');
+  const progressPlayhead = document.querySelector<HTMLElement>('.introduction__progress-playhead');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const preloadFrame = (index: number) => {
+    const image = frames[index]?.querySelector<HTMLImageElement>('img');
+    if (!image) return;
+    image.loading = 'eager';
+    image.fetchPriority = 'high';
+    if (!image.complete) image.decode?.().catch(() => {});
+  };
+  const setCenter = (index: number) => {
+    frames.forEach((frame, frameIndex) => frame.classList.toggle('is-center', frameIndex === index));
+    const center = frames[index];
+    if (!center) return;
+    if (project) project.textContent = center.dataset.project ?? 'Selected work';
+    if (role) role.textContent = center.dataset.role ?? '';
+    if (mobileStill) {
+      const source = center.querySelector<HTMLImageElement>('img');
+      mobileStill.alt = `${center.dataset.project ?? 'Selected work'} — ${center.dataset.role ?? ''}`;
+    }
+    updateMobileStrip(index);
+    progress?.setAttribute('aria-valuenow', String(index + 1));
+    progress?.setAttribute('aria-valuetext', `${index + 1} of ${frames.length}`);
+    if (progressTrack && progressPlayhead && frames.length > 1) {
+      const travel = Math.max(0, progressTrack.clientHeight - progressPlayhead.offsetHeight);
+      progressPlayhead.style.top = `${travel * index / (frames.length - 1)}px`;
+    }
+  };
+  if (track && frames.length > 2) {
+    let centerIndex = Math.floor(Math.random() * frames.length);
+    preloadFrame(centerIndex);
+    preloadFrame((centerIndex + 1) % frames.length);
+    preloadFrame((centerIndex + 2) % frames.length);
+    setCenter(centerIndex);
+    track.style.transform = `translateX(calc(50% - ${(centerIndex + 0.5) * 56.25}%))`;
+    window.setInterval(() => {
+      if (centerIndex === frames.length - 1) {
+        track.style.transition = 'none';
+        if (progressPlayhead) progressPlayhead.style.transition = 'none';
+        centerIndex = 0;
+        track.style.transform = 'translateX(calc(50% - 28.125%))';
+        setCenter(centerIndex);
+        progressPlayhead?.getBoundingClientRect();
+        window.requestAnimationFrame(() => {
+          track.style.transition = '';
+          if (progressPlayhead) progressPlayhead.style.transition = '';
+        });
+        return;
+      }
+      centerIndex += 1;
+      preloadFrame(centerIndex);
+      preloadFrame(centerIndex + 1);
+      track.style.transform = `translateX(calc(50% - ${(centerIndex + 0.5) * 56.25}%))`;
+      setCenter(centerIndex);
+    }, 5000);
+  }
+</script>

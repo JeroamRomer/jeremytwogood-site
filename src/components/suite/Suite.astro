@@ -20,7 +20,6 @@ const payload = {
   clips: sequence.clips.map((c) => ({
     name: c.name,
     client: c.client,
-    year: c.year,
     label: c.roleLabel ? `${c.name} · ${c.roleLabel}` : c.name,
     href: c.href,
     poster: c.thumbnail,
@@ -32,7 +31,7 @@ const payload = {
   })),
 };
 ---
-<section id="top" class="suite" data-suite aria-label="Jeremy Twogood: selected work">
+<section id="edit" class="suite" data-suite aria-label="Jeremy Twogood: selected work">
   <div class="suite__panes">
     <BinsPane clips={sequence.clips} />
     <ProgramMonitor lead={lead} sequence={sequence} />
@@ -54,7 +53,8 @@ const payload = {
     .suite__panes{ grid-template-columns:220px minmax(0,1fr); }
   }
   @media (max-width: 760px){
-    .suite__panes{ grid-template-columns:1fr; }
+    .suite{ grid-template-rows:auto auto auto; height:auto; min-height:0; }
+    .suite__panes{ display:contents; }
   }
 </style>
 

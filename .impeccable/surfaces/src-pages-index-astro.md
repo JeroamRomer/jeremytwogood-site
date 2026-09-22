@@ -7,6 +7,12 @@ related_targets: ["src/pages/work/[id].astro","src/pages/ai-builds.astro","src/p
 
 # Surface brief: homepage (`src/pages/index.astro`)
 
+## Entry revision — 2026-09-17
+
+Jeremy requested a clearer first impression before the editing interface. The current local draft opens with `Introduction.astro` at `#top`: name, existing role and bio, an untinted project still, primary “Explore the edit” link to `#edit`, secondary Watch Sizzle, and email. The original suite follows intact and plays only when visible. Classic remains the separate production site. This revision supersedes the suite-first arrival and primary-action statements in the historical direction below; its colours, type families, footage, accessibility, and panel rules still apply. The grading comparison now spans two Work columns with a fully visible responsive hint. All seven preview loops use audited source edit boundaries (`docs/preview-cuts.md`).
+
+## Original direction (2026-09-14)
+
 Scope: the homepage as the first surface of the replacement visual world; related surfaces `/work/[id]`, `/ai-builds`, `/reel`, `/mcp` inherit it in Phase 2.
 Mode: Experience (the work leads; the interface recedes), with a Persuade job (get hired or booked).
 Audience: hiring managers and recruiters vetting after a resume or LinkedIn; producers and agencies booking an editor now. Both at equal weight (PRODUCT.md).

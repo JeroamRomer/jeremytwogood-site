@@ -2,13 +2,29 @@
 import BuildsList from './BuildsList.astro';
 import aiBuilds from '../data/ai-builds.json';
 ---
-<section id="builds" class="bin" aria-labelledby="builds-title">
-  <div class="bin__head">
-    <h2 id="builds-title">AI builds</h2>
-    <span class="readout">{aiBuilds.length} builds</span>
-    <a class="bin__link" href="/ai-builds">Open as a page</a>
-  </div>
-  <div class="bin__body">
-    <BuildsList level="h3" />
+<section id="builds" class="section section--light" aria-labelledby="builds-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">AI Builds</span>
+        <h2 id="builds-title" class="section-title">Software that<br />removes the busywork.</h2>
+      </div>
+      <a class="section-head__count" href="/ai-builds">{String(aiBuilds.length).padStart(2, '0')} shipped · Open page</a>
+    </div>
+    <div class="bin__body">
+      <BuildsList level="h3" />
+    </div>
   </div>
 </section>
+
+<style>
+  .section{ position:relative; padding:clamp(72px, 10vw, 144px) clamp(20px, 4vw, 56px); }
+  .wrap{ max-width:1240px; margin:0 auto; }
+  .section--light{ background:#f4f1ec; color:#1a1a1a; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:32px; flex-wrap:wrap; margin-bottom:56px; padding-bottom:24px; border-bottom:1px solid #dcd6cb; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:10px; color:var(--mango); font-family:var(--font-readout); font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+  .eyebrow::before{ content:""; width:24px; height:1px; background:var(--mango); }
+  .section-title{ margin:18px 0 0; color:#1a1a1a; font-family:var(--font-display); font-size:clamp(34px, 4.6vw, 56px); font-weight:600; letter-spacing:-.015em; line-height:1.05; }
+  .section-head__count{ color:#2a2823; font-family:var(--font-readout); font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+  .bin__body{ padding:0; }
+</style>

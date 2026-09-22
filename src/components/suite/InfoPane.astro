@@ -9,10 +9,10 @@ const more = clients.length - shown.length;
 const liveBuilds = aiBuilds.filter((b) => b.status === 'live').map((b) => b.name);
 const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_id}?autoplay=1&rel=0`;
 ---
-<aside class="pane info" aria-label="About Jeremy Twogood">
+<aside class="pane info suite__mobile-info-hidden" aria-label="About Jeremy Twogood">
   <div class="pane-head"><span>Info</span><span>Toronto, ON · <span class="readout">43.65°N</span></span></div>
   <div class="info__body">
-    <h1 class="info__name">Jeremy Twogood<span class="info__dot">.</span></h1>
+    <h2 class="info__name">Jeremy Twogood<span class="info__dot">.</span></h2>
     <p class="info__role">{profile.title}</p>
     <p class="info__bio">{profile.bio[0]}</p>
     <div class="info__actions">
@@ -47,7 +47,6 @@ const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_
     .info__props{ grid-column:2; grid-row:1 / span 4; border-top:0; padding-top:0; }
   }
   @media (max-width: 760px){
-    .info__body{ display:flex; }
-    .info__props{ border-top:1px solid var(--hair); padding-top:12px; }
+    .suite__mobile-info-hidden{ display:none; }
   }
 </style>

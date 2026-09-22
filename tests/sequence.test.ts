@@ -32,9 +32,10 @@ test('hasCaseStudy: excludes coming-soon and comparison projects', () => {
 
 test('loopFor: preview loops, comparison fallback, null otherwise', () => {
   assert.deepEqual(loopFor({ id: 'shell-john-williams' }), { webm: '/assets/shell-loop.webm', mp4: '/assets/shell-loop.mp4' });
-  assert.deepEqual(loopFor({ id: 'thales-rcn', comparison: true, graded_src: '/assets/thales-graded.mp4' }), { mp4: '/assets/thales-graded.mp4' });
+  assert.deepEqual(loopFor({ id: 'thales-rcn', comparison: true, graded_src: '/assets/thales-graded.mp4' }), { webm: '/assets/thales-loop.webm', mp4: '/assets/thales-loop.mp4' });
+  assert.deepEqual(loopFor({ id: 'another-comparison', comparison: true, graded_src: '/assets/graded.mp4' }), { mp4: '/assets/graded.mp4' });
   assert.equal(loopFor({ id: 'nope' }), null);
-  assert.equal(Object.keys(PREVIEW_LOOPS).length, 6);
+  assert.equal(Object.keys(PREVIEW_LOOPS).length, 7);
 });
 
 test('buildSequence: widths follow real durations and sum to 100%', () => {

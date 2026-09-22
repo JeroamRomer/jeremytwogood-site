@@ -35,26 +35,28 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   </div>
   <div class="work-item__meta">
     <span class="work-item__name">{project.name}</span>
-    <span class="readout">{position} · {project.year}</span>
+    <span class="readout">{position}</span>
     <span class="work-item__sub">Colour grade, before and after · {project.type}</span>
   </div>
 </div>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
-  .cc-stage{ cursor:ew-resize; touch-action:none; user-select:none; -webkit-user-select:none; }
+  .comparison{ grid-column:span 2; }
+  .cc-stage{ container-type:inline-size; cursor:ew-resize; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+  .cc-stage:focus-visible{ outline:2px solid var(--text); outline-offset:3px; }
   .cc-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .cc-thumb{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:3; pointer-events:none; transition:opacity .3s; }
-  .comparison:hover .cc-thumb, .comparison.is-active .cc-thumb{ opacity:0; }
+  .comparison.is-active.is-ready .cc-thumb{ opacity:0; }
   .cc-slider{ position:absolute; inset:0; z-index:4; pointer-events:none; }
   .cc-slider__line{ position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--text); transform:translateX(-50%); }
   .cc-slider__handle{ position:absolute; top:50%; left:50%; width:36px; height:36px; transform:translate(-50%,-50%); display:grid; place-items:center; background:var(--panel-head); border:1px solid var(--hair-strong); }
   .cc-slider__handle svg{ width:16px; height:16px; fill:none; stroke:var(--text); stroke-width:1.5; }
-  .cc-slide-hint{ position:absolute; top:calc(50% - 22px); left:calc(50% + 24px); display:flex; align-items:center; gap:6px; font-family:'Caveat', cursive; font-size:44px; font-weight:500; line-height:1; color:#fff; white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .2s; }
-  .comparison:hover .cc-slide-hint, .comparison.is-active .cc-slide-hint{ opacity:1; }
-  .cc-hint-line{ width:54px; height:36px; flex-shrink:0; }
+  .cc-slide-hint{ position:absolute; top:50%; left:calc(50% + 24px); transform:translateY(-50%); display:flex; align-items:center; gap:6px; font-family:'Caveat', cursive; font-size:clamp(20px, 6cqw, 44px); font-weight:500; line-height:1; color:var(--text); white-space:nowrap; pointer-events:none; opacity:1; transition:opacity .2s; }
   .cc-slide-hint.is-used{ opacity:0; }
-  @media (max-width: 720px){ .cc-slide-hint{ display:none; } }
+  .comparison:hover .cc-slide-hint:not(.is-used), .comparison.is-active .cc-slide-hint:not(.is-used){ opacity:1; }
+  .cc-hint-line{ width:clamp(24px, 8cqw, 54px); height:auto; flex-shrink:0; }
+  @media (max-width: 700px){ .comparison{ grid-column:1 / -1; } }
   @media (prefers-reduced-motion: reduce){ .cc-thumb, .cc-slide-hint{ transition:none; } }
 </style>
 
@@ -71,11 +73,20 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   const slideHint = card.querySelector('.cc-slide-hint');
   let dragging = false;
   let syncInterval = null;
+  let percentage = 50;
+
+  stage.setAttribute('role', 'slider');
+  stage.setAttribute('tabindex', '0');
+  stage.setAttribute('aria-valuemin', '0');
+  stage.setAttribute('aria-valuemax', '100');
 
   function setPct(pct) {
     const clamped = Math.min(100, Math.max(0, pct));
+    percentage = clamped;
     sliderLine.style.left = clamped + '%';
     ungradedVideo.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+    stage.setAttribute('aria-valuenow', String(Math.round(clamped)));
+    stage.setAttribute('aria-valuetext', `${Math.round(clamped)}% ungraded, ${Math.round(100 - clamped)}% graded`);
   }
 
   // Keep ungraded locked to graded's playhead; runs every 500ms while playing
@@ -91,15 +102,35 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   // Detect touch-primary devices (no fine pointer)
   const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
 
+  function updateReady() {
+    card.classList.toggle('is-ready', gradedVideo.readyState >= 2 && ungradedVideo.readyState >= 2);
+  }
+  for (const video of [gradedVideo, ungradedVideo]) {
+    video.addEventListener('loadeddata', updateReady);
+    video.addEventListener('seeked', updateReady);
+    video.addEventListener('emptied', updateReady);
+  }
+
   function startVideos() {
+    card.classList.add('is-active');
+    if (!gradedVideo.paused) return;
+    // Paused comparison still needs decoded frames. preload="none" is only
+    // for the untouched card; keep its thumbnail until both frames are ready.
+    gradedVideo.preload = 'auto';
+    ungradedVideo.preload = 'auto';
     gradedVideo.currentTime = 0;
     ungradedVideo.currentTime = 0;
+    updateReady();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
     gradedVideo.play().catch(() => {});
     ungradedVideo.play().catch(() => {});
     if (!syncInterval) syncInterval = setInterval(syncVideos, 500);
   }
 
   function stopVideos() {
+    card.classList.remove('is-active');
     clearInterval(syncInterval);
     syncInterval = null;
     gradedVideo.pause();
@@ -113,7 +144,27 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
   });
 
   card.addEventListener('mouseleave', () => {
-    if (!isTouchDevice()) stopVideos();
+    if (!isTouchDevice() && document.activeElement !== stage) stopVideos();
+  });
+
+  stage.addEventListener('focus', startVideos);
+  stage.addEventListener('blur', () => {
+    if (!card.matches(':hover')) stopVideos();
+  });
+
+  stage.addEventListener('keydown', (e) => {
+    const values = {
+      ArrowLeft: percentage - 5,
+      ArrowDown: percentage - 5,
+      ArrowRight: percentage + 5,
+      ArrowUp: percentage + 5,
+      Home: 0,
+      End: 100,
+    };
+    if (!(e.key in values)) return;
+    e.preventDefault();
+    setPct(values[e.key]);
+    if (slideHint) slideHint.classList.add('is-used');
   });
 
   // On touch: first pointerdown starts videos and shows slider
@@ -124,7 +175,6 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
 
     if (isTouchDevice() && gradedVideo.paused) {
       startVideos();
-      card.classList.add('is-active');
     }
   });
 
@@ -134,7 +184,6 @@ const uid = `cc-${Math.random().toString(36).slice(2, 7)}`;
       entries.forEach(entry => {
         if (!entry.isIntersecting && isTouchDevice()) {
           stopVideos();
-          card.classList.remove('is-active');
         }
       });
     }, { threshold: 0.1 });

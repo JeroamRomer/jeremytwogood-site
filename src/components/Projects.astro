@@ -5,8 +5,7 @@ import { hasCaseStudy, mmss, orderOnlineFirst, roleLabel, type SequenceProject }
 import { PREVIEW_LOOPS } from '../lib/media';
 
 const ordered = orderOnlineFirst(projects as unknown as (SequenceProject & Record<string, any>)[]);
-const years = projects.map((p) => Number(p.year));
-const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.max(...years)}`;
+const summary = `${projects.length} projects`;
 ---
 <section id="work" class="bin" aria-labelledby="work-title">
   <div class="bin__head">
@@ -44,7 +43,7 @@ const summary = `${projects.length} projects · ${Math.min(...years)} to ${Math.
             </div>
             <div class="work-item__meta">
               <span class="work-item__name">{project.name}</span>
-              <span class="readout">{position} · {project.year}</span>
+              <span class="readout">{position}</span>
               <span class="work-item__sub">{project.client} · {project.type}{roleLabel(project) && ` · ${roleLabel(project)}`}</span>
             </div>
           </Tag>

@@ -91,7 +91,9 @@ components:
 
 **Creative North Star: "The Open Sequence"**
 
-The whole site is an edit in progress. The visitor lands inside Jeremy's suite: a program monitor playing the work, a sequence beneath it with every project as a clip sized by its real running time, bins for the rest of the site, and an info panel that says who he is. Nothing is decorated; every surface is a panel doing a job, and the work is the only colour on the page.
+The whole site is an edit in progress. The visitor first meets Jeremy through a focused introduction: his name, role, own bio, and a real project still. “Explore the edit” leads into the suite: a program monitor playing the work, a sequence beneath it with every project as a clip sized by its real running time, bins for the rest of the site, and an info panel. Nothing is decorated, and the work supplies the imagery.
+
+Entry revision, 2026-09-17: Jeremy asked for a clearer landing/hero before the editing interface. The local draft adds the introduction above Open Sequence on the same page; it does not copy Classic into this branch or change the live site. This supersedes the original suite-first-viewport requirement, while retaining its visual language.
 
 Chosen 2026-09-14 (direction round, seed f102dfc2) over Mezzotint Velvet Night and the incumbent "Cutting Room" system, now anti-reference. Built on branch `facelift` (5dc5139) against the approved prototype at `.impeccable/mocks/proto/seq.html`. Shipped as `src/components/suite/*` (Suite, BinsPane, ProgramMonitor, Sequence, InfoPane) plus the bins below the fold (Projects, BuildsList, Sound, About, Contact), the panel-bar Nav, the docked ChatWidget, and the page TimelineBar.
 
@@ -116,7 +118,7 @@ Reusable signature: the sequence (ruler, V1 clips, A1 waveform, playhead) with r
 Restrained strategy: near-black panel greys and one warm accent, with two clip colours for media type and one hatch for a missing-media state.
 
 ### Primary
-- **Mango** (#f4a23b, hover #ffb457, ink #1a1206): the playhead (sequence and page timeline bar), the active tab underline (`.bar__tab.is-active`), the primary action fill (Watch Sizzle, case-study Play, chat send), the wordmark period (`.bar__dot`, `.info__dot`), and two playhead-state indicators from the approved prototype — the transport timecode (`.transport__tc`) and the current-clip ring (`.seq__clip-link.is-current`).
+- **Mango** (#f4a23b, hover #ffb457, ink #1a1206): the playhead (sequence and page timeline bar), the active tab underline (`.bar__tab.is-active`), the primary action fill (Explore the edit, suite Watch Sizzle, case-study Play, chat send), the name/wordmark periods, and two playhead-state indicators from the approved prototype — the transport timecode (`.transport__tc`) and the current-clip ring (`.seq__clip-link.is-current`).
 
 ### Secondary
 - **Clip Teal** (#2c6b67, ink #dff5f2): video clips on V1 and any video-media surface.
@@ -145,6 +147,7 @@ Restrained strategy: near-black panel greys and one warm accent, with two clip c
 **Character:** A wide, engineered grotesk for the name, display statements and bin headings (set at wordmark scale in the 32px bin-head strip); a compact industrial sans for panel labels and body; a monospace used strictly as measurement.
 
 ### Hierarchy
+- **Introduction display** (800, responsive 52–104px, .96, `wdth 112`): the primary heading in `Introduction.astro`; Archivo at a larger scale to give arrivals a clear starting point.
 - **Display** (800, 34px, 1.0, `wdth 118`): the name in the info pane (`.info__name`).
 - **Bin heading** (700, 16px, 1.0, `wdth 112`): `.bin__head h1/h2` and the wordmark in the panel bar (`.bar__name`) — Archivo at wordmark scale inside the 32/44px head strip, not the larger contract-brief size.
 - **About lead** (700, clamp 22–30px): `.about__lead`, an Archivo display statement inside a bin body.
@@ -159,7 +162,7 @@ Restrained strategy: near-black panel greys and one warm accent, with two clip c
 
 ## Layout
 
-The first-viewport suite (`src/components/suite/Suite.astro` and children) is fixed at 1440×900 down to 1100 wide: a 44px panel bar (`Nav.astro`), three panes below it — bins 256px, program monitor fluid, info 320px — and the sequence beneath (32px ruler, 120px V1, 74px A1) with a mango playhead spanning both lanes.
+The introduction (`Introduction.astro`, `#top`) pairs identity and actions with an untinted Xbox project still. Its primary action is Explore the edit; Watch Sizzle is secondary. It stacks at 900px and uses native links, including without JavaScript. The suite below (`src/components/suite/Suite.astro`, `#edit`) retains its screen-height desktop layout: three panes — bins 256px, program monitor fluid, info 320px — and the sequence beneath (32px ruler, 120px V1, 74px A1) with a mango playhead spanning both lanes. The monitor starts only when visible and pauses offscreen.
 
 Below the fold, bins (`Projects`, `BuildsList`, `Sound`, `About`, `Contact`) stack edge to edge sharing hairlines, each with its own 32px `.bin__head` strip; no nested framed boxes, no card-grid-of-cards. The chat trigger (`ChatWidget.astro`) docks in the panel bar itself (194px, 66px on narrow widths), not as a floating FAB. A slim 28px page timeline bar (`TimelineBar.astro`) stays pinned to the viewport bottom on desktop and is hidden at 760px and below.
 
@@ -192,6 +195,8 @@ Square. Panels, buttons, thumbnails and the monitor have 0 radius; clips have 2p
 - **Bin** (`.bin` + `.bin__head`, below-the-fold sections): same 32px head strip pattern, but full-width with a top hairline instead of side borders; `h1`/`h2` inside is Archivo at wordmark scale (16px, `wdth 112`, 700); body is capped at `--max: 1600px`.
 - **Clip** (`.seq__clip-link`): teal/green/offline-hatch fill per the Media Colour Rule, 2px radius, name+thumb+meta grid, 12% brightness lift on hover, mango inset ring when current.
 - **Work item** (`.work-item`): 16:9 thumbnail with hover-preview loop, name/sub meta grid below; offline items mute the name colour instead of the hatch (hatch is reserved for sequence/bin clip chrome).
+- **Grading comparison** (`ComparisonCard.astro`): spans two Work grid columns (full width on phones), with a container-scaled “Slide me!” cue. Drag, touch, or use arrow/Home/End keys; reduced-motion users see a paused comparison. The full comparison videos are separate from the short sequence preview.
+- **Preview edits**: each silent preview starts and ends at a visually verified source cut. Durations vary with the actual shot; frame ranges and reproduction instructions live in `docs/preview-cuts.md`. During loading, the monitor holds the outgoing decoded frame until incoming footage is ready, avoiding a thumbnail flash.
 
 ### Navigation (`Nav.astro`)
 - 44px sticky panel bar; wordmark "Jeremy Twogood." in Archivo with the mango period; section tabs in Barlow 13px/500, muted at rest, mango inset-underline + text colour when active (IntersectionObserver-driven); status readouts (EST/GMT−5 in readout face, availability in plain text) shed left-to-right as the viewport narrows. Mobile (≤760px): tabs wrap to a full-width second row, status hides.
@@ -205,7 +210,7 @@ Square. Panels, buttons, thumbnails and the monitor have 0 radius; clips have 2p
 - **Do** keep every timecode, duration and count true to the data; a readout that lies breaks the world.
 - **Do** show title, client and year at rest on every clip and every bin item.
 - **Do** keep footage untouched; the monitor and thumbnails show frames as shot, with the running time carried by the transport timecode, never burned into the frame.
-- **Do** keep the whole first-viewport suite inside one screen at desktop widths (1440×900 down to 1100).
+- **Do** keep the suite inside one screen at desktop widths (1440×900 down to 1100), after the introduction.
 - **Do** honour reduced motion: no auto-advance, no auto-play, playhead at rest; `.tlbar`/`.work-item__preview`/`.cw__caret` transitions drop under `prefers-reduced-motion`.
 - **Do** treat the offline hatch as chrome-only clip-state code (Media Colour Rule), never as a texture on footage.
 - **Do** confine Caveat to the single "Slide me!" hint on the Thales comparison card (`ComparisonCard.astro`); no other use is sanctioned.
@@ -220,4 +225,4 @@ Square. Panels, buttons, thumbnails and the monitor have 0 radius; clips have 2p
 - **Don't** burn a timecode into the program monitor frame; the FIRST VIEWPORT block of the direction contract names a burn-in, but the Global Constraint "footage untouched" overrides it in the shipped build — this is a named, deliberate divergence between contract and build, not an omission.
 - **Don't** extend Caveat, or invent a second script/display face, beyond the one sanctioned hint use.
 
-**Not canonized — defects the build carries, not rules for future surfaces:** mixed Barlow/mono head readouts (INFO pane head, About head, Contact head) render the mono run optically larger than the Barlow run, and the About head mixes both faces in one dot-separated line; the Sound bin renders one column at 1440 with coarse stretched waveforms (two columns was the intent); the Production Intelligence row shows a logo on a white square, a content decision pending with Jeremy; detector residuals `cramped-padding` on `.seq__head` and `line-length` in the `/mcp` tool table remain open. None of these are recorded as rules — they are flagged for repair, not inherited.
+**Not canonized — defects the build carries, not rules for future surfaces:** mixed Barlow/mono head readouts (INFO pane head, About head, Contact head) render the mono run optically larger than the Barlow run, and the About head mixes both faces in one dot-separated line; the Production Intelligence row shows a logo on a white square, a content decision pending with Jeremy; detector residuals `cramped-padding` on `.seq__head` and `line-length` in the `/mcp` tool table remain open. None of these are recorded as rules — they are flagged for repair, not inherited. The Sound bin now uses two columns on desktop and one on phones.

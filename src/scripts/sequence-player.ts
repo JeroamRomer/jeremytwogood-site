@@ -3,7 +3,6 @@ import { tcFormat } from './timecode';
 interface PlayerClip {
   name: string;
   client: string;
-  year: string;
   label: string;
   href: string | null;
   poster: string;
@@ -30,8 +29,8 @@ export function initSequencePlayer(root: HTMLElement): void {
   const q = <T extends Element>(sel: string) => root.querySelector<T>(sel);
   const dataEl = q<HTMLScriptElement>('#sequence-data');
   const video = q<HTMLVideoElement>('[data-monitor]');
+  const hold = q<HTMLCanvasElement>('[data-monitor-hold]');
   const tagClientEl = q<HTMLElement>('[data-monitor-tag-client]');
-  const tagYearEl = q<HTMLElement>('[data-monitor-tag-year]');
   const nameEl = q<HTMLElement>('[data-monitor-name]');
   const linkEl = q<HTMLAnchorElement>('[data-monitor-link]');
   // Absent whenever a clip's duration is unknown (ProgramMonitor.astro), since
@@ -43,7 +42,7 @@ export function initSequencePlayer(root: HTMLElement): void {
   const nextBtn = q<HTMLButtonElement>('[data-transport="next"]');
   const lanes = q<HTMLElement>('[data-seq-lanes]');
   const playhead = q<HTMLElement>('[data-seq-playhead]');
-  if (!dataEl || !video || !tagClientEl || !tagYearEl || !nameEl || !linkEl || !playBtn || !prevBtn || !nextBtn || !lanes || !playhead) return;
+  if (!dataEl || !video || !tagClientEl || !nameEl || !linkEl || !playBtn || !prevBtn || !nextBtn || !lanes || !playhead) return;
 
   let data: PlayerData;
   try { data = JSON.parse(dataEl.textContent || '{}'); } catch { return; }
@@ -58,11 +57,58 @@ export function initSequencePlayer(root: HTMLElement): void {
 
   let current = -1;
   let wantPlay = !reduce;
-  let inView = true;
+  // The introduction now precedes the edit. Don't start a hidden monitor
+  // before IntersectionObserver has reported its visibility.
+  let inView = !('IntersectionObserver' in window);
+  let selection = 0;
+  let pendingFrame: number | null = null;
+
+  function releaseHeldFrame() {
+    if (hold) hold.hidden = true;
+  }
+
+  function holdCurrentFrame() {
+    if (!hold || video!.readyState < 2 || !video!.videoWidth) return;
+    const ctx = hold.getContext('2d');
+    if (!ctx) return;
+    try {
+      hold.width = video!.videoWidth;
+      hold.height = video!.videoHeight;
+      ctx.drawImage(video!, 0, 0);
+      hold.hidden = false;
+    } catch {
+      releaseHeldFrame();
+    }
+  }
+
+  function revealLoadedFrame() {
+    if (video!.readyState < 2) return;
+    const version = selection;
+    if (pendingFrame !== null) {
+      video!.cancelVideoFrameCallback(pendingFrame);
+      pendingFrame = null;
+    }
+    if (!video!.paused && 'requestVideoFrameCallback' in video!) {
+      // Keep the outgoing frame visible until the replacement is decoded and
+      // submitted for display. A project's thumbnail is not an edit frame.
+      pendingFrame = video!.requestVideoFrameCallback(() => {
+        pendingFrame = null;
+        if (version === selection) releaseHeldFrame();
+      });
+    } else {
+      // Paused/reduced-motion selection still presents the new loaded still.
+      requestAnimationFrame(() => {
+        if (version === selection && video!.readyState >= 2) releaseHeldFrame();
+      });
+    }
+  }
 
   function resume() {
-    if (wantPlay && inView && !document.hidden) video!.play().catch(() => {});
-    else video!.pause();
+    if (wantPlay && inView && !document.hidden) video!.play().catch(revealLoadedFrame);
+    else {
+      video!.pause();
+      revealLoadedFrame();
+    }
   }
 
   function setPlaying(on: boolean) {
@@ -79,11 +125,29 @@ export function initSequencePlayer(root: HTMLElement): void {
     const t = c.start + Math.min(Math.max(frac, 0), 1) * c.layout;
     playhead!.style.left = `${(t / data.total) * 100}%`;
     if (tcEl && data.allKnown) tcEl.textContent = tcFormat(t);
+    if (!desktop.matches) {
+      const scroller = lanes!.closest<HTMLElement>('.seq__tracks');
+      if (scroller && scroller.scrollWidth > scroller.clientWidth) {
+        const laneOffset = 44;
+        const playheadX = laneOffset + (t / data.total) * lanes!.clientWidth;
+        const target = playheadX - scroller.clientWidth * 0.55;
+        scroller.scrollLeft = Math.min(Math.max(target, 0), scroller.scrollWidth - scroller.clientWidth);
+      }
+    }
   }
 
   function select(i: number) {
     const c = data.clips[i];
     if (!c || c.offline) return;
+    selection++;
+    if (pendingFrame !== null) {
+      video!.cancelVideoFrameCallback(pendingFrame);
+      pendingFrame = null;
+    }
+    holdCurrentFrame();
+    // Explicit selections need a decoded still even when playback is paused.
+    // Keep the initial, offscreen monitor's preload="none" until interaction.
+    if (current >= 0) video!.preload = 'auto';
     current = i;
     clipEls.forEach((el) => {
       const on = Number(el.dataset.clip) === i;
@@ -92,7 +156,6 @@ export function initSequencePlayer(root: HTMLElement): void {
       else el.removeAttribute('aria-current');
     });
     tagClientEl!.textContent = c.client;
-    tagYearEl!.textContent = c.year;
     nameEl!.textContent = c.name;
     linkEl!.textContent = c.label;
     if (c.href) linkEl!.href = c.href;
@@ -101,14 +164,19 @@ export function initSequencePlayer(root: HTMLElement): void {
     video!.poster = c.poster;
     if (src) {
       if (video!.getAttribute('src') !== src) video!.src = src;
+      else {
+        video!.currentTime = 0;
+        revealLoadedFrame();
+      }
       place(0);
       resume();
     } else {
       // No loop for this clip: clear the previous clip's footage rather than
-      // leaving it playing under the new client/year tag, and don't play.
+      // leaving it playing under the new client tag, and don't play.
       video!.removeAttribute('src');
       video!.load();
       video!.pause();
+      releaseHeldFrame();
       place(0);
     }
   }
@@ -119,6 +187,9 @@ export function initSequencePlayer(root: HTMLElement): void {
   }
 
   video.muted = true;
+  video.addEventListener('loadeddata', revealLoadedFrame);
+  video.addEventListener('seeked', revealLoadedFrame);
+  video.addEventListener('error', releaseHeldFrame);
   video.addEventListener('timeupdate', () => {
     if (video.duration > 0) place(video.currentTime / video.duration);
   });

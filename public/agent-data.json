@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-09-14T21:31:28.999Z",
+  "generated_at": "2026-09-22T01:47:33.084Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -61,8 +61,7 @@
       "name": "Simbility",
       "client": "Simbility",
       "role": [
-        "Editor",
-        "Producer"
+        "Editor"
       ]
     },
     {
@@ -112,6 +111,21 @@
     }
   ],
   "ai_builds": [
+    {
+      "id": "bike-app",
+      "name": "Pedal Path",
+      "description": "Live on the App Store. One of an ongoing run of small, useful apps with no subscriptions. Free to use, with a one-time unlock for the premium features.",
+      "tech_stack": [
+        "SwiftUI",
+        "Mapbox",
+        "CoreLocation",
+        "Supabase"
+      ],
+      "role": "Creator",
+      "status": "live",
+      "github_url": null,
+      "live_url": "https://apps.apple.com/ca/app/pedal-path/id6784479426"
+    },
     {
       "id": "unbusy-scanner",
       "name": "Unbusy Scanner",
@@ -170,21 +184,6 @@
       "status": "beta",
       "github_url": null,
       "live_url": null
-    },
-    {
-      "id": "bike-app",
-      "name": "Pedal Path",
-      "description": "Live on the App Store. One of an ongoing run of small, useful apps with no subscriptions. Free to use, with a one-time unlock for the premium features.",
-      "tech_stack": [
-        "SwiftUI",
-        "Mapbox",
-        "CoreLocation",
-        "Supabase"
-      ],
-      "role": "Creator",
-      "status": "live",
-      "github_url": null,
-      "live_url": "https://apps.apple.com/ca/app/pedal-path/id6784479426"
     }
   ],
   "reel": {

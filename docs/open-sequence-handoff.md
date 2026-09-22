@@ -1,6 +1,17 @@
 # Open Sequence: handoff (for Codex or any agent)
 
-Last updated 2026-09-15. This is the single file to read before touching the Open Sequence build.
+Last updated 2026-09-17. This is the single file to read before touching the Open Sequence build.
+
+## Current local work
+
+`codex/portfolio-entry-polish` builds on the Sound grid fix (`703e14c`) and adds Jeremy's requested clearer entry, clean preview cuts, and larger grading comparison. It is a local review draft, not merged into `facelift` or `main`, and not deployed.
+
+- New introduction at `#top` gives visitors identity, a real work still, and “Explore the edit” into the existing suite at `#edit`. Watch Sizzle remains available immediately. Classic is unchanged; a combined Classic-first routing scheme is not implemented.
+- All seven sequence previews use complete shots cut on source edits. `docs/preview-cuts.md` records exact frame ranges, provenance, and export instructions. The monitor holds outgoing footage during loading instead of flashing an unrelated poster, including paused selections. Full project durations and the full Thales comparison are unchanged.
+- The grading comparison spans two Work columns, with a responsive, unclipped “Slide me!” hint, keyboard controls, touch dragging, and paused reduced-motion behavior.
+- Sound is two columns on desktop and one at 760px and below, with a browser regression test.
+
+Validation on 2026-09-17: build and all 151 tests passed (77 smoke/data, 22 UI, 52 API/chat). Browser review covered 1440px through 320px with no horizontal overflow, 390px without JavaScript, reduced motion, delayed media loading, paused/rapid clip selections, and natural end-of-clip advancement. The comparison retains its thumbnail until both paused frames load. Desktop/phone appearance still needs Jeremy's taste review.
 
 ## The two sites
 
@@ -23,10 +34,10 @@ Vercel serves production from `main`. Every pushed branch gets its own preview d
 ## Run it locally
 
 ```
-git checkout facelift
+git checkout codex/portfolio-entry-polish  # current local review; facelift is the earlier V1
 npm install
 npm run dev              # http://localhost:4321
-npm run build && npm test && npm run test:ui && npm run test:api   # 147 tests, all passing at 595ef36
+npm run build && npm test && npm run test:ui && npm run test:api
 ```
 
 `npm run build` rewrites the `generated_at` timestamp in `public/agent-data.json`. If that is the only diff, discard it (`git checkout -- public/agent-data.json`) and don't commit timestamp-only churn.
@@ -35,7 +46,7 @@ npm run build && npm test && npm run test:ui && npm run test:api   # 147 tests, 
 
 - Design authority: `DESIGN.md` (tokens, rules, exceptions, written from the build), `.impeccable/design.json`, `.impeccable/surfaces/src-pages-index-astro.md` (direction contract), spec `docs/superpowers/specs/2026-09-14-facelift-design.md`, plan `docs/superpowers/plans/2026-09-14-facelift-phase-2.md`.
 - Styles: `src/styles/global.css` (tokens + shared primitives `.pane`, `.pane-head`, `.bin*`, `.readout`, `.pbtn*`, `.props`, `.work-item*`).
-- First viewport: `src/components/suite/` (Suite, BinsPane, ProgramMonitor, InfoPane, Sequence) + `src/scripts/sequence-player.ts`; layout math in `src/lib/sequence.ts` (unit-tested in `tests/sequence.test.ts`), loop lookup in `src/lib/media.ts`.
+- First viewport: `src/components/Introduction.astro`; the editing suite at `#edit`: `src/components/suite/` (Suite, BinsPane, ProgramMonitor, InfoPane, Sequence) + `src/scripts/sequence-player.ts`; layout math in `src/lib/sequence.ts` (unit-tested in `tests/sequence.test.ts`), loop lookup in `src/lib/media.ts`.
 - Bins below: `src/components/{Projects,ComparisonCard,About,BuildsList,AIBuilds,Sound,Contact}.astro`; chrome: `Nav`, `Footer`, `TimelineBar`, `ChatWidget`, `Lightbox`.
 - Pages: `src/pages/index.astro`, `work/[id].astro`, `ai-builds.astro`, `reel.astro`, `mcp.astro`.
 - Data: `src/data/*.json` (projects, profile, ai-builds, reel-index, waveforms, video-content, resume).
@@ -57,7 +68,7 @@ npm run build && npm test && npm run test:ui && npm run test:api   # 147 tests, 
 ## Open work, in priority order
 
 1. **Data from Jeremy:** `duration_seconds` for `simbility-desk-series` and `thales-rcn` in `src/data/projects.json`. This turns the timeline ruler labels and running timecode back on.
-2. **Sound bin regression:** it renders one column at 1440 with coarse, stretched waveforms. Restore two columns (`.tracks` grid in `src/components/Sound.astro`).
+2. **Entry review:** Jeremy to review the local hero-first draft before deciding whether a separate landing page or Classic-first entry is preferable. Sound grid regression is fixed locally (`703e14c`).
 3. **Mixed type in head strips:** in the INFO pane, About and Contact heads, the mono readout runs look optically larger than the Barlow beside them, and the About head's dot spacing mixes both faces. Shrink or retune the mono run.
 4. **Production Intelligence** row shows a logo on a white square (`/assets/rome-brone.svg`): decide on a real capture or a treatment.
 5. **Burned-in monitor timecode:** left out on purpose ("footage untouched"), but that reason is applied inconsistently, so it's a taste call.
