@@ -55,7 +55,7 @@ const stripImages: StripImage[] = [
   { src: '/assets/hero-strip/new-cabin-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop and monitors at an editing workstation by a window' },
   { src: '/assets/hero-strip/new-edit-station.webp', project: '', client: '', year: '', role: '', alt: 'Editing workstation with a laptop and vertical monitor' },
   { src: '/assets/hero-strip/new-office-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a laptop in a production office' },
-  { src: '/assets/hero-strip/new-mural-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a colorful studio mural', focus: 'portrait-down' },
+  { src: '/assets/hero-strip/new-mural-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a colorful studio mural' },
   { src: '/assets/hero-strip/new-location-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop editing station with headphones on a production floor' },
   { src: '/assets/hero-strip/new-dark-edit-suite.webp', project: '', client: '', year: '', role: '', alt: 'Dark editing suite with three monitors' },
   { src: '/assets/hero-strip/new-studio-session.webp', project: '', client: '', year: '', role: '', alt: 'Recording studio session at a mixing console' },
@@ -195,8 +195,6 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__frame.is-center :is(img, video){ filter:none; transform:scale(1); }
   .introduction__frame[data-focus="portrait-up"] :is(img, video),
   .introduction__frame.is-center[data-focus="portrait-up"] :is(img, video){ object-position:center bottom; transform:scale(1.1) translateY(-10%); }
-  .introduction__frame[data-focus="portrait-down"] :is(img, video),
-  .introduction__frame.is-center[data-focus="portrait-down"] :is(img, video){ object-position:center top; transform:scale(1.1) translateY(8%); }
   .introduction__frame-chrome{ position:absolute; z-index:3; inset:0; pointer-events:none; }
   .introduction__frame-corner{ position:absolute; width:14px; height:14px; border-color:var(--text); border-style:solid; opacity:.82; }
   .introduction__frame-corner--tl{ top:0; left:21.875%; border-width:1px 0 0 1px; }
@@ -241,7 +239,6 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
   .introduction__mobile-still{ display:block; background:var(--panel); }
   .introduction__mobile-still[data-focus="portrait-up"]{ object-position:center bottom; transform:scale(1.1) translateY(-10%); }
-  .introduction__mobile-still[data-focus="portrait-down"]{ object-position:center top; transform:scale(1.1) translateY(8%); }
     .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
     .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
     .introduction__mobile-chrome .introduction__frame-corner--tr{ top:0; right:0; }
