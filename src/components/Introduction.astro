@@ -50,10 +50,10 @@ const stripImages: StripImage[] = [
   { src: '/assets/hero-strip/chac-mool-cenote.jpg', project: 'Chac Mool Cenote · Cavern Dive', client: '', year: '', role: 'Camera Operator' },
   { src: '/assets/hero-strip/new-rgb-edit-suite.webp', project: '', client: '', year: '', role: '', alt: 'RGB-lit editing desk with a pair of monitors' },
   { src: '/assets/hero-strip/new-production-office.webp', project: '', client: '', year: '', role: '', alt: 'Camera crew filming in an office' },
-  { src: '/assets/hero-strip/new-headphones-selfie.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait wearing headphones at a workstation', focus: 'headphones-up' },
+  { src: '/assets/hero-strip/new-headphones-selfie.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait wearing headphones at a workstation' },
   { src: '/assets/hero-strip/new-portrait.webp', project: '', client: '', year: '', role: '', alt: 'Portrait outdoors', focus: 'portrait-up' },
   { src: '/assets/hero-strip/new-cabin-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop and monitors at an editing workstation by a window' },
-  { src: '/assets/hero-strip/new-edit-station.webp', project: '', client: '', year: '', role: '', alt: 'Editing workstation with a laptop and vertical monitor', focus: 'edit-station' },
+  { src: '/assets/hero-strip/new-edit-station.webp', project: '', client: '', year: '', role: '', alt: 'Editing workstation with a laptop and vertical monitor' },
   { src: '/assets/hero-strip/new-office-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a laptop in a production office' },
   { src: '/assets/hero-strip/new-mural-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a colorful studio mural', focus: 'portrait-down' },
   { src: '/assets/hero-strip/new-location-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop editing station with headphones on a production floor' },
@@ -64,7 +64,12 @@ const stripImages: StripImage[] = [
 
 // Interleave the untitled production moments between job-specific frames.
 const stripOrder = [0, 22, 3, 6, 9, 12, 25, 26, 30, 15, 18, 31, 20, 1, 32, 4, 7, 33, 10, 13, 34, 16, 19, 35, 21, 2, 36, 23, 5, 37, 8, 11, 38, 14, 17, 39, 24, 27, 40, 28, 41, 29];
-const orderedStripImages = stripOrder.map((index) => stripImages[index]);
+const removedStripSources = new Set([
+  '/assets/hero-strip/new-headphones-selfie.webp',
+  '/assets/hero-strip/new-edit-station.webp',
+  '/assets/hero-strip/new-location-edit.webp',
+]);
+const orderedStripImages = stripOrder.map((index) => stripImages[index]).filter((image) => !removedStripSources.has(image.src));
 const fillerWords = new Set(['a', 'an', 'and', 'for', 'of', 'the', 'to']);
 const projectInfo = ({ project, client }: StripImage) => {
   if (!project && !client) return '';
@@ -176,6 +181,8 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__mobile-track.is-sliding .introduction__mobile-side--next{ filter:none; transform:scale(1); }
   .introduction__mobile-side{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
   .introduction__mobile-video{ display:block; position:absolute; z-index:2; top:0; left:21.875%; width:56.25%; height:100%; object-fit:cover; }
+  .introduction__mobile-video{ transition:transform .8s cubic-bezier(.22,.61,.36,1); }
+  .introduction__mobile-video.is-sliding{ transform:translateX(-100%); }
   .introduction__mobile-video[hidden]{ display:none; }
   .introduction__mobile-chrome{ display:none; }
   .introduction__image{ position:relative; display:block; aspect-ratio:3.16/1; overflow:hidden; background:var(--panel); }
@@ -186,12 +193,8 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__frame{ position:relative; z-index:1; flex:0 0 56.25%; height:100%; aspect-ratio:16/9; overflow:hidden; background:var(--panel); }
   .introduction__frame :is(img, video){ display:block; width:100%; height:100%; object-fit:cover; filter:brightness(.58) blur(1.8px); transform:scale(1.035); transition:filter .8s ease, transform .8s ease; }
   .introduction__frame.is-center :is(img, video){ filter:none; transform:scale(1); }
-  .introduction__frame[data-focus="edit-station"] :is(img, video),
-  .introduction__frame.is-center[data-focus="edit-station"] :is(img, video){ object-position:center bottom; transform:scale(1.1) translateY(-4%); }
   .introduction__frame[data-focus="portrait-up"] :is(img, video),
   .introduction__frame.is-center[data-focus="portrait-up"] :is(img, video){ object-position:center bottom; transform:scale(1.1) translateY(-10%); }
-  .introduction__frame[data-focus="headphones-up"] :is(img, video),
-  .introduction__frame.is-center[data-focus="headphones-up"] :is(img, video){ object-position:center bottom; transform:scale(1.1) translateY(-28%); }
   .introduction__frame[data-focus="portrait-down"] :is(img, video),
   .introduction__frame.is-center[data-focus="portrait-down"] :is(img, video){ object-position:center top; transform:scale(1.1) translateY(8%); }
   .introduction__frame-chrome{ position:absolute; z-index:3; inset:0; pointer-events:none; }
@@ -221,7 +224,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__next > span:last-child{ color:var(--muted); }
   .introduction__next:hover > span:last-child{ color:var(--text); }
   [data-strip-role]{ color:var(--muted); }
-  @media (prefers-reduced-motion: reduce){ .introduction__track, .introduction__frame :is(img, video), .introduction__progress-playhead{ transition:none; } }
+  @media (prefers-reduced-motion: reduce){ .introduction__track, .introduction__frame :is(img, video), .introduction__mobile-video, .introduction__progress-playhead{ transition:none; } }
   @media (max-width:900px){
     .introduction__body{ grid-template-columns:1fr; gap:32px; padding-top:40px; padding-bottom:32px; }
     h1{ max-width:12ch; font-size:clamp(56px, 10vw, 88px); }
@@ -237,9 +240,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     .introduction__image{ display:none; }
     .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
   .introduction__mobile-still{ display:block; background:var(--panel); }
-  .introduction__mobile-still[data-focus="edit-station"]{ object-position:center bottom; transform:scale(1.1) translateY(-4%); }
   .introduction__mobile-still[data-focus="portrait-up"]{ object-position:center bottom; transform:scale(1.1) translateY(-10%); }
-  .introduction__mobile-still[data-focus="headphones-up"]{ object-position:center bottom; transform:scale(1.1) translateY(-28%); }
   .introduction__mobile-still[data-focus="portrait-down"]{ object-position:center top; transform:scale(1.1) translateY(8%); }
     .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
     .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
@@ -281,6 +282,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     if (!mobileVideo) return;
     mobileVideo.pause();
     mobileVideo.currentTime = 0;
+    mobileVideo.classList.remove('is-sliding');
     mobileVideo.hidden = true;
   };
   const syncMobileVideo = (frame: HTMLElement) => {
@@ -329,6 +331,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
       return;
     }
     const token = ++mobileSlideToken;
+    mobileVideo?.classList.add('is-sliding');
     mobileTrack.classList.add('is-sliding');
     const finish = () => {
       if (token !== mobileSlideToken) return;
