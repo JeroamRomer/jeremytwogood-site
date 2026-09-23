@@ -52,7 +52,7 @@ const tabs = [
     position:relative;
   }
   .bar__lockup{ position:relative; display:flex; align-items:center; gap:10px; }
-  .bar__rollout{ position:absolute; left:13px; right:0; bottom:-5px; height:2px; background:currentColor; transform:scaleX(0); transform-origin:left center; animation:bar-reel-line 1.6s ease-in-out both; pointer-events:none; }
+  .bar__rollout{ position:absolute; left:10px; right:0; bottom:1px; height:2px; background:currentColor; transform:scaleX(0); transform-origin:left center; animation:bar-reel-line 1.6s ease-in-out both; pointer-events:none; }
   .bar__brand:hover .bar__rollout, .bar__brand:focus-visible .bar__rollout{ animation:bar-reel-line-loop 2.8s ease-in-out infinite; }
   .bar__mark-wrap{ display:grid; place-items:center; flex:0 0 20px; }
   .bar__mark-roll{ transform-origin:center; animation:bar-reel-roll 1.6s ease-in-out; }
@@ -94,7 +94,6 @@ const tabs = [
   @media (max-width: 760px){
     .bar{ height:auto; flex-wrap:wrap; }
     .bar__brand{ flex:1 1 auto; height:var(--bar-h); border-right:0; padding:0 14px; padding-right:calc(14px + var(--chat-trigger-w-mobile)); }
-    .bar__rollout{ left:10px; bottom:1px; }
     .bar__status{ display:none; }
     .bar__tabs{ flex:1 1 100%; border-top:1px solid var(--hair); }
     .bar__tab{ flex:1 1 0; justify-content:center; padding:0 4px; min-height:40px; }
