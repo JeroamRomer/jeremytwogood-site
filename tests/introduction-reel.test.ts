@@ -32,6 +32,22 @@ test('hero reel separates project identity from role credits and shows all 41 st
     }) as typeof window.setTimeout;
   });
   await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await page.locator('.bar__rollout, .bar__mark-roll').evaluateAll(elements => {
+    elements.flatMap(element => element.getAnimations()).forEach(animation => animation.finish());
+  });
+
+  const desktopBrandGeometry = await page.locator('.bar__brand').evaluate(element => {
+    const mark = element.querySelector('.bar__mark-wrap')!.getBoundingClientRect();
+    const name = element.querySelector('.bar__name')!.getBoundingClientRect();
+    const rollout = element.querySelector('.bar__rollout')!.getBoundingClientRect();
+    return { mark, name, rollout };
+  });
+  assert.ok(Math.abs(desktopBrandGeometry.rollout.left - (desktopBrandGeometry.mark.left + desktopBrandGeometry.mark.width / 2)) < 0.5,
+    `desktop reel underline should roll out from the reel center: ${JSON.stringify(desktopBrandGeometry)}`);
+  assert.ok(Math.abs(desktopBrandGeometry.rollout.bottom - desktopBrandGeometry.mark.bottom) < 0.5,
+    `desktop reel underline should meet the reel's lower edge: ${JSON.stringify(desktopBrandGeometry)}`);
+  assert.ok(Math.abs(desktopBrandGeometry.rollout.right - desktopBrandGeometry.name.right) < 0.5,
+    `desktop reel underline should stop at the wordmark period: ${JSON.stringify(desktopBrandGeometry)}`);
 
   const frames = page.locator('.introduction__frame');
   assert.equal(await frames.count(), 42);
@@ -79,6 +95,9 @@ test('hero reel separates project identity from role credits and shows all 41 st
     const alt = await frame.locator('img, video').getAttribute('aria-label') ?? await frame.locator('img, video').getAttribute('alt');
     assert.ok(alt && !alt.includes('—'), `${src} should retain descriptive accessibility text without a title separator`);
   }
+  const editStationFrame = frames.filter({ has: page.locator('img[src="/assets/hero-strip/new-edit-station.webp"]') });
+  assert.equal(await editStationFrame.getAttribute('data-focus'), 'edit-station',
+    'the edit-station still should use its upward crop treatment');
   const untitledFrameIndexes = await frames.evaluateAll((elements, sources) => elements.flatMap((element, index) => {
     const source = element.querySelector('video')?.getAttribute('src') ?? element.querySelector('img')?.getAttribute('src');
     return (sources as string[]).includes(source ?? '') ? [index] : [];

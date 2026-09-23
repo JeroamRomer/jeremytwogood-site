@@ -11,6 +11,7 @@ type StripImage = {
   year: string;
   role: string;
   alt?: string;
+  focus?: string;
   kind?: 'video';
   poster?: string;
   durationMs?: number;
@@ -52,7 +53,7 @@ const stripImages: StripImage[] = [
   { src: '/assets/hero-strip/new-headphones-selfie.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait wearing headphones at a workstation' },
   { src: '/assets/hero-strip/new-portrait.webp', project: '', client: '', year: '', role: '', alt: 'Portrait outdoors' },
   { src: '/assets/hero-strip/new-cabin-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop and monitors at an editing workstation by a window' },
-  { src: '/assets/hero-strip/new-edit-station.webp', project: '', client: '', year: '', role: '', alt: 'Editing workstation with a laptop and vertical monitor' },
+  { src: '/assets/hero-strip/new-edit-station.webp', project: '', client: '', year: '', role: '', alt: 'Editing workstation with a laptop and vertical monitor', focus: 'edit-station' },
   { src: '/assets/hero-strip/new-office-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a laptop in a production office' },
   { src: '/assets/hero-strip/new-mural-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a colorful studio mural' },
   { src: '/assets/hero-strip/new-location-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop editing station with headphones on a production floor' },
@@ -117,7 +118,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
         <div class="introduction__image" aria-label="Selected work film strip">
           <div class="introduction__track">
             {orderedStripImages.map((image, index) => (
-              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-kind={image.kind ?? 'image'} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} data-alt={mediaAlt(image)} data-poster={image.poster ?? ''} data-duration-ms={image.durationMs ?? ''} style={`background-image:url('${mediaPoster(image)}')`}>
+              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-kind={image.kind ?? 'image'} data-focus={image.focus ?? ''} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} data-alt={mediaAlt(image)} data-poster={image.poster ?? ''} data-duration-ms={image.durationMs ?? ''} style={`background-image:url('${mediaPoster(image)}')`}>
                 {image.kind === 'video'
                   ? <video src={image.src} poster={image.poster} aria-label={mediaAlt(image)} muted playsinline preload="metadata"></video>
                   : <img src={image.src} alt={mediaAlt(image)} width="960" height="540" loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />}
@@ -182,6 +183,8 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__frame{ position:relative; flex:0 0 56.25%; height:100%; aspect-ratio:16/9; overflow:hidden; background:var(--panel); }
   .introduction__frame :is(img, video){ display:block; width:100%; height:100%; object-fit:cover; filter:brightness(.58) blur(1.8px); transform:scale(1.035); transition:filter .8s ease, transform .8s ease; }
   .introduction__frame.is-center :is(img, video){ filter:none; transform:scale(1); }
+  .introduction__frame[data-focus="edit-station"] :is(img, video),
+  .introduction__frame.is-center[data-focus="edit-station"] :is(img, video){ object-position:center bottom; transform:scale(1.1) translateY(-4%); }
   .introduction__frame-chrome{ position:absolute; z-index:3; inset:0; pointer-events:none; }
   .introduction__frame-corner{ position:absolute; width:14px; height:14px; border-color:var(--text); border-style:solid; opacity:.82; }
   .introduction__frame-corner--tl{ top:0; left:21.875%; border-width:1px 0 0 1px; }
@@ -224,7 +227,8 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     .introduction__shade{ display:none; }
     .introduction__image{ display:none; }
     .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
-    .introduction__mobile-still{ display:block; background:var(--panel); }
+  .introduction__mobile-still{ display:block; background:var(--panel); }
+  .introduction__mobile-still[data-focus="edit-station"]{ object-position:center bottom; transform:scale(1.1) translateY(-4%); }
     .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
     .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
     .introduction__mobile-chrome .introduction__frame-corner--tr{ top:0; right:0; }
@@ -293,6 +297,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
       if (frame) {
         mobileStill.src = mediaPoster(frame);
         mobileStill.alt = mediaAlt(frame);
+        mobileStill.dataset.focus = frame.dataset.focus ?? '';
       }
     }
     const frame = frames[index];
