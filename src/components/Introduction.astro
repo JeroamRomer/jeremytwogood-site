@@ -4,7 +4,19 @@ import reel from '../data/reel-index.json';
 
 const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_id}?autoplay=1&rel=0`;
 
-const stripImages = [
+type StripImage = {
+  src: string;
+  project: string;
+  client: string;
+  year: string;
+  role: string;
+  alt?: string;
+  kind?: 'video';
+  poster?: string;
+  durationMs?: number;
+};
+
+const stripImages: StripImage[] = [
   { src: '/assets/hero-strip/shell-1.jpg', project: 'Shell × John Williams', client: 'Shell', year: '2023', role: 'Editor · Colour Grade' },
   { src: '/assets/hero-strip/caot-still.jpg', project: 'Canadian Association of Occupational Therapists', client: 'CAOT', year: '2026', role: 'Editor · Motion GFX' },
   { src: '/assets/fivepoints-thumb.png', project: '5 Points Nashville Hot Chicken', client: 'Talk T.O. My Stomach', year: '2018', role: 'Producer · Editor · Host' },
@@ -35,13 +47,26 @@ const stripImages = [
   { src: '/assets/hero-strip/zane-caplansky.jpg', project: 'Zane Caplansky Interview', client: 'Talk T.O. My Stomach', year: '', role: 'Producer · Editor · Host' },
   { src: '/assets/hero-strip/nbn-light-em-up.jpg', project: 'NBN Boxing · Light Em Up', client: 'NBN', year: '', role: 'Editor · Story Editor · Motion Graphics' },
   { src: '/assets/hero-strip/chac-mool-cenote.jpg', project: 'Chac Mool Cenote · Cavern Dive', client: '', year: '', role: 'Camera Operator' },
+  { src: '/assets/hero-strip/new-rgb-edit-suite.webp', project: '', client: '', year: '', role: '', alt: 'RGB-lit editing desk with a pair of monitors' },
+  { src: '/assets/hero-strip/new-production-office.webp', project: '', client: '', year: '', role: '', alt: 'Camera crew filming in an office' },
+  { src: '/assets/hero-strip/new-headphones-selfie.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait wearing headphones at a workstation' },
+  { src: '/assets/hero-strip/new-portrait.webp', project: '', client: '', year: '', role: '', alt: 'Portrait outdoors' },
+  { src: '/assets/hero-strip/new-cabin-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop and monitors at an editing workstation by a window' },
+  { src: '/assets/hero-strip/new-edit-station.webp', project: '', client: '', year: '', role: '', alt: 'Editing workstation with a laptop and vertical monitor' },
+  { src: '/assets/hero-strip/new-office-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a laptop in a production office' },
+  { src: '/assets/hero-strip/new-mural-self.webp', project: '', client: '', year: '', role: '', alt: 'Self portrait beside a colorful studio mural' },
+  { src: '/assets/hero-strip/new-location-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop editing station with headphones on a production floor' },
+  { src: '/assets/hero-strip/new-dark-edit-suite.webp', project: '', client: '', year: '', role: '', alt: 'Dark editing suite with three monitors' },
+  { src: '/assets/hero-strip/new-studio-session.webp', project: '', client: '', year: '', role: '', alt: 'Recording studio session at a mixing console' },
+  { src: '/assets/hero-strip/new-production-move.mp4', project: '', client: '', year: '', role: '', alt: 'Production crew reviewing a cinema camera in an office', kind: 'video', poster: '/assets/hero-strip/new-production-move-poster.webp', durationMs: 9605 },
 ];
 
-// Interleave projects so adjacent windows always show a different piece of work.
-const stripOrder = [0, 22, 3, 6, 9, 12, 25, 26, 15, 18, 20, 1, 4, 7, 10, 13, 16, 19, 21, 2, 23, 5, 8, 11, 14, 17, 24, 27, 28, 29];
+// Interleave the untitled production moments between job-specific frames.
+const stripOrder = [0, 22, 3, 6, 9, 12, 25, 26, 30, 15, 18, 31, 20, 1, 32, 4, 7, 33, 10, 13, 34, 16, 19, 35, 21, 2, 36, 23, 5, 37, 8, 11, 38, 14, 17, 39, 24, 27, 40, 28, 41, 29];
 const orderedStripImages = stripOrder.map((index) => stripImages[index]);
 const fillerWords = new Set(['a', 'an', 'and', 'for', 'of', 'the', 'to']);
-const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
+const projectInfo = ({ project, client }: StripImage) => {
+  if (!project && !client) return '';
   const projectWords = project.toLocaleLowerCase().match(/[a-z0-9]+/g) ?? [];
   const clientWords = client.toLocaleLowerCase().match(/[a-z0-9]+/g) ?? [];
   const clientKey = clientWords.join('');
@@ -55,6 +80,8 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
     ? project
     : `${client} · ${project}`;
 };
+const mediaAlt = (image: StripImage) => image.alt ?? `${projectInfo(image)} — ${image.role}`;
+const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster ?? image.src : image.src;
 ---
 <section id="top" class="introduction" aria-labelledby="introduction-title">
   <div class="introduction__body">
@@ -74,11 +101,12 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
       <div class="introduction__media">
         <div class="introduction__mobile-strip">
           <div class="introduction__mobile-track">
-            <img class="introduction__mobile-side introduction__mobile-side--prev" src={orderedStripImages[orderedStripImages.length - 1].src} alt="" width="960" height="540" aria-hidden="true" />
-            <img class="introduction__mobile-still" src={orderedStripImages[0].src} alt={`${projectInfo(orderedStripImages[0])} — ${orderedStripImages[0].role}`} width="960" height="540" fetchpriority="high" />
-            <img class="introduction__mobile-side introduction__mobile-side--next" src={orderedStripImages[1].src} alt="" width="960" height="540" aria-hidden="true" />
-            <img class="introduction__mobile-side introduction__mobile-side--after" src={orderedStripImages[2].src} alt="" width="960" height="540" aria-hidden="true" />
+            <img class="introduction__mobile-side introduction__mobile-side--prev" src={mediaPoster(orderedStripImages[orderedStripImages.length - 1])} alt="" width="960" height="540" aria-hidden="true" />
+            <img class="introduction__mobile-still" src={mediaPoster(orderedStripImages[0])} alt={mediaAlt(orderedStripImages[0])} width="960" height="540" fetchpriority="high" />
+            <img class="introduction__mobile-side introduction__mobile-side--next" src={mediaPoster(orderedStripImages[1])} alt="" width="960" height="540" aria-hidden="true" />
+            <img class="introduction__mobile-side introduction__mobile-side--after" src={mediaPoster(orderedStripImages[2])} alt="" width="960" height="540" aria-hidden="true" />
           </div>
+          <video class="introduction__mobile-video" muted playsinline preload="metadata" aria-label={mediaAlt(orderedStripImages[0])} hidden></video>
           <div class="introduction__mobile-chrome" aria-hidden="true">
             <span class="introduction__frame-corner introduction__frame-corner--tl"></span>
             <span class="introduction__frame-corner introduction__frame-corner--tr"></span>
@@ -89,8 +117,10 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
         <div class="introduction__image" aria-label="Selected work film strip">
           <div class="introduction__track">
             {orderedStripImages.map((image, index) => (
-              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} style={`background-image:url('${image.src}')`}>
-                <img src={image.src} alt={`${projectInfo(image)} — ${image.role}`} width="960" height="540" loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-kind={image.kind ?? 'image'} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} data-alt={mediaAlt(image)} data-poster={image.poster ?? ''} data-duration-ms={image.durationMs ?? ''} style={`background-image:url('${mediaPoster(image)}')`}>
+                {image.kind === 'video'
+                  ? <video src={image.src} poster={image.poster} aria-label={mediaAlt(image)} muted playsinline preload="metadata"></video>
+                  : <img src={image.src} alt={mediaAlt(image)} width="960" height="540" loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />}
               </div>
             ))}
           </div>
@@ -144,12 +174,14 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
   .introduction__mobile-track.is-sliding .introduction__mobile-still{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
   .introduction__mobile-track.is-sliding .introduction__mobile-side--next{ filter:none; transform:scale(1); }
   .introduction__mobile-side{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
+  .introduction__mobile-video{ display:block; position:absolute; z-index:2; top:0; left:21.875%; width:56.25%; height:100%; object-fit:cover; }
+  .introduction__mobile-video[hidden]{ display:none; }
   .introduction__mobile-chrome{ display:none; }
   .introduction__image{ position:relative; display:block; aspect-ratio:3.16/1; overflow:hidden; background:var(--panel); }
   .introduction__track{ display:flex; align-items:center; height:100%; width:100%; transform:translateX(calc(50% - 28.125%)); transition:transform .8s cubic-bezier(.22,.61,.36,1); will-change:transform; }
   .introduction__frame{ position:relative; flex:0 0 56.25%; height:100%; aspect-ratio:16/9; overflow:hidden; background:var(--panel); }
-  .introduction__frame img{ display:block; width:100%; height:100%; object-fit:cover; filter:brightness(.58) blur(1.8px); transform:scale(1.035); transition:filter .8s ease, transform .8s ease; }
-  .introduction__frame.is-center img{ filter:none; transform:scale(1); }
+  .introduction__frame :is(img, video){ display:block; width:100%; height:100%; object-fit:cover; filter:brightness(.58) blur(1.8px); transform:scale(1.035); transition:filter .8s ease, transform .8s ease; }
+  .introduction__frame.is-center :is(img, video){ filter:none; transform:scale(1); }
   .introduction__frame-chrome{ position:absolute; z-index:3; inset:0; pointer-events:none; }
   .introduction__frame-corner{ position:absolute; width:14px; height:14px; border-color:var(--text); border-style:solid; opacity:.82; }
   .introduction__frame-corner--tl{ top:0; left:21.875%; border-width:1px 0 0 1px; }
@@ -177,7 +209,7 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
   .introduction__next > span:last-child{ color:var(--muted); }
   .introduction__next:hover > span:last-child{ color:var(--text); }
   [data-strip-role]{ color:var(--muted); }
-  @media (prefers-reduced-motion: reduce){ .introduction__track, .introduction__frame img, .introduction__progress-playhead{ transition:none; } }
+  @media (prefers-reduced-motion: reduce){ .introduction__track, .introduction__frame :is(img, video), .introduction__progress-playhead{ transition:none; } }
   @media (max-width:900px){
     .introduction__body{ grid-template-columns:1fr; gap:32px; padding-top:40px; padding-bottom:32px; }
     h1{ max-width:12ch; font-size:clamp(56px, 10vw, 88px); }
@@ -218,21 +250,53 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
   const mobilePrev = document.querySelector<HTMLImageElement>('.introduction__mobile-side--prev');
   const mobileNext = document.querySelector<HTMLImageElement>('.introduction__mobile-side--next');
   const mobileAfter = document.querySelector<HTMLImageElement>('.introduction__mobile-side--after');
+  const mobileVideo = document.querySelector<HTMLVideoElement>('.introduction__mobile-video');
   const mobileTrack = document.querySelector<HTMLElement>('.introduction__mobile-track');
   let mobileIndex: number | null = null;
   let mobileSlideTimer = 0;
   let mobileSlideToken = 0;
-  const syncMobileSources = (index: number) => {
-    const previous = frames[(index - 1 + frames.length) % frames.length]?.querySelector<HTMLImageElement>('img');
-    const next = frames[(index + 1) % frames.length]?.querySelector<HTMLImageElement>('img');
-    const after = frames[(index + 2) % frames.length]?.querySelector<HTMLImageElement>('img');
-    if (mobilePrev && previous) mobilePrev.src = previous.src;
-    if (mobileNext && next) mobileNext.src = next.src;
-    if (mobileAfter && after) mobileAfter.src = after.src;
-    if (mobileStill) {
-      const source = frames[index]?.querySelector<HTMLImageElement>('img');
-      if (source) mobileStill.src = source.src;
+  let centerIndex = 0;
+  let advanceTimer = 0;
+  let advanceReentry = false;
+  const isMobileViewport = () => window.matchMedia('(max-width:760px)').matches;
+  const mediaPoster = (frame: HTMLElement) => frame.dataset.poster || frame.querySelector<HTMLVideoElement>('video')?.poster || frame.querySelector<HTMLImageElement>('img')?.src || '';
+  const mediaAlt = (frame: HTMLElement) => frame.dataset.alt || 'Selected work still';
+  const hideMobileVideo = () => {
+    if (!mobileVideo) return;
+    mobileVideo.pause();
+    mobileVideo.currentTime = 0;
+    mobileVideo.hidden = true;
+  };
+  const syncMobileVideo = (frame: HTMLElement) => {
+    if (!mobileVideo || frame.dataset.kind !== 'video') {
+      hideMobileVideo();
+      return;
     }
+    const source = frame.querySelector<HTMLVideoElement>('video');
+    if (!source) return;
+    mobileVideo.src = source.currentSrc || source.src;
+    mobileVideo.poster = source.poster;
+    mobileVideo.setAttribute('aria-label', mediaAlt(frame));
+    mobileVideo.hidden = !isMobileViewport();
+    mobileVideo.currentTime = 0;
+    if (!reduce && isMobileViewport()) mobileVideo.play().catch(() => {});
+  };
+  const syncMobileSources = (index: number) => {
+    const previous = frames[(index - 1 + frames.length) % frames.length];
+    const next = frames[(index + 1) % frames.length];
+    const after = frames[(index + 2) % frames.length];
+    if (mobilePrev && previous) mobilePrev.src = mediaPoster(previous);
+    if (mobileNext && next) mobileNext.src = mediaPoster(next);
+    if (mobileAfter && after) mobileAfter.src = mediaPoster(after);
+    if (mobileStill) {
+      const frame = frames[index];
+      if (frame) {
+        mobileStill.src = mediaPoster(frame);
+        mobileStill.alt = mediaAlt(frame);
+      }
+    }
+    const frame = frames[index];
+    if (frame) syncMobileVideo(frame);
   };
   const updateMobileStrip = (index: number) => {
     if (!mobileTrack || mobileIndex === null || index === mobileIndex) {
@@ -240,7 +304,14 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
       mobileIndex = index;
       return;
     }
+    if (reduce) {
+      hideMobileVideo();
+      syncMobileSources(index);
+      mobileIndex = index;
+      return;
+    }
     const token = ++mobileSlideToken;
+    hideMobileVideo();
     mobileTrack.classList.add('is-sliding');
     const finish = () => {
       if (token !== mobileSlideToken) return;
@@ -272,17 +343,65 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
     image.fetchPriority = 'high';
     if (!image.complete) image.decode?.().catch(() => {});
   };
+  const clearAdvanceTimer = () => {
+    if (advanceTimer) window.clearTimeout(advanceTimer);
+    advanceTimer = 0;
+  };
+  const scheduleAdvance = (index: number) => {
+    clearAdvanceTimer();
+    const frame = frames[index];
+    const video = frame?.querySelector<HTMLVideoElement>('video');
+    if (video && !reduce) return;
+    const duration = 5000;
+    advanceTimer = window.setTimeout(() => advance(), duration);
+  };
+  const advance = () => {
+    if (advanceReentry || !frames.length) return;
+    advanceReentry = true;
+    clearAdvanceTimer();
+    if (centerIndex === frames.length - 1) {
+      track?.style.setProperty('transition', 'none');
+      if (progressPlayhead) progressPlayhead.style.transition = 'none';
+      centerIndex = 0;
+      if (track) track.style.transform = 'translateX(calc(50% - 28.125%))';
+      setCenter(centerIndex);
+      progressPlayhead?.getBoundingClientRect();
+      window.requestAnimationFrame(() => {
+        if (track) track.style.transition = '';
+        if (progressPlayhead) progressPlayhead.style.transition = '';
+      });
+    } else {
+      centerIndex += 1;
+      preloadFrame(centerIndex);
+      preloadFrame(centerIndex + 1);
+      if (track) track.style.transform = `translateX(calc(50% - ${(centerIndex + 0.5) * 56.25}%))`;
+      setCenter(centerIndex);
+    }
+    scheduleAdvance(centerIndex);
+    advanceReentry = false;
+  };
   const setCenter = (index: number) => {
-    frames.forEach((frame, frameIndex) => frame.classList.toggle('is-center', frameIndex === index));
+    frames.forEach((frame, frameIndex) => {
+      frame.classList.toggle('is-center', frameIndex === index);
+      if (frameIndex !== index) {
+        const video = frame.querySelector<HTMLVideoElement>('video');
+        video?.pause();
+        if (video) video.currentTime = 0;
+      }
+    });
     const center = frames[index];
     if (!center) return;
     if (project) project.textContent = center.dataset.project ?? 'Selected work';
     if (role) role.textContent = center.dataset.role ?? '';
     if (mobileStill) {
-      const source = center.querySelector<HTMLImageElement>('img');
-      mobileStill.alt = `${center.dataset.project ?? 'Selected work'} — ${center.dataset.role ?? ''}`;
+      mobileStill.alt = mediaAlt(center);
     }
     updateMobileStrip(index);
+    const video = center.querySelector<HTMLVideoElement>('video');
+    if (video && !reduce && !isMobileViewport()) {
+      video.currentTime = 0;
+      video.play().catch(() => advance());
+    }
     progress?.setAttribute('aria-valuenow', String(index + 1));
     progress?.setAttribute('aria-valuetext', `${index + 1} of ${frames.length}`);
     if (progressTrack && progressPlayhead && frames.length > 1) {
@@ -290,32 +409,37 @@ const projectInfo = ({ project, client }: (typeof stripImages)[number]) => {
       progressPlayhead.style.top = `${travel * index / (frames.length - 1)}px`;
     }
   };
+  const onVideoEnded = (event: Event) => {
+    if (event.currentTarget === frames[centerIndex]?.querySelector('video')) advance();
+  };
+  frames.forEach(frame => frame.querySelector<HTMLVideoElement>('video')?.addEventListener('ended', onVideoEnded));
+  mobileVideo?.addEventListener('ended', () => {
+    if (frames[centerIndex]?.dataset.kind === 'video') advance();
+  });
+  mobileVideo?.addEventListener('error', () => {
+    if (frames[centerIndex]?.dataset.kind === 'video') advance();
+  });
+  frames.forEach(frame => frame.querySelector<HTMLVideoElement>('video')?.addEventListener('error', onVideoEnded));
+  const viewportQuery = window.matchMedia('(max-width:760px)');
+  viewportQuery.addEventListener?.('change', () => {
+    const center = frames[centerIndex];
+    if (!center || center.dataset.kind !== 'video') return;
+    const video = center.querySelector<HTMLVideoElement>('video');
+    if (viewportQuery.matches) {
+      video?.pause();
+      syncMobileVideo(center);
+    } else {
+      hideMobileVideo();
+      if (video && !reduce) video.play().catch(() => advance());
+    }
+  });
   if (track && frames.length > 2) {
-    let centerIndex = Math.floor(Math.random() * frames.length);
+    centerIndex = Math.floor(Math.random() * frames.length);
     preloadFrame(centerIndex);
     preloadFrame((centerIndex + 1) % frames.length);
     preloadFrame((centerIndex + 2) % frames.length);
     setCenter(centerIndex);
     track.style.transform = `translateX(calc(50% - ${(centerIndex + 0.5) * 56.25}%))`;
-    window.setInterval(() => {
-      if (centerIndex === frames.length - 1) {
-        track.style.transition = 'none';
-        if (progressPlayhead) progressPlayhead.style.transition = 'none';
-        centerIndex = 0;
-        track.style.transform = 'translateX(calc(50% - 28.125%))';
-        setCenter(centerIndex);
-        progressPlayhead?.getBoundingClientRect();
-        window.requestAnimationFrame(() => {
-          track.style.transition = '';
-          if (progressPlayhead) progressPlayhead.style.transition = '';
-        });
-        return;
-      }
-      centerIndex += 1;
-      preloadFrame(centerIndex);
-      preloadFrame(centerIndex + 1);
-      track.style.transform = `translateX(calc(50% - ${(centerIndex + 0.5) * 56.25}%))`;
-      setCenter(centerIndex);
-    }, 5000);
+    scheduleAdvance(centerIndex);
   }
 </script>

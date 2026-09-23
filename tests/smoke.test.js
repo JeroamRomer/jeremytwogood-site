@@ -138,18 +138,19 @@ test('smoke: introduction uses a role-neutral rotating work montage', () => {
   assert.ok(html.includes('/assets/thales-thumb.jpg') && html.includes('/assets/talkto-thumb.png'), 'montage must use local work stills');
 });
 
-test('smoke: introduction renders the three-window film strip with project metadata', () => {
+test('smoke: introduction renders the mixed-media film strip with project metadata', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('introduction__track'), 'hero film strip track must exist');
   const frames = [...html.matchAll(/<div class="introduction__frame(?: is-center)?"[^>]*>[\s\S]*?<img src="([^"]+)"/g)];
-  assert.equal(frames.length, 30, 'hero strip must include one pass of 30 distinct stills');
+  assert.equal(frames.length, 41, 'hero strip must include one pass of 41 distinct stills');
+  assert.ok(html.includes('<video src="/assets/hero-strip/new-production-move.mp4"'), 'hero strip must include the full production video');
   assert.ok(frames.some(([, src]) => src === '/assets/hero-strip/francesco-yates.jpg'), 'hero strip should include the YouTube Creator Series still');
   assert.ok(html.includes('data-project="YouTube Creator Series · Francesco Yates"'), 'the new still should carry its series and featured creator credit');
   assert.ok(html.includes('data-client="YouTube"') && html.includes('data-role="Camera Operator"'), 'the new still should credit YouTube and camera operation');
   assert.ok(html.includes('data-project="Talk T.O. My Stomach · Zane Caplansky Interview"') && html.includes('data-role="Producer · Editor · Host"'), 'the Zane Caplansky still should carry the Talk T.O. My Stomach series credits');
   assert.ok(html.includes('data-project="NBN Boxing · Light Em Up"') && html.includes('data-role="Editor · Story Editor · Motion Graphics"'), 'the NBN boxing still should carry the supplied project and role credits');
   assert.ok(html.includes('data-project="Chac Mool Cenote · Cavern Dive"') && html.includes('data-role="Camera Operator"'), 'the Chac Mool still should identify the cavern dive and camera role');
-  assert.ok(html.includes('introduction__progress') && html.includes('aria-valuemax="30"'), 'the external reel progress ruler should describe the complete image count');
+  assert.ok(html.includes('introduction__progress') && html.includes('aria-valuemax="42"'), 'the external reel progress ruler should describe the complete media count');
   assert.equal(frames[1][1], '/assets/hero-strip/orm-multibox.jpg', 'the second still should be the ORMGP multi-feature graphic');
   assert.ok(!frames.some(([, src]) => src === '/assets/hero-strip/sizzle-evan-seth.jpg'), 'generic sizzle still should be removed from the strip');
   assert.ok(html.includes('data-project="Oak Ridges Moraine Groundwater Program"'), 'the ORMGP replacement should retain its project credit');
