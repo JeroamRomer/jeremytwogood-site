@@ -23,13 +23,19 @@ Scripts referenced below live in `.claude/skills/add-video/scripts/`
   `[id].astro` / `astro.config.mjs`.
 - **Homepage project count** — derived from `projects.json` in
   `Projects.astro`.
+- **Editing-suite timeline** — `src/components/suite/Sequence.astro` (layout
+  math in `src/lib/sequence.ts`) builds its clip order, widths, and ruler
+  straight from `projects.json` + the `PREVIEW_LOOPS` map. One project entry
+  places the video in both the timeline and the work grid below it — there
+  is no separate timeline data file, and nothing needs adding there by hand.
 
 ## Step 1 — Intake
 
 Collect from Jeremy (ask for whatever the message didn't include):
 URL (YouTube or Vimeo), client, project name, type (e.g. "Advocacy Film ·
 Documentary"), disciplines (e.g. "Editing · Motion Graphics"), role array,
-year, `featured` (bool), `span` (grid width, existing entries use 2-3).
+`featured` (bool), `span` (grid width, existing entries use 2-3). Year is
+optional — Jeremy may say to skip it ("we aren't using those").
 
 - Check `projects.json` for a matching `coming_soon` entry → **fill it**
   instead of appending.
@@ -90,19 +96,55 @@ Jeremy picks one:
 
 ## Step 5 — Hover loop — GATE
 
-```bash
-# Propose a start point (scene change nearest 1/3 of runtime):
-.claude/skills/add-video/scripts/make-loop.sh suggest <downloaded-video>
+As of the 2026-09-17 preview-cuts audit (`docs/preview-cuts.md`), loops are
+**complete shots cut exactly on the source's own edits**, not an arbitrary
+fixed-length window — `make-loop.sh cut`'s old 4-second-from-any-point
+behavior is superseded; only use its `suggest` mode (below) to locate
+candidates.
 
-# Cut at the suggested (or Jeremy's) start:
-.claude/skills/add-video/scripts/make-loop.sh cut <downloaded-video> <start> public/assets/<name>-loop
-```
-
-Loop filename follows the existing short-name convention (`chefnuit-loop`,
-not the full project id). Show Jeremy the cut (open the .mp4 with
-`open public/assets/<name>-loop.mp4`); re-cut at a different start until he
-approves. Output is fixed at 960×540, 24 fps, muted, 4 s, mp4+webm ≤ 300 KB
-each — that's in the script, don't override it.
+1. **Download a high-res source** if the watch download was low-res (thumbnail
+   and cut both want real resolution):
+   ```bash
+   yt-dlp -f <best-video-only-format> -o src.<ext> <watch-url>
+   ```
+2. **Find real cut points** near a natural mid-video moment (avoid the first
+   few seconds — that's usually a title or establishing shot):
+   ```bash
+   ffmpeg -i <source> -vf "select='gt(scene,0.12)',showinfo" -an -f null - 2>&1 \
+     | grep -o 'pts_time:[0-9.]*'
+   ```
+   `make-loop.sh suggest <source>` gives one candidate (scene change nearest
+   1/3 of runtime) if you want a starting guess instead of scanning by hand.
+   Convert the chosen start/end timestamps to frame numbers with `ffprobe`
+   (`select=eq(n\,<frame>)` framing) or by multiplying time × fps.
+3. **Render the frame-exact cut:**
+   ```bash
+   node scripts/render-preview.mjs <source> <start-frame> <end-frame> public/assets/<name>-loop
+   ```
+   (`end-frame` is exclusive.) Loop filename follows the existing short-name
+   convention (`chefnuit-loop`, not the full project id). Keep it under
+   ~300 KB per format — re-cut at a calmer moment rather than raising the
+   bitrate if it lands over.
+4. **Verify no flash frame bleeds in from an adjacent shot** — pixel-diff the
+   render's first/last frame against the source frames immediately outside
+   the cut (one before the start, the one at the excluded end frame):
+   ```bash
+   ffmpeg -y -i public/assets/<name>-loop.mp4 -vf "select=eq(n\,0)" -frames:v 1 out_first.png
+   ffmpeg -y -sseof -0.5 -i public/assets/<name>-loop.mp4 -frames:v 1 out_last.png
+   # extract the matching source frames at start, start-1, end-1, end, cropped 960x540,
+   # then diff each pair, e.g.:
+   ffmpeg -y -i out_first.png -i src_frame.png -filter_complex "blend=all_mode=difference,format=gray" -update 1 -frames:v 1 diff.png
+   ffmpeg -i diff.png -vf "signalstats,metadata=print" -f null - 2>&1 | grep YAVG
+   ```
+   The render should closely match (~low single-digit avg diff, encode noise
+   only) its own boundary frame and clearly diverge (tens of avg diff) from
+   the excluded neighbor on each side. If it doesn't, the frame numbers are
+   off by one — recheck against the `showinfo` timestamps.
+5. Show Jeremy the cut (`open public/assets/<name>-loop.mp4`); re-cut at a
+   different shot until he approves.
+6. **Record it in `docs/preview-cuts.md`** — add a row to the table (source,
+   fps, start/end frame, frame count, duration) and a short "why this cut"
+   bullet, matching the existing entries.
 
 ## Step 6 — Write data
 
@@ -127,6 +169,13 @@ Only after Gates 3-5 have all passed:
    }
    ```
    Measure `duration_seconds` with `yt-dlp --print duration --skip-download -q <watch-url>`; omit the field if the platform will not report it.
+   `year` should always be set to a bare `YYYY` string even when Jeremy says
+   not to bother with years — `[id].astro` builds the VideoObject JSON-LD
+   `uploadDate` as `` `${project.year}-01-01` ``, so anything other than a
+   plain 4-digit year (e.g. a full date) breaks that concatenation into an
+   invalid date. Nothing in the UI renders it — see the smoke tests
+   asserting no project dates render. If Jeremy has no year, use the
+   platform's upload date's year (`yt-dlp --print upload_date`).
    (Completed entries omit unused fields — no explicit nulls. Vimeo videos
    replace the two youtube fields with `vimeo_id` AND `vimeo_url` — see
    `simbility-desk-series`; the case-study page builds its watch link from
@@ -170,6 +219,8 @@ npm run test:api
 All must pass — if not, stop and fix before the commit gate. Then start the
 dev server (`.claude/launch.json`) and check in the browser:
 - Homepage: new card renders, hover plays the loop, project count is right.
+- Editing-suite timeline (`#edit`): the new clip appears in the sequence, in
+  the right order, with the right running time.
 - `/work/<id>`: copy, meta sidebar, player, and JSON-LD all render.
 
 Now clean up the watch working directory.

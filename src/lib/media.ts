@@ -12,6 +12,7 @@ export const PREVIEW_LOOPS: Record<string, string> = {
   'thales-rcn': 'thales-loop',
   'ttms-5-points': 'fivepoints-loop',
   'ns-health-westray': 'nshealth-loop',
+  'retailprophet-resurrecting-retail': 'retailprophet-loop',
 };
 
 interface ProjectMedia {

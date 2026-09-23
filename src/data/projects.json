@@ -117,5 +117,22 @@
     "thumbnail": "https://img.youtube.com/vi/5Ux0sDZ6MY0/maxresdefault.jpg",
     "featured": true,
     "span": 3
+  },
+  {
+    "id": "retailprophet-resurrecting-retail",
+    "name": "Resurrecting Retail",
+    "client": "Retail Prophet",
+    "type": "Book Trailer · Branded Content",
+    "disciplines": "Editing",
+    "year": "2021",
+    "role": [
+      "Editor"
+    ],
+    "youtube_id": "zidZCkwoEnE",
+    "youtube_url": "https://www.youtube.com/watch?v=zidZCkwoEnE",
+    "duration_seconds": 134,
+    "thumbnail": "/assets/retailprophet-thumb.jpg",
+    "featured": false,
+    "span": 2
   }
 ]

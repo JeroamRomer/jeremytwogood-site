@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import sharp from 'sharp';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const DIST = join(ROOT, 'dist');
@@ -39,6 +40,16 @@ test('smoke: index.html has OG meta tags', () => {
   assert.ok(html.includes('og:title'), 'og:title must be present');
   assert.ok(html.includes('og:description'), 'og:description must be present');
   assert.ok(html.includes('twitter:card'), 'twitter:card must be present');
+});
+
+test('smoke: index.html points to the versioned 1200x630 share image', async () => {
+  const html = getHtml('index.html');
+  assert.match(html, /property="og:image" content="https:\/\/jeremytwogood\.com\/og-image-open-sequence\.png"/);
+  assert.match(html, /name="twitter:image" content="https:\/\/jeremytwogood\.com\/og-image-open-sequence\.png"/);
+
+  const image = await sharp(join(ROOT, 'dist/og-image-open-sequence.png')).metadata();
+  assert.equal(image.width, 1200, 'share image must be 1200px wide');
+  assert.equal(image.height, 630, 'share image must be 630px high');
 });
 
 // ── Chat widget ──────────────────────────────────────────────────────────────
@@ -201,13 +212,13 @@ test('smoke: case study reads as source monitor + clip properties with prev/next
   assert.ok(html.includes('Running time'), 'running time property renders');
   assert.ok(html.includes('07:17'), 'running time is the real duration');
   assert.ok(html.includes('rel="next"'), 'next clip link renders');
-  const last = getHtml('work/ns-health-westray/index.html');
+  const last = getHtml('work/retailprophet-resurrecting-retail/index.html');
   assert.ok(last.includes('rel="prev"'), 'last case study links back');
   assert.ok(!last.includes('rel="next"'), 'last case study has no next link');
 });
 
-test('smoke: all six case-study pages are generated', () => {
-  const ids = ['shell-john-williams', 'simbility-desk-series', 'ttms-chef-nuit', 'xbox-forza-5', 'ttms-5-points', 'ns-health-westray'];
+test('smoke: all seven case-study pages are generated', () => {
+  const ids = ['shell-john-williams', 'simbility-desk-series', 'ttms-chef-nuit', 'xbox-forza-5', 'ttms-5-points', 'ns-health-westray', 'retailprophet-resurrecting-retail'];
   for (const id of ids) {
     assert.ok(existsSync(join(DIST, 'work', id, 'index.html')), `missing case-study page: ${id}`);
   }

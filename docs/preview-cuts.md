@@ -15,6 +15,7 @@ and the full Thales graded/ungraded comparison assets are unchanged.
 | thales-loop | `public/assets/thales-graded.mp4` | 30000/1001 | 601 | 694 | 93 | 3.1031 |
 | fivepoints-loop | YouTube `kG6aFDd9j_g` | 24000/1001 | 3315 | 3412 | 97 | 4.045708 |
 | nshealth-loop | YouTube `5Ux0sDZ6MY0` | 24000/1001 | 1902 | 2076 | 174 | 7.25725 |
+| retailprophet-loop | YouTube `zidZCkwoEnE` | 24000/1001 | 1682 | 1995 | 313 | 13.045958 |
 
 The local Simbility source is in
 `/Users/romer/Movies/+Work/+Renders/Simbility Outputs/H264/`.
@@ -39,6 +40,12 @@ derive a fresh preview from the already compressed four-second legacy loops.
   shot at the old excerpt's tail and restores the first shot's beginning.
 - NS Health: the complete outdoor close-up. The old loop cut through the
   middle of this uninterrupted shot at both ends.
+- Retail Prophet: the complete alley walk-and-talk shot of Doug Stephens.
+  Scene-detection scores of 0.28 and 0.45 at frames 1682 and 1995 confirm
+  real source edits at both boundaries; the clip's first/last frames pixel-match
+  their source frames (avg diff ~1-5) and clearly diverge from the excluded
+  neighbouring frames (avg diff ~44-53), so no flash frame bleeds in from
+  either adjacent shot.
 
 ## Reproduce and review
 

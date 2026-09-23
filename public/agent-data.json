@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-09-22T01:47:33.084Z",
+  "generated_at": "2026-09-23T17:30:21.934Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -108,6 +108,15 @@
         "Editor"
       ],
       "youtube_url": "https://www.youtube.com/watch?v=5Ux0sDZ6MY0"
+    },
+    {
+      "id": "retailprophet-resurrecting-retail",
+      "name": "Resurrecting Retail",
+      "client": "Retail Prophet",
+      "role": [
+        "Editor"
+      ],
+      "youtube_url": "https://www.youtube.com/watch?v=zidZCkwoEnE"
     }
   ],
   "ai_builds": [
