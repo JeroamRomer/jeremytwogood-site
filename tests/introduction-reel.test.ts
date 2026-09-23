@@ -32,6 +32,12 @@ test('hero reel separates project identity from role credits and shows all 41 st
     }) as typeof window.setTimeout;
   });
   await page.goto(url, { waitUntil: 'domcontentloaded' });
+  const edgeImages = await page.locator('.introduction__track').evaluate(track => ({
+    start: getComputedStyle(track, '::before').backgroundImage,
+    end: getComputedStyle(track, '::after').backgroundImage,
+  }));
+  assert.match(edgeImages.start, /chac-mool-cenote\.jpg/, 'the opening edge should show the reel final image');
+  assert.match(edgeImages.end, /shell-1\.jpg/, 'the closing edge should show the reel first image');
   await page.locator('.bar__rollout, .bar__mark-roll').evaluateAll(elements => {
     elements.flatMap(element => element.getAnimations()).forEach(animation => animation.finish());
   });
@@ -347,5 +353,7 @@ test('hero reel plays the full untitled production video before advancing', { ti
   assert.equal(await page.evaluate(() => (window as Window & { __heroReelDelay?: number }).__heroReelDelay), undefined,
     'the video should wait for its ended event instead of a wall-clock timeout');
   await productionVideo.dispatchEvent('ended');
+  assert.equal(await productionVideo.getAttribute('data-ended'), 'true',
+    'the outgoing video should retain its final frame during the transition');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '42');
 });
