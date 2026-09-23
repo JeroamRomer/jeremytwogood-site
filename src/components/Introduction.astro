@@ -175,11 +175,11 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__mobile-strip{ display:none; }
   .introduction__mobile-track{ position:absolute; z-index:1; left:50%; top:0; display:flex; width:225%; height:100%; transform:translateX(-37.5%); }
   .introduction__mobile-track.is-sliding{ transform:translateX(calc(-37.5% - 25%)); transition:transform .8s cubic-bezier(.22,.61,.36,1); }
-  .introduction__mobile-still, .introduction__mobile-side{ position:static; flex:0 0 25%; width:25%; height:100%; object-fit:cover; }
+  .introduction__mobile-still, .introduction__mobile-side{ position:static; flex:0 0 25%; width:25%; height:100%; object-fit:fill; transform:none; }
   .introduction__mobile-still, .introduction__mobile-side{ transition:filter .8s ease, transform .8s ease; }
-  .introduction__mobile-track.is-sliding .introduction__mobile-still{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
-  .introduction__mobile-track.is-sliding .introduction__mobile-side--next{ filter:none; transform:scale(1); }
-  .introduction__mobile-side{ filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
+  .introduction__mobile-track.is-sliding .introduction__mobile-still{ filter:brightness(.58) blur(1.8px); }
+  .introduction__mobile-track.is-sliding .introduction__mobile-side--next{ filter:none; }
+  .introduction__mobile-side{ filter:brightness(.58) blur(1.8px); }
   .introduction__mobile-video{ display:block; position:absolute; z-index:2; top:0; left:21.875%; width:56.25%; height:100%; object-fit:cover; }
   .introduction__mobile-video{ transition:transform .8s cubic-bezier(.22,.61,.36,1); }
   .introduction__mobile-video.is-sliding{ transform:translateX(-100%); }
@@ -238,7 +238,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     .introduction__image{ display:none; }
     .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
   .introduction__mobile-still{ display:block; background:var(--panel); }
-  .introduction__mobile-still[data-focus="portrait-up"]{ object-position:center bottom; transform:scale(1.1) translateY(-10%); }
+  .introduction__mobile-still[data-focus="portrait-up"]{ object-position:center bottom; transform:none; }
     .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
     .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
     .introduction__mobile-chrome .introduction__frame-corner--tr{ top:0; right:0; }

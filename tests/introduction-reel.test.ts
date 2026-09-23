@@ -278,6 +278,10 @@ test('hero reel separates project identity from role credits and shows all 38 st
     'mobile reel should render the active frame directly instead of relying on the desktop filmstrip transform');
   assert.ok(await page.locator('.introduction__mobile-still').evaluate((image: HTMLImageElement) => image.naturalWidth > 0),
     'mobile reel should use a decoded dedicated still element');
+  assert.equal(await page.locator('.introduction__mobile-still').evaluate((image: HTMLImageElement) => getComputedStyle(image).objectFit), 'fill',
+    'mobile center stills should fill the marker-defined frame without cover cropping');
+  assert.equal(await page.locator('.introduction__mobile-still').evaluate((image: HTMLImageElement) => getComputedStyle(image).transform), 'none',
+    'mobile center stills should not scale beyond the marker-defined frame');
   assert.equal(await page.locator('.introduction__mobile-track > img').count(), 4,
     'mobile reel should keep a fourth incoming slot ready before each transition');
   assert.equal(await page.locator('.introduction__mobile-chrome .introduction__frame-corner').count(), 4,
