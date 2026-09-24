@@ -223,8 +223,8 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   [data-strip-role]{ color:var(--muted); }
   @media (min-width:901px){
     .introduction__body{ grid-template-columns:minmax(0, .34fr) minmax(0, .66fr); gap:0; padding:7vh 5vw 7vh 8vw; overflow:hidden; }
-    .introduction__copy{ position:relative; z-index:3; max-width:550px; isolation:isolate; background:#212121; }
-    .introduction__copy::after{ content:''; position:absolute; z-index:-1; top:-12vh; bottom:-12vh; left:-8vw; width:calc(100% + 36vw); background:linear-gradient(90deg, #212121 0%, #212121 43%, rgba(33,33,33,.98) 58%, rgba(33,33,33,.72) 72%, rgba(33,33,33,0) 100%); pointer-events:none; }
+    .introduction__copy{ position:relative; z-index:3; max-width:550px; isolation:isolate; }
+    .introduction__copy::after{ content:''; position:absolute; z-index:-1; top:-12vh; bottom:-12vh; left:-24vw; width:calc(100% + 44vw); background:linear-gradient(90deg, #212121 0%, rgba(33,33,33,.99) 24%, rgba(33,33,33,.94) 42%, rgba(33,33,33,.72) 70%, rgba(33,33,33,0) 100%); pointer-events:none; }
     .introduction__work{ position:relative; z-index:1; transform:translate(4vw) scale(1.5); transform-origin:center center; }
     .introduction__media{ display:block; }
     .introduction__progress{ position:absolute; z-index:4; left:21.875%; right:21.875%; bottom:-16px; width:auto; height:2px; min-height:2px; align-self:auto; }
