@@ -298,10 +298,10 @@ test('hero reel separates project identity from role credits and shows all 38 st
     'mobile center stills should fill the marker-defined frame without cover cropping');
   assert.equal(await page.locator('.introduction__mobile-still').evaluate((image: HTMLImageElement) => getComputedStyle(image).transform), 'none',
     'mobile center stills should not scale beyond the marker-defined frame');
-  assert.notEqual(await page.locator('.introduction__mobile-still').evaluate((image: HTMLImageElement) => {
+  assert.match(await page.locator('.introduction__mobile-still').evaluate((image: HTMLImageElement) => {
     image.dataset.focus = 'portrait-up';
     return getComputedStyle(image).transform;
-  }), 'none', 'portrait mobile stills should use their approved 16:9 focus framing');
+  }), /^(none|matrix\(1, 0, 0, 1, 0, 0\))$/, '16:9 portrait stills should retain their native framing on mobile');
   assert.equal(await page.locator('.introduction__mobile-track > img').count(), 4,
     'mobile reel should keep a fourth incoming slot ready before each transition');
   assert.equal(await page.locator('.introduction__mobile-chrome .introduction__frame-corner').count(), 4,
