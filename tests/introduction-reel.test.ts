@@ -90,7 +90,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
     '/assets/hero-strip/new-portrait.webp',
     '/assets/hero-strip/new-cabin-edit.webp',
     '/assets/hero-strip/new-office-self.webp',
-    '/assets/hero-strip/new-mural-self.webp',
+    '/assets/hero-strip/new-mural-self-original.webp',
     '/assets/hero-strip/new-dark-edit-suite.webp',
     '/assets/hero-strip/new-studio-session.webp',
     '/assets/hero-strip/new-production-move.mp4',
