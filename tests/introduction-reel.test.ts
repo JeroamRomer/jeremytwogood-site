@@ -86,7 +86,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
   }
   const untitledSources = [
     '/assets/hero-strip/new-rgb-edit-suite.webp',
-    '/assets/hero-strip/new-production-office.webp',
+    '/assets/hero-strip/new-production-office-color.webp',
     '/assets/hero-strip/new-portrait.webp',
     '/assets/hero-strip/new-cabin-edit.webp',
     '/assets/hero-strip/new-office-self.webp',
