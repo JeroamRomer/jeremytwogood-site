@@ -183,6 +183,11 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.deepEqual(await readCaption(), ['Shell × John Williams', 'Editor · Colour Grade']);
   const captionHeight = await page.locator('.introduction__work figcaption').evaluate(element => element.getBoundingClientRect().height);
   assert.ok(captionHeight > 30, `reel caption should reserve two lines: ${captionHeight}`);
+  const captionAlignment = await page.locator('.introduction__work figcaption').evaluate(element => {
+    const style = getComputedStyle(element);
+    return { alignItems: style.alignItems, textAlign: style.textAlign };
+  });
+  assert.deepEqual(captionAlignment, { alignItems: 'flex-end', textAlign: 'right' }, 'reel job info should sit on the right edge');
   const emptyCaptionHeight = await page.locator('.introduction__work figcaption').evaluate(element => {
     element.querySelector('[data-strip-project]')!.textContent = '';
     element.querySelector('[data-strip-role]')!.textContent = '';
