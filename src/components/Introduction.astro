@@ -239,7 +239,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     .introduction__image{ display:none; }
     .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
   .introduction__mobile-still{ display:block; background:var(--panel); }
-  .introduction__mobile-still[data-focus="portrait-up"]{ object-position:center bottom; transform:none; }
+  .introduction__mobile-still[data-focus="portrait-up"]{ object-position:center bottom; transform:scale(1.1) translateY(-10%); }
     .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
     .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
     .introduction__mobile-chrome .introduction__frame-corner--tr{ top:0; right:0; }
