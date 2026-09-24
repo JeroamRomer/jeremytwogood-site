@@ -395,6 +395,12 @@ test('hero reel plays the full untitled production video before advancing', { ti
   await productionVideo.dispatchEvent('ended');
   assert.equal(await productionVideo.getAttribute('data-ended'), 'true',
     'the outgoing video should retain its final frame during the transition');
+  assert.match(await productionVideo.getAttribute('poster') ?? '',
+    /new-production-move-final-poster\.webp$/,
+    'the desktop video should swap to the final poster before moving out');
+  assert.match(await page.locator('.introduction__frame[data-kind="video"]').getAttribute('style') ?? '',
+    /new-production-move-final-poster\.webp/,
+    'the desktop outgoing frame should swap to the final poster before moving out');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '39');
 });
 
@@ -424,6 +430,9 @@ test('hero reel moves the ended video out with the mobile transition', { timeout
   const mobileVideo = page.locator('.introduction__mobile-video');
   assert.equal(await mobileVideo.isVisible(), true);
   await mobileVideo.dispatchEvent('ended');
+  assert.match(await mobileVideo.getAttribute('poster') ?? '',
+    /new-production-move-final-poster\.webp$/,
+    'the mobile video should swap to the final poster before moving out');
   await page.waitForTimeout(80);
   const transitionState = await mobileVideo.evaluate(video => ({
     sliding: video.classList.contains('is-sliding'),

@@ -276,6 +276,11 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   const isMobileViewport = () => window.matchMedia('(max-width:900px)').matches;
   const mediaPoster = (frame: HTMLElement) => frame.dataset.poster || frame.querySelector<HTMLVideoElement>('video')?.poster || frame.querySelector<HTMLImageElement>('img')?.src || '';
   const mediaEndPoster = (frame: HTMLElement) => frame.dataset.endPoster || mediaPoster(frame);
+  const markVideoEnded = (frame: HTMLElement, video: HTMLVideoElement) => {
+    const finalPoster = mediaEndPoster(frame);
+    frame.style.backgroundImage = `url('${finalPoster}')`;
+    video.poster = finalPoster;
+  };
   const mediaAlt = (frame: HTMLElement) => frame.dataset.alt || 'Selected work still';
   const hideMobileVideo = () => {
     if (!mobileVideo) return;
@@ -411,6 +416,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     });
     const center = frames[index];
     if (!center) return;
+    if (center.dataset.kind === 'video') center.style.backgroundImage = `url('${mediaPoster(center)}')`;
     if (project) project.textContent = center.dataset.project ?? 'Selected work';
     if (role) role.textContent = center.dataset.role ?? '';
     if (mobileStill) {
@@ -434,6 +440,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     const video = event.currentTarget as HTMLVideoElement;
     if (video === frames[centerIndex]?.querySelector('video')) {
       video.dataset.ended = 'true';
+      markVideoEnded(frames[centerIndex], video);
       advance();
     }
   };
@@ -441,6 +448,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   mobileVideo?.addEventListener('ended', () => {
     if (frames[centerIndex]?.dataset.kind === 'video') {
       mobileVideo.dataset.ended = 'true';
+      markVideoEnded(frames[centerIndex], mobileVideo);
       advance();
     }
   });
