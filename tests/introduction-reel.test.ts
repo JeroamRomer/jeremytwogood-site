@@ -312,8 +312,8 @@ test('hero reel separates project identity from role credits and shows all 38 st
     'mobile reel should keep four framing corners around the dedicated still');
   assert.notEqual(await page.locator('.introduction__frame.is-center').evaluate(element => getComputedStyle(element).backgroundImage), 'none',
     'mobile reel frames should carry an image background fallback');
-  assert.ok((await rulerMarks.evaluateAll(elements => elements.every(element => getComputedStyle(element).display === 'block'))),
-    'mobile reel should show the ruler calibration marks');
+  assert.ok((await rulerMarks.evaluateAll(elements => elements.every(element => getComputedStyle(element).display === 'none'))),
+    'mobile reel should use a clean rail without ruler calibration marks');
   const mobileChromeGeometry = await readChromeGeometry();
   const mobileStillBeforeAdvance = await page.locator('.introduction__mobile-still').getAttribute('src');
   const mobileSlotsBeforeAdvance = await page.locator('.introduction__mobile-track > img').evaluateAll(images =>

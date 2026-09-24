@@ -252,7 +252,22 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     .introduction__copy{ order:1; }
     .introduction__shade{ display:none; }
     .introduction__image{ display:none; }
-    .introduction__mobile-strip{ display:block; position:relative; width:97%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
+    .introduction__media{ display:block; }
+    .introduction__mobile-strip{ display:block; position:relative; width:100%; aspect-ratio:3.16/1; margin-inline:auto; overflow:hidden; background:var(--panel); }
+    .introduction__mobile-strip::before,
+    .introduction__mobile-strip::after{ content:''; position:absolute; z-index:2; top:0; bottom:0; width:21.875%; pointer-events:none; }
+    .introduction__mobile-strip::before{ left:0; background:linear-gradient(90deg, var(--page) 0%, rgba(33,33,33,.82) 48%, rgba(33,33,33,0) 100%); }
+    .introduction__mobile-strip::after{ right:0; background:linear-gradient(270deg, var(--page) 0%, rgba(33,33,33,.82) 48%, rgba(33,33,33,0) 100%); }
+    .introduction__progress{ position:absolute; z-index:4; left:21.875%; right:21.875%; bottom:-16px; width:auto; height:2px; min-height:2px; align-self:auto; }
+    .introduction__progress-track{ inset:0; width:auto; height:1px; }
+    .introduction__progress-mark{ display:none; top:-4px; left:50%; width:1px; height:9px; transform:translateX(-50%); }
+    [data-ruler-mark="top"]{ top:-4px; left:0; transform:none; }
+    [data-ruler-mark="quarter"]{ top:-4px; left:25%; }
+    [data-ruler-mark="half"]{ top:-4px; left:50%; }
+    [data-ruler-mark="three-quarter"]{ top:-4px; left:75%; }
+    [data-ruler-mark="bottom"]{ top:-4px; left:100%; transform:none; }
+    .introduction__progress-playhead{ top:-4px; left:0; width:2px; height:9px; transition:left .8s cubic-bezier(.22,.61,.36,1); }
+    figcaption{ margin-inline:0; padding-top:28px; align-items:flex-start; text-align:left; }
   .introduction__mobile-still{ display:block; background:var(--panel); }
     .introduction__mobile-chrome{ display:block; position:absolute; z-index:3; inset:0 21.875%; pointer-events:none; }
     .introduction__mobile-chrome .introduction__frame-corner--tl{ top:0; left:0; }
@@ -446,15 +461,9 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     progress?.setAttribute('aria-valuenow', String(index + 1));
     progress?.setAttribute('aria-valuetext', `${index + 1} of ${frames.length}`);
     if (progressTrack && progressPlayhead && frames.length > 1) {
-      if (isMobileViewport()) {
-        const travel = Math.max(0, progressTrack.clientHeight - progressPlayhead.offsetHeight);
-        progressPlayhead.style.left = '';
-        progressPlayhead.style.top = `${travel * index / (frames.length - 1)}px`;
-      } else {
-        const travel = Math.max(0, progressTrack.clientWidth - progressPlayhead.offsetWidth);
-        progressPlayhead.style.top = '';
-        progressPlayhead.style.left = `${travel * index / (frames.length - 1)}px`;
-      }
+      const travel = Math.max(0, progressTrack.clientWidth - progressPlayhead.offsetWidth);
+      progressPlayhead.style.top = '';
+      progressPlayhead.style.left = `${travel * index / (frames.length - 1)}px`;
     }
   };
   const onVideoEnded = (event: Event) => {
