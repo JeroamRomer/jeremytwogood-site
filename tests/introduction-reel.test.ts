@@ -181,6 +181,17 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuemax'), '39');
   const readCaption = () => page.locator('.introduction__work figcaption > span').allTextContents();
   assert.deepEqual(await readCaption(), ['Shell × John Williams', 'Editor · Colour Grade']);
+  const captionHeight = await page.locator('.introduction__work figcaption').evaluate(element => element.getBoundingClientRect().height);
+  assert.ok(captionHeight > 30, `reel caption should reserve two lines: ${captionHeight}`);
+  const emptyCaptionHeight = await page.locator('.introduction__work figcaption').evaluate(element => {
+    element.querySelector('[data-strip-project]')!.textContent = '';
+    element.querySelector('[data-strip-role]')!.textContent = '';
+    const height = element.getBoundingClientRect().height;
+    element.querySelector('[data-strip-project]')!.textContent = 'Shell × John Williams';
+    element.querySelector('[data-strip-role]')!.textContent = 'Editor · Colour Grade';
+    return height;
+  });
+  assert.equal(emptyCaptionHeight, captionHeight, 'empty reel captions should keep the same two-line height');
   assert.ok(await page.evaluate(() => typeof (window as Window & { __heroReelTick?: () => void }).__heroReelTick === 'function'),
     'the hero reel should register its five-second advance');
   await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
