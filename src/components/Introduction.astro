@@ -221,6 +221,23 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__next > span:last-child{ color:var(--muted); }
   .introduction__next:hover > span:last-child{ color:var(--text); }
   [data-strip-role]{ color:var(--muted); }
+  @media (min-width:901px){
+    .introduction__body{ grid-template-columns:minmax(0, .34fr) minmax(0, .66fr); gap:0; padding:7vh 5vw 7vh 8vw; overflow:hidden; }
+    .introduction__copy{ position:relative; z-index:3; max-width:550px; isolation:isolate; background:#212121; }
+    .introduction__copy::after{ content:''; position:absolute; z-index:-1; top:-12vh; bottom:-12vh; left:-8vw; width:calc(100% + 36vw); background:linear-gradient(90deg, #212121 0%, #212121 43%, rgba(33,33,33,.98) 58%, rgba(33,33,33,.72) 72%, rgba(33,33,33,0) 100%); pointer-events:none; }
+    .introduction__work{ position:relative; z-index:1; transform:translateX(-2vw); }
+    .introduction__media{ display:block; }
+    .introduction__progress{ position:absolute; z-index:4; left:21.875%; right:21.875%; bottom:-16px; width:auto; height:2px; min-height:2px; align-self:auto; }
+    .introduction__progress-track{ inset:0; width:auto; height:1px; }
+    .introduction__progress-mark{ top:-4px; left:50%; width:1px; height:9px; transform:translateX(-50%); }
+    [data-ruler-mark="top"]{ top:-4px; left:0; transform:none; }
+    [data-ruler-mark="quarter"]{ top:-4px; left:25%; }
+    [data-ruler-mark="half"]{ top:-4px; left:50%; }
+    [data-ruler-mark="three-quarter"]{ top:-4px; left:75%; }
+    [data-ruler-mark="bottom"]{ top:-4px; left:100%; transform:none; }
+    .introduction__progress-playhead{ top:-4px; left:0; width:2px; height:9px; transition:left .8s cubic-bezier(.22,.61,.36,1); }
+    figcaption{ margin-inline:21.875%; padding-top:28px; }
+  }
   @media (prefers-reduced-motion: reduce){ .introduction__track, .introduction__frame :is(img, video), .introduction__mobile-video, .introduction__progress-playhead{ transition:none; } }
   @media (max-width:900px){
     .introduction__body{ grid-template-columns:1fr; gap:32px; padding-top:40px; padding-bottom:32px; }
@@ -429,8 +446,15 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     progress?.setAttribute('aria-valuenow', String(index + 1));
     progress?.setAttribute('aria-valuetext', `${index + 1} of ${frames.length}`);
     if (progressTrack && progressPlayhead && frames.length > 1) {
-      const travel = Math.max(0, progressTrack.clientHeight - progressPlayhead.offsetHeight);
-      progressPlayhead.style.top = `${travel * index / (frames.length - 1)}px`;
+      if (isMobileViewport()) {
+        const travel = Math.max(0, progressTrack.clientHeight - progressPlayhead.offsetHeight);
+        progressPlayhead.style.left = '';
+        progressPlayhead.style.top = `${travel * index / (frames.length - 1)}px`;
+      } else {
+        const travel = Math.max(0, progressTrack.clientWidth - progressPlayhead.offsetWidth);
+        progressPlayhead.style.top = '';
+        progressPlayhead.style.left = `${travel * index / (frames.length - 1)}px`;
+      }
     }
   };
   const onVideoEnded = (event: Event) => {

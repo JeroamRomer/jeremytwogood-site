@@ -147,17 +147,17 @@ test('hero reel separates project identity from role credits and shows all 38 st
     const rect = element.getBoundingClientRect();
     return {
       mark: element.getAttribute('data-ruler-mark'),
-      center: rect.top + rect.height / 2,
+      center: rect.left + rect.width / 2,
       display: getComputedStyle(element).display,
     };
   }));
   const initialRail = await page.locator('.introduction__progress-track').evaluate(element => {
     const rect = element.getBoundingClientRect();
-    return { top: rect.top, height: rect.height };
+    return { left: rect.left, width: rect.width, top: rect.top, height: rect.height };
   });
   for (const [mark, fraction] of [['top', 0], ['quarter', .25], ['half', .5], ['three-quarter', .75], ['bottom', 1]] as const) {
     const measured = initialRulerMarks.find(item => item.mark === mark);
-    assert.ok(measured && Math.abs(measured.center - (initialRail.top + initialRail.height * fraction)) < 1,
+    assert.ok(measured && Math.abs(measured.center - (initialRail.left + initialRail.width * fraction)) < 1,
       `${mark} ruler mark should sit at ${fraction * 100}% of the rail`);
     assert.equal(measured?.display, 'block', `${mark} ruler mark should be visible on desktop`);
   }
@@ -172,11 +172,10 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.ok(Math.abs(rightBottom[1] + rightBottom[3] - (centerY + centerHeight)) < 0.5, 'lower bracket should align with the expanded center frame edge');
   assert.ok(Math.abs(leftBottom[0] - centerX) < 0.5, 'lower left bracket should line up with the center image');
   assert.ok(Math.abs(leftBottom[1] + leftBottom[3] - (centerY + centerHeight)) < 0.5, 'lower bracket should align with the expanded center frame edge');
-  assert.ok(initialChromeGeometry.rail[0] >= initialChromeGeometry.stage[0] + initialChromeGeometry.stage[2], 'progress ruler should sit outside the footage');
-  assert.ok(initialChromeGeometry.rail[0] + initialChromeGeometry.rail[2] <= initialChromeGeometry.media[0] + initialChromeGeometry.media[2], 'progress ruler should stay beside the reel');
-  assert.ok(Math.abs(initialChromeGeometry.rail[1] - initialChromeGeometry.stage[1]) < 0.5, 'progress ruler should start level with the top of the reel');
-  assert.ok(Math.abs(initialChromeGeometry.rail[1] + initialChromeGeometry.rail[3] - (initialChromeGeometry.stage[1] + initialChromeGeometry.stage[3])) < 0.5, 'progress ruler should reach the bottom of the reel');
-  assert.ok(Math.abs(initialChromeGeometry.playhead[1] - initialChromeGeometry.rail[1]) < 0.5, 'orange playhead should start at the top for the first still');
+  assert.ok(initialChromeGeometry.rail[1] >= initialChromeGeometry.media[1] + initialChromeGeometry.media[3] - 1, 'progress rail should sit below the footage');
+  assert.ok(Math.abs(initialChromeGeometry.rail[0] - centerX) < 1, 'progress rail should align with the center image');
+  assert.ok(Math.abs(initialChromeGeometry.rail[0] + initialChromeGeometry.rail[2] - (centerX + centerWidth)) < 1, 'progress rail should end at the center image');
+  assert.ok(Math.abs(initialChromeGeometry.playhead[0] - initialChromeGeometry.rail[0]) < 1, 'orange playhead should start at the left edge for the first still');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '1');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuemax'), '39');
   const readCaption = () => page.locator('.introduction__work figcaption > span').allTextContents();
@@ -202,7 +201,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
   await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   await page.waitForTimeout(900);
   const firstAdvance = await readChromeGeometry();
-  assert.ok(firstAdvance.playhead[1] > initialChromeGeometry.playhead[1], 'orange playhead should step down for each new still');
+  assert.ok(firstAdvance.playhead[0] > initialChromeGeometry.playhead[0], 'orange playhead should step right for each new still');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '2');
   assert.equal(await page.locator('.introduction__frame.is-center img').getAttribute('src'), '/assets/hero-strip/orm-multibox.jpg');
   assert.deepEqual(await readCaption(), ['Oak Ridges Moraine Groundwater Program', 'Editor · Motion Graphics · Sound · Colour']);
@@ -244,8 +243,8 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.equal(lastFrame.index, '38', 'the last distinct still should remain centered for its full interval');
   assert.equal(lastFrame.source, '/assets/hero-strip/chac-mool-cenote.jpg');
   const lastFrameGeometry = await readChromeGeometry();
-  assert.ok(Math.abs(lastFrameGeometry.playhead[1] + lastFrameGeometry.playhead[3] - (lastFrameGeometry.rail[1] + lastFrameGeometry.rail[3])) < 0.5,
-    'orange playhead should reach the bottom for the last still');
+  assert.ok(Math.abs(lastFrameGeometry.playhead[0] + lastFrameGeometry.playhead[2] - (lastFrameGeometry.rail[0] + lastFrameGeometry.rail[2])) < 0.5,
+    'orange playhead should reach the right edge for the last still');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '39');
 
   await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
@@ -256,8 +255,8 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.equal(wrappedState.index, '0', 'the reel should reset directly to the first still without an empty frame');
   assert.equal(wrappedState.project, 'Shell × John Williams');
   const wrappedGeometry = await readChromeGeometry();
-  assert.ok(Math.abs(wrappedGeometry.playhead[1] - wrappedGeometry.rail[1]) < 0.5,
-    `orange playhead should return to the top when the loop restarts: ${JSON.stringify(wrappedGeometry)}`);
+  assert.ok(Math.abs(wrappedGeometry.playhead[0] - wrappedGeometry.rail[0]) < 0.5,
+    `orange playhead should return to the left edge when the loop restarts: ${JSON.stringify(wrappedGeometry)}`);
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '1');
   assert.deepEqual(await readCaption(), ['Shell × John Williams', 'Editor · Colour Grade']);
 
