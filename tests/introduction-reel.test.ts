@@ -40,7 +40,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.match(edgeImages.end, /shell-1\.jpg/, 'the closing edge should show the reel first image');
   assert.ok(await page.locator('.introduction__track').evaluate(track => {
     const left = Number.parseFloat(getComputedStyle(track, '::after').left);
-    return Math.abs((left / track.getBoundingClientRect().width) - 21.9375) < 0.001;
+    return Math.abs((left / Number.parseFloat(getComputedStyle(track).width)) - 21.9375) < 0.001;
   }),
     'the closing edge should sit immediately after the 39-frame reel');
   await page.locator('.bar__rollout, .bar__mark-roll').evaluateAll(elements => {
