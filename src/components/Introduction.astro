@@ -14,6 +14,7 @@ type StripImage = {
   focus?: string;
   kind?: 'video';
   poster?: string;
+  endPoster?: string;
   durationMs?: number;
 };
 
@@ -59,7 +60,7 @@ const stripImages: StripImage[] = [
   { src: '/assets/hero-strip/new-location-edit.webp', project: '', client: '', year: '', role: '', alt: 'Laptop editing station with headphones on a production floor' },
   { src: '/assets/hero-strip/new-dark-edit-suite.webp', project: '', client: '', year: '', role: '', alt: 'Dark editing suite with three monitors' },
   { src: '/assets/hero-strip/new-studio-session.webp', project: '', client: '', year: '', role: '', alt: 'Recording studio session at a mixing console' },
-  { src: '/assets/hero-strip/new-production-move.mp4', project: '', client: '', year: '', role: '', alt: 'Production crew reviewing a cinema camera in an office', kind: 'video', poster: '/assets/hero-strip/new-production-move-poster.webp', durationMs: 9605 },
+  { src: '/assets/hero-strip/new-production-move.mp4', project: '', client: '', year: '', role: '', alt: 'Production crew reviewing a cinema camera in an office', kind: 'video', poster: '/assets/hero-strip/new-production-move-poster.webp', endPoster: '/assets/hero-strip/new-production-move-final-poster.webp', durationMs: 9605 },
 ];
 
 // Interleave the untitled production moments between job-specific frames.
@@ -123,7 +124,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
         <div class="introduction__image" aria-label="Selected work film strip">
             <div class="introduction__track" style={`--reel-first:url('${mediaPoster(orderedStripImages[0])}');--reel-last:url('${mediaPoster(orderedStripImages[orderedStripImages.length - 1])}')`}>
             {orderedStripImages.map((image, index) => (
-              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-kind={image.kind ?? 'image'} data-focus={image.focus ?? ''} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} data-alt={mediaAlt(image)} data-poster={image.poster ?? ''} data-duration-ms={image.durationMs ?? ''} style={`background-image:url('${mediaPoster(image)}')`}>
+              <div class:list={["introduction__frame", { "is-center": index === 0 }]} data-index={index} data-kind={image.kind ?? 'image'} data-focus={image.focus ?? ''} data-project={projectInfo(image)} data-client={image.client} data-year={image.year} data-role={image.role} data-alt={mediaAlt(image)} data-poster={image.poster ?? ''} data-end-poster={image.endPoster ?? ''} data-duration-ms={image.durationMs ?? ''} style={`background-image:url('${mediaPoster(image)}')`}>
                 {image.kind === 'video'
                   ? <video src={image.src} poster={image.poster} aria-label={mediaAlt(image)} muted playsinline preload="metadata"></video>
                   : <img src={image.src} alt={mediaAlt(image)} width="960" height="540" loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />}
@@ -272,8 +273,9 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   let centerIndex = 0;
   let advanceTimer = 0;
   let advanceReentry = false;
-  const isMobileViewport = () => window.matchMedia('(max-width:760px)').matches;
+  const isMobileViewport = () => window.matchMedia('(max-width:900px)').matches;
   const mediaPoster = (frame: HTMLElement) => frame.dataset.poster || frame.querySelector<HTMLVideoElement>('video')?.poster || frame.querySelector<HTMLImageElement>('img')?.src || '';
+  const mediaEndPoster = (frame: HTMLElement) => frame.dataset.endPoster || mediaPoster(frame);
   const mediaAlt = (frame: HTMLElement) => frame.dataset.alt || 'Selected work still';
   const hideMobileVideo = () => {
     if (!mobileVideo) return;
@@ -301,7 +303,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
     const previous = frames[(index - 1 + frames.length) % frames.length];
     const next = frames[(index + 1) % frames.length];
     const after = frames[(index + 2) % frames.length];
-    if (mobilePrev && previous) mobilePrev.src = mediaPoster(previous);
+    if (mobilePrev && previous) mobilePrev.src = mediaEndPoster(previous);
     if (mobileNext && next) mobileNext.src = mediaPoster(next);
     if (mobileAfter && after) mobileAfter.src = mediaPoster(after);
     if (mobileStill) {
@@ -448,7 +450,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   frames.forEach(frame => frame.querySelector<HTMLVideoElement>('video')?.addEventListener('error', () => {
     if (frame === frames[centerIndex]) advance();
   }));
-  const viewportQuery = window.matchMedia('(max-width:760px)');
+  const viewportQuery = window.matchMedia('(max-width:900px)');
   viewportQuery.addEventListener?.('change', () => {
     const center = frames[centerIndex];
     if (!center || center.dataset.kind !== 'video') return;

@@ -404,4 +404,8 @@ test('hero reel moves the ended video out with the mobile transition', { timeout
   }));
   assert.equal(transitionState.sliding, true, 'the ended mobile video should leave the center slot with the outgoing frame');
   assert.notEqual(transitionState.transform, 'none', 'the ended mobile video should visibly move left during the transition');
+  await page.waitForTimeout(950);
+  assert.equal(await page.locator('.introduction__mobile-side--prev').getAttribute('src'),
+    '/assets/hero-strip/new-production-move-final-poster.webp',
+    'the mobile outgoing side slot should hold the video final frame');
 });
