@@ -190,7 +190,7 @@ const mediaPoster = (image: StripImage) => image.kind === 'video' ? image.poster
   .introduction__track{ position:relative; display:flex; align-items:center; height:100%; width:100%; transform:translateX(calc(50% - 28.125%)); transition:transform .8s cubic-bezier(.22,.61,.36,1); will-change:transform; }
   .introduction__track::before, .introduction__track::after{ content:''; position:absolute; z-index:0; top:0; width:56.25%; height:100%; background:var(--reel-last) center/cover no-repeat; filter:brightness(.58) blur(1.8px); transform:scale(1.035); }
   .introduction__track::before{ left:-56.25%; background-image:var(--reel-last); }
-  .introduction__track::after{ left:2362.5%; background-image:var(--reel-first); }
+  .introduction__track::after{ left:2193.75%; background-image:var(--reel-first); }
   .introduction__frame{ position:relative; z-index:1; flex:0 0 56.25%; height:100%; aspect-ratio:16/9; overflow:hidden; background:var(--panel); }
   .introduction__frame :is(img, video){ display:block; width:100%; height:100%; object-fit:cover; filter:brightness(.58) blur(1.8px); transform:scale(1.035); transition:filter .8s ease, transform .8s ease; }
   .introduction__frame.is-center :is(img, video){ filter:none; transform:scale(1); }
