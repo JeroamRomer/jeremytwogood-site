@@ -324,6 +324,13 @@ test('hero reel separates project identity from role credits and shows all 38 st
     'the overlay should stay aligned and fixed on mobile as the reel advances');
   assert.ok(advancedMobileChromeGeometry.rail[0] >= advancedMobileChromeGeometry.stage[0] + advancedMobileChromeGeometry.stage[2],
     'on mobile, the progress ruler should remain outside the footage');
+
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.waitForTimeout(200);
+  assert.equal(await page.locator('.introduction__mobile-strip').evaluate(element => getComputedStyle(element).display), 'block',
+    'tablet-width reel should keep the mobile frame geometry');
+  assert.equal(await page.locator('.introduction__image').evaluate(element => getComputedStyle(element).display), 'none',
+    'tablet-width reel should not fall back to the desktop filmstrip');
 });
 
 test('hero reel plays the full untitled production video before advancing', { timeout: 30000 }, async (t) => {
