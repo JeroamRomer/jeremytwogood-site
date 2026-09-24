@@ -340,6 +340,13 @@ test('hero reel separates project identity from role credits and shows all 38 st
     'tablet-width reel should keep the mobile frame geometry');
   assert.equal(await page.locator('.introduction__image').evaluate(element => getComputedStyle(element).display), 'none',
     'tablet-width reel should not fall back to the desktop filmstrip');
+  for (let index = 0; index < 34; index += 1) {
+    await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
+  }
+  await page.waitForTimeout(950);
+  assert.match(await page.locator('.introduction__mobile-side--next').getAttribute('src') ?? '',
+    /\/assets\/hero-strip\/shell-1\.jpg$/,
+    'the mobile loop edge should show the first reel image instead of black');
 });
 
 test('hero reel plays the full untitled production video before advancing', { timeout: 30000 }, async (t) => {
