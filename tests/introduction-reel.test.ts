@@ -155,11 +155,9 @@ test('hero reel separates project identity from role credits and shows all 38 st
     const rect = element.getBoundingClientRect();
     return { left: rect.left, width: rect.width, top: rect.top, height: rect.height };
   });
-  for (const [mark, fraction] of [['top', 0], ['quarter', .25], ['half', .5], ['three-quarter', .75], ['bottom', 1]] as const) {
+  for (const mark of ['top', 'quarter', 'half', 'three-quarter', 'bottom'] as const) {
     const measured = initialRulerMarks.find(item => item.mark === mark);
-    assert.ok(measured && Math.abs(measured.center - (initialRail.left + initialRail.width * fraction)) < 1,
-      `${mark} ruler mark should sit at ${fraction * 100}% of the rail`);
-    assert.equal(measured?.display, 'block', `${mark} ruler mark should be visible on desktop`);
+    assert.equal(measured?.display, 'none', `${mark} ruler gradation should be hidden on desktop`);
   }
   const initialChromeGeometry = await readChromeGeometry();
   const [centerX, centerY, centerWidth, centerHeight] = initialChromeGeometry.center;
