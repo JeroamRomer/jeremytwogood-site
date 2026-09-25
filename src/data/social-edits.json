@@ -1,0 +1,50 @@
+{
+  "_note": "Backlog for a future Social Edits section. Not rendered or published yet. Add an entry per social cut; fill youtube_id/vimeo_id (or a self-hosted file) once Jeremy finds where each video lives, then build the UI.",
+  "items": [
+    {
+      "id": "nsh-babatolu-social-1",
+      "title": "Doctor recruitment social trailer 1",
+      "client": "Nova Scotia Health / Journeyman Video Production",
+      "campaign": "Dr. Babatolu's Journey",
+      "role": ["Editor"],
+      "format": "1:1",
+      "platforms": ["Instagram", "Facebook"],
+      "duration_seconds": null,
+      "blurb": "Aimed at the kids of UK doctors, so they would share the campaign with their parents.",
+      "youtube_id": null,
+      "vimeo_id": null,
+      "reference_url": "https://www.journeymanvideo.ca/case-studies/doctor-recruitment-campaign",
+      "status": "link_needed"
+    },
+    {
+      "id": "nsh-babatolu-social-2",
+      "title": "Dr. Babatolu's Journey social trailer 2",
+      "client": "Nova Scotia Health / Journeyman Video Production",
+      "campaign": "Dr. Babatolu's Journey",
+      "role": ["Editor"],
+      "format": "1:1",
+      "platforms": ["Instagram", "Facebook"],
+      "duration_seconds": null,
+      "blurb": "Dr. Hadiza Babatolu, direct to camera, promoting the longer film.",
+      "youtube_id": null,
+      "vimeo_id": null,
+      "reference_url": "https://www.journeymanvideo.ca/case-studies/doctor-recruitment-campaign",
+      "status": "link_needed"
+    },
+    {
+      "id": "nsh-babatolu-social-3",
+      "title": "Dr. Babatolu's Journey social trailer 3",
+      "client": "Nova Scotia Health / Journeyman Video Production",
+      "campaign": "Dr. Babatolu's Journey",
+      "role": ["Editor"],
+      "format": "1:1",
+      "platforms": ["Instagram", "Facebook"],
+      "duration_seconds": null,
+      "blurb": "Dr. Ola Babatolu, promoting the longer film.",
+      "youtube_id": null,
+      "vimeo_id": null,
+      "reference_url": "https://www.journeymanvideo.ca/case-studies/doctor-recruitment-campaign",
+      "status": "link_needed"
+    }
+  ]
+}
