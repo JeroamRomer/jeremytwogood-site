@@ -40,3 +40,13 @@ test('MCP endpoint: GET and HEAD advertise the POST endpoint for discovery', asy
   assert.match(source, /endpoint: '\/api\/mcp'/);
   assert.match(source, /req\.method !== 'POST'/);
 });
+
+test('MCP discovery: scanner well-known path rewrites to the server card', async () => {
+  const vercel = JSON.parse(await readFile('vercel.json', 'utf8'));
+  assert.deepEqual(vercel.rewrites, [
+    {
+      source: '/.well-known/mcp',
+      destination: '/.well-known/mcp-server-card',
+    },
+  ]);
+});

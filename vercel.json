@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/.well-known/mcp",
+      "destination": "/.well-known/mcp-server-card"
+    }
+  ],
   "headers": [
     {
       "source": "/.well-known/mcp-server-card",
