@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
+import { readFile } from 'node:fs/promises';
 import { createServer } from '../api/_lib/server.ts';
 import manifest from '../src/data/mcp-manifest.json' with { type: 'json' };
 
@@ -31,4 +32,11 @@ test('manifest: server identity fields are coherent', () => {
   assert.ok(manifest.server.endpoint.startsWith('https://jeremytwogood.com/'));
   assert.equal(manifest.tools.length, 10);
   assert.equal(manifest.tools.filter((t) => t.kind === 'action').length, 2);
+});
+
+test('MCP endpoint: GET and HEAD advertise the POST endpoint for discovery', async () => {
+  const source = await readFile('api/mcp.ts', 'utf8');
+  assert.match(source, /req\.method === 'GET' \|\| req\.method === 'HEAD'/);
+  assert.match(source, /endpoint: '\/api\/mcp'/);
+  assert.match(source, /req\.method !== 'POST'/);
 });

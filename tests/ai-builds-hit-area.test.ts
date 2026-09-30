@@ -11,5 +11,6 @@ test('AI build previews remain decorative and cannot intercept CTAs', async () =
       /\.build-card:hover \.build-card__shot[^}]*pointer-events:auto/,
       `${file} should not make the decorative preview capture pointer input on hover`,
     );
+    assert.match(source, /\.build-card__cta\{[^}]*position:relative[^}]*z-index:3/, `${file} should keep the CTA above the preview`);
   }
 });

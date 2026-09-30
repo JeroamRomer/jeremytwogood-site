@@ -3,7 +3,19 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { createServer } from './_lib/server.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === 'GET' || req.method === 'HEAD') {
+    res.status(200).json({
+      name: 'jeremytwogood-mcp',
+      protocol: 'Model Context Protocol',
+      transport: 'streamable-http',
+      endpoint: '/api/mcp',
+      message: 'Send JSON-RPC requests with POST to use this MCP server.',
+    });
+    return;
+  }
+
   if (req.method !== 'POST') {
+    res.setHeader('Allow', 'GET, HEAD, POST');
     res.status(405).json({ error: 'Method not allowed. MCP endpoint requires POST.' });
     return;
   }

@@ -99,7 +99,7 @@ const statusClass = (status: string) => status === 'live' ? 'build-card__status 
   .tag{ padding:4px 9px; border:1px solid #dcd6cb; border-radius:2px; color:#6b6b63; font-family:var(--font-readout); font-size:10.5px; letter-spacing:.06em; }
   .build-card__url{ position:absolute; top:32px; right:28px; max-width:48%; overflow:hidden; color:#8a867d; font-family:var(--font-readout); font-size:10px; letter-spacing:.1em; text-overflow:ellipsis; white-space:nowrap; transition:color .15s; }
   .build-card__url:hover{ color:var(--mango); }
-  .build-card__cta{ min-height:36px; padding-top:16px; }
+  .build-card__cta{ position:relative; z-index:3; min-height:36px; padding-top:16px; }
   .build-card__launch{ display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 14px; border:1px solid var(--mango); background:var(--mango); color:var(--mango-ink); font-family:var(--font-ui); font-weight:600; font-size:13px; line-height:1; }
   .build-card__launch:hover{ border-color:var(--mango-hover); background:var(--mango-hover); }
   .build-card__coming-soon{ color:#8a867d; font-family:var(--font-readout); font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
