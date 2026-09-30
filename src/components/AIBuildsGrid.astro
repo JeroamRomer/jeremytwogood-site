@@ -112,7 +112,7 @@ const statusClass = (status: string) => status === 'live' ? 'build-card__status 
   .build-card__shot--four img{ width:auto; height:auto; max-width:23%; max-height:80%; border-radius:12px; object-fit:contain; }
   .build-card__shot--icon{ inset:24px 24px auto auto; width:80px; height:80px; opacity:.35; background:none; }
   .build-card__shot--icon img{ width:100%; height:auto; mix-blend-mode:multiply; }
-  .build-card:hover .build-card__shot:not(.build-card__shot--icon), .build-card.is-active .build-card__shot:not(.build-card__shot--icon){ opacity:1; pointer-events:auto; }
+  .build-card:hover .build-card__shot:not(.build-card__shot--icon), .build-card.is-active .build-card__shot:not(.build-card__shot--icon){ opacity:1; }
   .build-card:hover .build-card__shot--icon{ opacity:1; }
   @media (max-width:900px){ .builds-grid{ grid-template-columns:1fr; } .build-card[style*="span 2"]{ grid-column:span 1 !important; } }
   @media (max-width:720px){ .build-card{ min-height:280px; } .build-card__shot:not(.build-card__shot--icon){ display:none; } .build-card.is-active .build-card__shot:not(.build-card__shot--icon){ display:flex; } .build-card__shot--icon{ inset:16px 16px auto auto; width:54px; height:54px; opacity:1; } }
