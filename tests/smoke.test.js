@@ -395,6 +395,30 @@ test('smoke: work bin count is derived from projects.json without project dates'
   assert.ok(!html.includes('projects · 20'), 'work summary must not render project years');
 });
 
+test('smoke: homepage exposes the social cutdowns bin with all four local edits', () => {
+  const html = getHtml('index.html');
+  assert.ok(html.includes('id="social-cutdowns"'), 'social cutdowns bin must render');
+  assert.ok(
+    html.indexOf('Doctor Recruitment · Kids') < html.indexOf("John Williams' Mural · 60 second trailer"),
+    'Doctor Recruitment cutdowns must precede the John Williams trailer',
+  );
+  for (const src of [
+    '/assets/shell-john-williams-trailer.mp4',
+    '/assets/ns-doctor-recruitment-kids.mp4',
+    '/assets/ns-doctor-recruitment-hadiza.mp4',
+    '/assets/ns-doctor-recruitment-ola.mp4',
+  ]) assert.ok(html.includes(src), `social cutdowns must include ${src}`);
+});
+
+test('smoke: Shell case study places the trailer below the main player', () => {
+  const html = getHtml('work/shell-john-williams/index.html');
+  const mainPlayer = html.indexOf('aria-label="Source monitor"');
+  const trailer = html.indexOf('class="case__related"');
+  assert.ok(mainPlayer >= 0, 'main source monitor must render');
+  assert.ok(trailer > mainPlayer, 'related trailer must follow the main monitor');
+  assert.ok(html.includes('/assets/shell-john-williams-trailer.mp4'), 'Shell trailer must render');
+});
+
 test('smoke: visible work cards do not date the projects', () => {
   const source = readFileSync(join(ROOT, 'src/components/Projects.astro'), 'utf-8');
   const metadata = source.slice(source.indexOf('<div class="work-item__meta">'), source.indexOf('</Tag>', source.indexOf('<div class="work-item__meta">')));

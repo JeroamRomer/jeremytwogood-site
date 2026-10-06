@@ -1,0 +1,40 @@
+---
+import socialCutdowns from '../data/social-cutdowns.json';
+import { mmss } from '../lib/sequence';
+---
+<section id="social-cutdowns" class="bin" aria-labelledby="social-cutdowns-title">
+  <div class="bin__head">
+    <h2 id="social-cutdowns-title">Social cutdowns</h2>
+    <span class="readout">{socialCutdowns.length} cuts</span>
+  </div>
+  <div class="bin__body">
+    <div class="social-cutdowns__grid">
+      {socialCutdowns.map((cut) => (
+        <article class="social-cut">
+          <div class="social-cut__stage" style={`aspect-ratio:${cut.aspect}`}>
+            <video controls preload="metadata" playsinline poster={cut.poster} aria-label={`Play ${cut.title}`}>
+              <source src={cut.src} type="video/mp4" />
+            </video>
+          </div>
+          <div class="social-cut__meta">
+            <div class="social-cut__title">{cut.title}</div>
+            <span class="readout">{mmss(cut.duration_seconds)}</span>
+            <div class="social-cut__sub">{cut.client} · {cut.type}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .social-cutdowns__grid{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:18px; align-items:start; }
+  .social-cut{ min-width:0; }
+  .social-cut__stage{ overflow:hidden; background:#000; border:1px solid var(--hair-strong); }
+  .social-cut__stage video{ width:100%; height:100%; object-fit:contain; background:#000; }
+  .social-cut__meta{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 12px; padding:10px 2px 0; }
+  .social-cut__title{ font-size:15px; font-weight:600; }
+  .social-cut__sub{ grid-column:1 / -1; font-size:13px; color:var(--muted); }
+  @media (max-width: 900px){ .social-cutdowns__grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 480px){ .social-cutdowns__grid{ grid-template-columns:1fr; } }
+</style>

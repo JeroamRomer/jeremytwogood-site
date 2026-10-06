@@ -7,6 +7,7 @@ import { hasCaseStudy, mmss, orderOnlineFirst } from '../../lib/sequence';
 import projects from '../../data/projects.json';
 import videoContent from '../../data/video-content.json';
 import profile from '../../data/profile.json';
+import socialCutdowns from '../../data/social-cutdowns.json';
 
 export function getStaticPaths() {
   // A case-study page exists for every project that has a real video (i.e. not
@@ -43,6 +44,9 @@ const position = sequenceOrder.findIndex((p) => p.id === project.id);
 const prev = position > 0 ? sequenceOrder[position - 1] : null;
 const next = position >= 0 && position < sequenceOrder.length - 1 ? sequenceOrder[position + 1] : null;
 const runningTime = typeof (project as any).duration_seconds === 'number' ? mmss((project as any).duration_seconds) : '';
+const relatedCuts = project.id === 'shell-john-williams'
+  ? socialCutdowns.filter((cut) => cut.id === 'shell-john-williams-trailer')
+  : [];
 
 const metaDesc = (summary || `${project.type} by ${profile.name}.`).slice(0, 200);
 const thumbAbs = new URL(project.thumbnail, profile.website).href;
@@ -121,6 +125,21 @@ const breadcrumbSchema = {
       </aside>
     </div>
 
+    {relatedCuts.length > 0 && <section class="case__related" aria-labelledby="related-cuts-title">
+      <div class="pane-head"><span id="related-cuts-title">Related cut</span><span>Social / trailer</span></div>
+      {relatedCuts.map((cut) => <div class="case__related-item">
+        <div class="case__related-stage" style={`aspect-ratio:${cut.aspect}`}>
+          <video controls preload="metadata" playsinline poster={cut.poster} aria-label={`Play ${cut.title}`}>
+            <source src={cut.src} type="video/mp4" />
+          </video>
+        </div>
+        <div class="case__related-meta">
+          <strong>{cut.title}</strong>
+          <span class="readout">{mmss(cut.duration_seconds)}</span>
+        </div>
+      </div>)}
+    </section>}
+
     <div class="case__body">
       {summary && <p class="case__summary">{summary}</p>}
       {excerpt && <blockquote class="case__quote"><p>{excerpt}</p></blockquote>}
@@ -152,6 +171,12 @@ const breadcrumbSchema = {
   .case__play{ position:absolute; left:14px; bottom:14px; display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:0 16px; background:var(--mango); color:var(--mango-ink); font-weight:600; font-size:14px; }
   .case__play svg{ width:14px; height:14px; fill:currentColor; }
   .case__player:hover .case__play{ background:var(--mango-hover); }
+  .case__related{ margin-top:28px; border:1px solid var(--hair); }
+  .case__related-item{ padding:18px; background:var(--stage); }
+  .case__related-stage{ max-width:900px; background:#000; outline:1px solid var(--hair-strong); }
+  .case__related-stage video{ width:100%; height:100%; object-fit:contain; background:#000; }
+  .case__related-meta{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; max-width:900px; padding:10px 2px 0; }
+  .case__related-meta strong{ font-size:15px; }
 
   .case__body{ max-width:70ch; margin:28px 0 0; }
   .case__summary{ margin:0 0 18px; font-size:clamp(17px, 2vw, 20px); line-height:1.6; }

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ns-doctor-recruitment-kids",
+    "title": "Doctor Recruitment · Kids",
+    "client": "NS Health",
+    "type": "Social cutdown",
+    "duration_seconds": 33,
+    "src": "/assets/ns-doctor-recruitment-kids.mp4",
+    "poster": "/assets/ns-doctor-recruitment-kids.jpg",
+    "aspect": "1 / 1"
+  },
+  {
+    "id": "ns-doctor-recruitment-hadiza",
+    "title": "Dr Babatolu's Journey · Hadiza",
+    "client": "NS Health",
+    "type": "Social cutdown",
+    "duration_seconds": 30,
+    "src": "/assets/ns-doctor-recruitment-hadiza.mp4",
+    "poster": "/assets/ns-doctor-recruitment-hadiza.jpg",
+    "aspect": "1 / 1"
+  },
+  {
+    "id": "ns-doctor-recruitment-ola",
+    "title": "Dr Babatolu's Journey · Ola",
+    "client": "NS Health",
+    "type": "Social cutdown",
+    "duration_seconds": 30,
+    "src": "/assets/ns-doctor-recruitment-ola.mp4",
+    "poster": "/assets/ns-doctor-recruitment-ola.jpg",
+    "aspect": "1 / 1"
+  },
+  {
+    "id": "shell-john-williams-trailer",
+    "title": "John Williams' Mural · 60 second trailer",
+    "client": "Shell × John Williams",
+    "type": "Trailer",
+    "duration_seconds": 65,
+    "src": "/assets/shell-john-williams-trailer.mp4",
+    "poster": "/assets/shell-john-williams-trailer.jpg",
+    "aspect": "16 / 9"
+  }
+]
