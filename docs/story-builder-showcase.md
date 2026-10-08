@@ -84,3 +84,7 @@ Release build and166 tests passed:86 core,26UI,54API. The snapshot smoke test ch
 ## Mobile screenshot spacing fix — 2026-10-08
 
 Fixed the oversized black bands reported on iPhone. The mobile feature board uses natural image heights and automatic grid rows; the active card sizes to the preview rather than a fixed-height overlay. Script, Board and Strip retain10px internal padding, Transcript stays uncropped and the icon remains centered. Desktop geometry unchanged. Second tap restores description; without JavaScript the normal card remains readable. Browser regression checks both pages at320/390/430 for image aspect ratios, bottom spacing, no horizontal overflow and closing the preview. Updated desktop/phone review captures.
+
+## Desktop app-card expansion — 2026-10-08
+
+Pedal Path and Story Builder now start as compact text cards on desktop devices with hover support. Hover puts the graphics in normal layout flow so each card expands to fit them, and leaving restores the original card height. Pedal Path shows its icon and three uncropped screenshots with the App Store button below; Story Builder keeps its approved716px board arrangement. Other build cards and the corrected mobile behavior remain unchanged. Text remains accessible while visually replaced on hover. Regression covers both pages: expanded height, stable width, image containment, clickable CTA and collapse back to copy.
