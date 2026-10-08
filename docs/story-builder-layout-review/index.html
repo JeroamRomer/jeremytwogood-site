@@ -7,9 +7,10 @@
   .selected-board img:nth-child(5){ grid-area:strip; padding:18px; object-fit:cover; object-position:center top; }
   .selected-board{ min-height:716px; }
   @media (max-width:720px){
-    .selected-board{ min-height:558px; }
-    .selected-board{ grid-template-columns:.95fr 1.05fr; grid-template-rows:140px 80px 150px 130px; grid-template-areas:"icon script" "transcript script" "transcript board" "transcript strip"; gap:10px; padding:14px; }
-    .selected-board img:nth-child(1){ width:132px; height:132px; }
+    .selected-board{ min-height:0; }
+    .selected-board{ grid-template-columns:.95fr 1.05fr; grid-template-rows:auto auto auto; grid-template-areas:"icon script" "transcript board" "transcript strip"; gap:10px; padding:14px; align-items:start; align-content:start; }
+    .selected-board img{ height:auto; max-height:none; }
+    .selected-board img:nth-child(1){ width:132px; height:auto; }
     .selected-board img:nth-child(3), .selected-board img:nth-child(4), .selected-board img:nth-child(5){ padding:10px; }
     .selected-board img:nth-child(4), .selected-board img:nth-child(5){ object-fit:contain; }
   }

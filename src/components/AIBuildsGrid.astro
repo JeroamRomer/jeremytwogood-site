@@ -119,11 +119,13 @@ const statusClass = (status: string) => status === 'live' ? 'build-card__status 
   .build-card__shot--board img:nth-child(5){ grid-area:strip; padding:18px; object-fit:cover; object-position:center top; }
   .build-card:has(.build-card__shot--board){ min-height:716px; }
   @media (max-width:720px){
-    .build-card:has(.build-card__shot--board){ min-height:558px; }
-    .build-card__shot--board{ grid-template-columns:.95fr 1.05fr; grid-template-rows:140px 80px 150px 130px; grid-template-areas:"icon script" "transcript script" "transcript board" "transcript strip"; gap:10px; padding:14px; }
-    .build-card__shot--board img:nth-child(1){ width:132px; height:132px; }
-    .build-card__shot--board img:nth-child(3), .build-card__shot--board img:nth-child(4), .build-card__shot--board img:nth-child(5){ padding:10px; }
-    .build-card__shot--board img:nth-child(4), .build-card__shot--board img:nth-child(5){ object-fit:contain; }
+    .build-card:has(.build-card__shot--board){ min-height:280px; }
+    .build-card.is-active:has(.build-card__shot--board){ padding:0; }
+    .build-card.is-active:has(.build-card__shot--board) > :not(.build-card__shot){ display:none; }
+    .build-card__shot--board{ position:relative; inset:auto; grid-template-columns:.95fr 1.05fr; grid-template-rows:auto auto auto; grid-template-areas:"icon script" "transcript board" "transcript strip"; gap:10px; padding:14px; align-items:start; align-content:start; }
+    .build-card__shot--board img{ height:auto; max-height:none; }
+    .build-card__shot--board img:nth-child(1){ width:132px; height:auto; }
+    .build-card__shot--board img:nth-child(3), .build-card__shot--board img:nth-child(4), .build-card__shot--board img:nth-child(5){ padding:10px; object-fit:contain; }
   }
   .build-card__shot--icon{ inset:24px 24px auto auto; width:80px; height:80px; opacity:.35; background:none; }
   .build-card__shot--icon img{ width:100%; height:auto; mix-blend-mode:multiply; }
