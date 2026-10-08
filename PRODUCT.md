@@ -60,7 +60,7 @@ Explicitly not binding: the amber accent (`#c8922a`), the dark near-black base, 
 
 - **Video work:** 8 projects in `src/data/projects.json` (Shell, Simbility, Talk T.O. My Stomach x2, Microsoft Xbox, Thales Canada, NS Health, and CAOT marked coming soon), 2016 to 2026. Per-project descriptions and video IDs in `src/data/video-content.json`. Real stills and thumbnails in `public/assets/`, six silent hover loops (`public/assets/<name>-loop.mp4|webm`), and a portrait (`public/assets/portrait.jpg`).
 - **Reel:** YouTube `Tl1n3hu4e8I` (`src/data/reel-index.json`).
-- **Software:** 5 entries in `src/data/ai-builds.json`: Unbusy Scanner (live), Gibbon Knight (live), Pedal Path (live on the App Store, `id6784479426`), Production Intelligence (internal), MCP Integrator (beta). Product screenshots for Gibbon Knight and Pedal Path in `public/assets/`.
+- **Software:** 6 entries in `src/data/ai-builds.json`: Pedal Path (live on the App Store, `id6784479426`), Story Builder (in development), Unbusy Scanner (live), Production Intelligence (internal), Gibbon Knight (live), Ultimate PPL (personal use, no public link). Product screenshots for Gibbon Knight, Pedal Path, Story Builder and Ultimate PPL in `public/assets/`.
 - **Music:** 10 SoundCloud tracks in `profile.json` with real waveform peaks in `src/data/waveforms.json`.
 - **Clients (canonical, `profile.json`, merged 2026-09-14):** Google, Microsoft Xbox, Shell, Sony Ericsson, Sobeys, Mirvish Productions, Canova Media, Journeyman Film Company, Volvo, Mitsubishi Motors, Simbility, NS Health, Thales Canada, Ewing Morris & Co.
 - **Absent, do not fabricate:** testimonials, awards, press, view counts, client quotes, and any metric beyond "twenty years" and the real project count.

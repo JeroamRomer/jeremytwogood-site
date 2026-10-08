@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-09-23T17:30:21.934Z",
+  "generated_at": "2026-10-08T17:47:35.785Z",
   "profile": {
     "name": "Jeremy Twogood",
     "title": "Multimedia Producer & Video Editor",
@@ -195,17 +195,15 @@
       "live_url": "https://gibbon-knight.vercel.app"
     },
     {
-      "id": "mcp-integrator",
-      "name": "MCP Integrator",
-      "description": "Beta. A productized service that gets businesses agent-ready, with three tiers running from read-only presence to a full agent gateway. (TypeScript, MCP, Node.js, SQLite)",
+      "id": "ultimate-ppl",
+      "name": "Ultimate PPL",
+      "description": "Personal use. A training log I built for my own six-day push/pull/legs plan. It runs the full thirteen weeks, shows last week's numbers beside every lift, and lets me swap or skip an exercise on the day. Syncs across my devices.",
       "tech_stack": [
-        "TypeScript",
-        "MCP",
-        "Node",
-        "SQLite"
+        "JavaScript",
+        "Claude Artifacts"
       ],
       "role": "Creator",
-      "status": "beta",
+      "status": "Personal use",
       "github_url": null,
       "live_url": null
     }

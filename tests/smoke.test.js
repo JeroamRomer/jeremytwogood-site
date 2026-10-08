@@ -248,7 +248,7 @@ test('smoke: builds bin lists every build with a plain status', () => {
   const html = getHtml('index.html');
   assert.ok(html.includes('id="builds"'), '#builds bin must exist');
   const builds = html.slice(html.indexOf('id="builds"'), html.indexOf('id="sound"'));
-  for (const name of ['Unbusy Scanner', 'Production Intelligence', 'Gibbon Knight', 'MCP Integrator', 'Pedal Path']) {
+  for (const name of ['Unbusy Scanner', 'Production Intelligence', 'Gibbon Knight', 'Ultimate PPL', 'Pedal Path']) {
     assert.ok(builds.includes(name), `${name} must appear`);
   }
   assert.ok(builds.includes('section--light'), 'homepage AI builds should use the light treatment');
@@ -264,7 +264,7 @@ test('smoke: /ai-builds/index.html exists with full grid', () => {
   assert.ok(html.includes('Gibbon Knight'), 'Gibbon Knight must appear');
   assert.ok(html.includes('Production Intelligence'), 'Production Intelligence must appear');
   assert.ok(html.includes('Unbusy Scanner'), 'Unbusy Scanner must appear');
-  assert.ok(html.includes('MCP Integrator'), 'MCP Integrator must appear');
+  assert.ok(html.includes('Ultimate PPL'), 'Ultimate PPL must appear');
   assert.ok(html.includes('Pedal Path'), 'Pedal Path must appear');
   const aiBuilds = JSON.parse(readFileSync(join(ROOT, 'src/data/ai-builds.json'), 'utf-8'));
   assert.equal(aiBuilds[0].name, 'Pedal Path', 'Pedal Path should lead the build list');

@@ -72,17 +72,17 @@
     "featured": true
   },
   {
-    "id": "mcp-integrator",
-    "name": "MCP Integrator",
-    "description": "Beta. A productized service that gets businesses agent-ready, with three tiers running from read-only presence to a full agent gateway. (TypeScript, MCP, Node.js, SQLite)",
-    "tech_stack": ["TypeScript", "MCP", "Node", "SQLite"],
+    "id": "ultimate-ppl",
+    "name": "Ultimate PPL",
+    "description": "Personal use. A training log I built for my own six-day push/pull/legs plan. It runs the full thirteen weeks, shows last week's numbers beside every lift, and lets me swap or skip an exercise on the day. Syncs across my devices.",
+    "tech_stack": ["JavaScript", "Claude Artifacts"],
     "role": "Creator",
-    "status": "beta",
+    "status": "Personal use",
     "github_url": null,
     "live_url": null,
-    "shot_class": null,
-    "shot_images": [],
-    "shot_alts": [],
+    "shot_class": "build-card__shot--phones build-card__shot--four",
+    "shot_images": ["/assets/ppl-1.jpg", "/assets/ppl-2.jpg", "/assets/ppl-3.jpg", "/assets/ppl-4.jpg"],
+    "shot_alts": ["Ultimate PPL push session with weights logged and equipment tags selected", "Ultimate PPL pull session with last week's numbers beside each lift", "Ultimate PPL thirteen-week picker with completed days marked by colour", "Ultimate PPL finished leg session marked complete"],
     "featured": true
   }
 ]
