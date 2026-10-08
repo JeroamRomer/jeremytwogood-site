@@ -1,0 +1,102 @@
+From cefcedf5df024588ca6aea488c8031e1d09fb0f4 Mon Sep 17 00:00:00 2001
+From: Jeremy <jtwogood@gmail.com>
+Date: Fri, 25 Sep 2026 14:59:56 -0400
+Subject: [PATCH] data: credit NS Health doctor recruitment film + start social
+ edits backlog
+
+Add Dr. Babatolu's Journey (Journeyman / Nova Scotia Health) to resume.json:
+fine edit, colour, and sound on the 8-minute film, plus the three social
+trailers. New src/data/social-edits.json holds social cuts awaiting links;
+not rendered yet.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ src/data/resume.json       |  7 ++++++
+ src/data/social-edits.json | 50 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
+ create mode 100644 src/data/social-edits.json
+
+diff --git a/src/data/resume.json b/src/data/resume.json
+index f68fae9..8f73f14 100644
+--- a/src/data/resume.json
++++ b/src/data/resume.json
+@@ -81,6 +81,7 @@
+         "Long-form and documentary work including a 20-video bilingual series (CAOT) and a feature documentary on Indigenous public art (Journeyman Video Production / Shell).",
+         "Multi-camera post-production for Houseplant (Seth Rogen, Evan Goldberg): synced and media-managed a large 4K multi-cam, multi-mic shoot across multiple locations in Vancouver.",
+         "Corporate video partner with Journeyman Video Production, Canova Media, and BizMedia; aerial drone operator on the Xbox Forza 5 campaign (BizMedia).",
++        "Fine edit, colour, and sound on Journeyman's Nova Scotia Health doctor recruitment film (Dr. Babatolu's Journey), plus its social media trailers.",
+         "Full-service delivery: scripting, directing, editing, colour, motion graphics, and multi-platform versioning."
+       ]
+     },
+@@ -153,6 +154,12 @@
+       "description": "Ongoing series with portfolio manager Randy Stuart: screen-recorded investment workflow, direct-to-camera commentary, and editorial narrative. Titles: Bandwidth (2024), the importance of taxes for investment income (2025), investment risk (2025). Produced for client retention and business development.",
+       "client": "Ewing Morris & Co."
+     },
++    {
++      "title": "Nova Scotia Health: Dr. Babatolu's Journey",
++      "year": null,
++      "description": "Physician recruitment campaign aimed at UK-trained doctors, built around one doctor's real move from the NHS to Nova Scotia with his family. Fine edit, colour grade, and sound mix on the 8-minute anthem film used at UK recruitment fairs and in email follow-ups, plus editor on three 30-second 1:1 social trailers for Instagram and Facebook.",
++      "client": "Nova Scotia Health / Journeyman Video Production"
++    },
+     {
+       "title": "Nova Scotia Health: Westray Mine Documentary",
+       "year": "2024",
+diff --git a/src/data/social-edits.json b/src/data/social-edits.json
+new file mode 100644
+index 0000000..78bb9d4
+--- /dev/null
++++ b/src/data/social-edits.json
+@@ -0,0 +1,50 @@
++{
++  "_note": "Backlog for a future Social Edits section. Not rendered or published yet. Add an entry per social cut; fill youtube_id/vimeo_id (or a self-hosted file) once Jeremy finds where each video lives, then build the UI.",
++  "items": [
++    {
++      "id": "nsh-babatolu-social-1",
++      "title": "Doctor recruitment social trailer 1",
++      "client": "Nova Scotia Health / Journeyman Video Production",
++      "campaign": "Dr. Babatolu's Journey",
++      "role": ["Editor"],
++      "format": "1:1",
++      "platforms": ["Instagram", "Facebook"],
++      "duration_seconds": null,
++      "blurb": "Aimed at the kids of UK doctors, so they would share the campaign with their parents.",
++      "youtube_id": null,
++      "vimeo_id": null,
++      "reference_url": "https://www.journeymanvideo.ca/case-studies/doctor-recruitment-campaign",
++      "status": "link_needed"
++    },
++    {
++      "id": "nsh-babatolu-social-2",
++      "title": "Dr. Babatolu's Journey social trailer 2",
++      "client": "Nova Scotia Health / Journeyman Video Production",
++      "campaign": "Dr. Babatolu's Journey",
++      "role": ["Editor"],
++      "format": "1:1",
++      "platforms": ["Instagram", "Facebook"],
++      "duration_seconds": null,
++      "blurb": "Dr. Hadiza Babatolu, direct to camera, promoting the longer film.",
++      "youtube_id": null,
++      "vimeo_id": null,
++      "reference_url": "https://www.journeymanvideo.ca/case-studies/doctor-recruitment-campaign",
++      "status": "link_needed"
++    },
++    {
++      "id": "nsh-babatolu-social-3",
++      "title": "Dr. Babatolu's Journey social trailer 3",
++      "client": "Nova Scotia Health / Journeyman Video Production",
++      "campaign": "Dr. Babatolu's Journey",
++      "role": ["Editor"],
++      "format": "1:1",
++      "platforms": ["Instagram", "Facebook"],
++      "duration_seconds": null,
++      "blurb": "Dr. Ola Babatolu, promoting the longer film.",
++      "youtube_id": null,
++      "vimeo_id": null,
++      "reference_url": "https://www.journeymanvideo.ca/case-studies/doctor-recruitment-campaign",
++      "status": "link_needed"
++    }
++  ]
++}
+-- 
+2.50.1 (Apple Git-155)
+

@@ -136,6 +136,21 @@
       "live_url": "https://apps.apple.com/ca/app/pedal-path/id6784479426"
     },
     {
+      "id": "story-builder",
+      "name": "Story Builder",
+      "description": "In development. A tool I built for my own editing workflow. Search interview transcripts, audition exact quotes, and arrange them into a paper edit, with source timecodes carried through to Final Cut Pro. Connect your preferred AI assistant through MCP and let it operate Story Builder for you.",
+      "tech_stack": [
+        "TypeScript",
+        "Node.js",
+        "Whisper",
+        "MCP"
+      ],
+      "role": "Creator",
+      "status": "In development",
+      "github_url": null,
+      "live_url": null
+    },
+    {
       "id": "unbusy-scanner",
       "name": "Unbusy Scanner",
       "description": "Live at unbusyscanner.vercel.app. Scans any URL for agent-readability, MCP endpoints, friction score, opportunity gap. (Next.js, Claude API, Vercel)",

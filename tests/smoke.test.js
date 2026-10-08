@@ -44,10 +44,10 @@ test('smoke: index.html has OG meta tags', () => {
 
 test('smoke: index.html points to the versioned 1200x630 share image', async () => {
   const html = getHtml('index.html');
-  assert.match(html, /property="og:image" content="https:\/\/jeremytwogood\.com\/og-image-open-sequence\.png"/);
-  assert.match(html, /name="twitter:image" content="https:\/\/jeremytwogood\.com\/og-image-open-sequence\.png"/);
+  assert.match(html, /property="og:image" content="https:\/\/jeremytwogood\.com\/og-image\.jpg"/);
+  assert.match(html, /name="twitter:image" content="https:\/\/jeremytwogood\.com\/og-image\.jpg"/);
 
-  const image = await sharp(join(ROOT, 'dist/og-image-open-sequence.png')).metadata();
+  const image = await sharp(join(ROOT, 'dist/og-image.jpg')).metadata();
   assert.equal(image.width, 1200, 'share image must be 1200px wide');
   assert.equal(image.height, 630, 'share image must be 630px high');
 });

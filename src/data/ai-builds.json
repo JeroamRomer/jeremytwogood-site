@@ -15,6 +15,21 @@
     "featured": true
   },
   {
+    "id": "story-builder",
+    "name": "Story Builder",
+    "description": "In development. A tool I built for my own editing workflow. Search interview transcripts, audition exact quotes, and arrange them into a paper edit, with source timecodes carried through to Final Cut Pro. Connect your preferred AI assistant through MCP and let it operate Story Builder for you.",
+    "tech_stack": ["TypeScript", "Node.js", "Whisper", "MCP"],
+    "role": "Creator",
+    "status": "In development",
+    "github_url": null,
+    "live_url": null,
+    "shot_class": "build-card__shot--board",
+    "shot_images": ["/assets/story-builder-icon.png", "/assets/story-builder-feature-transcript.png", "/assets/story-builder-feature-script.png", "/assets/story-builder-feature-board.png", "/assets/story-builder-feature-strip.png"],
+    "shot_alts": ["Story Builder app icon", "Full fictional Captain Puddles transcript and shipwreck image filling the viewer", "Centered Script view with fictional narration and source timecodes", "Board view with fictional story beat cards", "Strip view with beat timeline and selected story cards"],
+    "span": 2,
+    "featured": true
+  },
+  {
     "id": "unbusy-scanner",
     "name": "Unbusy Scanner",
     "description": "Live at unbusyscanner.vercel.app. Scans any URL for agent-readability, MCP endpoints, friction score, opportunity gap. (Next.js, Claude API, Vercel)",

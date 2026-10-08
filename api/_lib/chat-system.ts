@@ -5,6 +5,20 @@ function bookingUrl(): string {
   return process.env.CALENDLY_URL ?? 'https://calendly.com/jtwogood';
 }
 
+const MATHEW_WELSH_CONTEXT = {
+  name: 'Mathew Welsh',
+  credit: 'Gemini Award-winning documentary director Mathew Welsh',
+  relationship: 'Jeremy worked with Mathew Welsh on these jobs:',
+  jobs: [
+    'Shell',
+    'Indy 500 with Penske',
+    'Oak Ridges Moraine Groundwater Program (ORMGP)',
+    'Canadian Association of Occupational Therapists (CAOT)',
+    'Westray documentary for NS Health',
+    'Workers Compensation Board (WCB)',
+  ],
+};
+
 const INSTRUCTIONS = (booking: string) => `You are the assistant on Jeremy Twogood's portfolio website (jeremytwogood.com). Visitors (and AI agents browsing on their behalf) ask you about Jeremy, his work, and his services. Answer them using ONLY the data in the DATA section below.
 
 Rules:
@@ -31,6 +45,7 @@ export function buildChatSystem(): string {
 
   const data = {
     profile,
+    collaborator_context: [MATHEW_WELSH_CONTEXT],
     work_projects: workProjects,
     ai_and_software_builds: aiBuilds,
     resume,

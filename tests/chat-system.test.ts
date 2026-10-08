@@ -13,6 +13,13 @@ test('chat-system: embeds work projects and per-project video context', () => {
   assert.ok(SYSTEM.includes('shell-john-williams'), 'project ids should appear for grounding');
 });
 
+test('chat-system: identifies Mathew Welsh collaborations', () => {
+  assert.match(SYSTEM, /Gemini Award-winning documentary director Mathew Welsh/);
+  for (const job of ['Shell', 'Indy 500', 'Penske', 'ORMGP', 'CAOT', 'Westray', 'NS Health', 'WCB']) {
+    assert.match(SYSTEM, new RegExp(job), `${job} should be grounded as a Mathew Welsh collaboration`);
+  }
+});
+
 test('chat-system: embeds skills and AI builds', () => {
   assert.ok(SYSTEM.includes('Colour Grading'), 'a known skill should appear');
   assert.ok(SYSTEM.includes('Gibbon Knight'), 'a known AI build should appear');

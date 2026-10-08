@@ -1,3 +1,13 @@
+# Current production state — 2026-10-08
+
+This section supersedes the historical handoff below. Open Sequence is the approved live site, and main is its canonical production branch. Jeremy explicitly authorized reconciling all deployed work, committing/merging/pushing it, and consolidating the checkout.
+
+The production reconciliation includes social cutdowns/Shell trailer, MCP discovery and CTA fixes, the final five-image Story Builder feature board and MCP description, plus restoration of previously approved chatbot-only Mathew Welsh context. Undeployed social-card and older social-edit drafts are preserved in docs/archive/2026-10-08-repository-reconciliation. All original branch/worktree pointers are recorded there. Public Story Builder archive captures are intentionally retained alongside the five selected overlay images.
+
+Release order: run build + core/UI/API checks, commit, integrate/push main, deploy that exact clean commit, then verify live desktop/mobile and asset parity. Do not deploy uncommitted snapshots. Agent-data generated_at churn alone should not dirty the checkout. Source media and local environment/tool settings stay private and ignored.
+
+# Historical handoff — September17
+
 # Open Sequence: handoff (for Codex or any agent)
 
 Last updated 2026-09-17. This is the single file to read before touching the Open Sequence build.

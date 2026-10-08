@@ -1,0 +1,13 @@
+diff --git a/src/layouts/BaseLayout.astro b/src/layouts/BaseLayout.astro
+index bb456a3..8ea0690 100644
+--- a/src/layouts/BaseLayout.astro
++++ b/src/layouts/BaseLayout.astro
+@@ -22,7 +22,7 @@ const metaDescription = (profile as any).bioMeta ?? bioText;
+ const {
+   title = `${profile.name} · ${profile.title}`,
+   description = metaDescription,
+-  ogImage = '/og-image.jpg',
++  ogImage = '/og-image-open-sequence.png',
+   pageType = 'home',
+   chat = true,
+ } = Astro.props;

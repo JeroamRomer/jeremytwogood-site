@@ -1,0 +1,16 @@
+worktree /Users/romer/Documents/Claude/Website
+HEAD 83995bb4b10b1978d61e5bba4c153e7ea7defa58
+branch refs/heads/codex/reel-production-moments
+
+worktree /Users/romer/Documents/Claude/Website-discoverability
+HEAD b6b4a2cdc05aa3db5ef382133ef24ccb55ac34cd
+branch refs/heads/main
+
+worktree /Users/romer/Documents/Claude/Website/.claude/worktrees/quirky-lehmann-ab5cda
+HEAD b6b4a2cdc05aa3db5ef382133ef24ccb55ac34cd
+detached
+
+worktree /Users/romer/Documents/Claude/Website/.claude/worktrees/social-edits
+HEAD cefcedf5df024588ca6aea488c8031e1d09fb0f4
+branch refs/heads/social-edits
+
