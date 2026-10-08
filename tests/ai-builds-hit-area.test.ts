@@ -158,3 +158,45 @@ test('All galleries ease between compact and fitted sizes; Rome traces its brain
     await page.close();
   }
 });
+
+test('Phone app galleries fit complete screenshots in two columns on mobile', async (t) => {
+  const { chromium } = await import('playwright');
+  const { startDistServer } = await import('./helpers/dist-server.ts');
+  const { server, url } = await startDistServer();
+  const browser = await chromium.launch();
+  t.after(async () => { await browser.close(); server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())); });
+  for (const route of ['/', '/ai-builds/index.html']) {
+    for (const width of [320, 390, 430]) {
+      const page = await browser.newPage({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
+      await page.route(/\.(mp4|webm)(\?|$)/, (route) => route.abort());
+      await page.goto(url + route);
+      for (const id of ['bike-app', 'gibbon-knight', 'ultimate-ppl']) {
+        const card = page.locator('#build-' + id);
+        await card.scrollIntoViewIfNeeded();
+        await card.tap();
+        await card.locator('img').evaluateAll((images) => Promise.all(images.map((image) => { image.loading = 'eager'; return image.decode(); })));
+        const info = await card.evaluate((card) => {
+          const shot = card.querySelector('.build-card__shot')!;
+          const bounds = card.getBoundingClientRect();
+          const images = [...shot.querySelectorAll('img')];
+          return {
+            display: getComputedStyle(shot).display,
+            columns: getComputedStyle(shot).gridTemplateColumns.split(' ').length,
+            fits: images.every((image) => {
+              const box = image.getBoundingClientRect();
+              return box.width < bounds.width / 2 && box.left >= bounds.left && box.right <= bounds.right && box.top >= bounds.top && box.bottom <= bounds.bottom && Math.abs(box.height - box.width * image.naturalHeight / image.naturalWidth) < 1;
+            }),
+            overflow: document.documentElement.scrollWidth > innerWidth,
+          };
+        });
+        assert.equal(info.display, 'grid', `${id} uses a mobile grid`);
+        assert.equal(info.columns, 2);
+        assert.equal(info.fits, true, `${id} has complete contained images at ${width}: ${JSON.stringify(info)}`);
+        assert.equal(info.overflow, false);
+        await card.tap();
+        assert.equal(await card.locator('.build-card__desc').isVisible(), true);
+      }
+      await page.close();
+    }
+  }
+});

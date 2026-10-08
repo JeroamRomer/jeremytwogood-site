@@ -18,7 +18,10 @@
 .builds-grid .build-card:hover .build-card__shot--icon,.builds-grid .build-card.is-active .build-card__shot--icon{opacity:1}
 @media(max-width:720px){
  .builds-grid .build-card:has(.build-card__shot--icon) .build-card__desc{padding-right:46px}
- .builds-grid .build-card.is-expanded .build-card__shot--phones{gap:8px;padding:14px}
+ .builds-grid .build-card.is-expanded .build-card__shot--phones,
+ .builds-grid #build-bike-app.is-expanded .build-card__shot--phones{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px;align-items:start}
+ .builds-grid .build-card.is-expanded .build-card__shot--phones img{min-width:0;border-radius:10px}
+ .builds-grid #build-bike-app.is-expanded .build-card__shot img:first-child{align-self:center}
  .builds-grid .build-card.is-expanded > .build-card__cta{padding:12px 14px 14px}
 }
 @media(prefers-reduced-motion:reduce){.builds-grid .build-card.is-expanded > .build-card__shot{transition:none}}

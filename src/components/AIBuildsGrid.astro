@@ -124,7 +124,7 @@ const statusClass = (status: string) => status === 'live' ? 'build-card__status 
   .build-card:hover .build-card__shot--icon{ opacity:1; }
   @media (max-width:900px){ .builds-grid{ grid-template-columns:1fr; } .build-card[style*="span 2"]{ grid-column:span 1 !important; } }
   @media (max-width:720px){ .build-card{ min-height:280px; } .build-card__shot:not(.build-card__shot--icon){ display:none; } .build-card.is-active .build-card__shot:not(.build-card__shot--icon){ display:flex; } .build-card__shot--icon{ inset:16px 16px auto auto; width:54px; height:54px; opacity:1; } }
-  @media (max-width:720px){ .build-card.is-active .build-card__shot.build-card__shot--board{ display:grid; } }
+  @media (max-width:720px){ .build-card.is-active .build-card__shot.build-card__shot--board, .build-card.is-active .build-card__shot.build-card__shot--phones{ display:grid; } }
   @media (max-width:640px){ .section-head__count{ width:100%; } .build-card__url{ position:static; display:block; max-width:100%; margin:0 0 12px; text-align:right; } }
   @media (prefers-reduced-motion: reduce){ .build-card, .build-card__shot{ transition:none; } }
 </style>

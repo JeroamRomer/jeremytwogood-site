@@ -98,3 +98,7 @@ Rome Brone stays compact. RomeBrain.astro reuses the existing SVG artwork and tr
 ### Uniform desktop cards and full-row previews — October 8
 
 Every build now starts at the same one-column footprint. The compact height is measured from the longest description so no copy is clipped. On desktop above 900px, screenshot galleries ease to the full width of both columns and a shared large height, then return to their compact position. Right-column previews grow leftward within their existing row so the pointer stays over the card. Width and horizontal position use the same 480ms easing as height. Production Intelligence keeps its compact brain-glow treatment; mobile retains natural screenshot heights.
+
+### Mobile phone galleries — October 8
+
+Pedal Path, Gibbon Knight and Ultimate PPL use a two-column mobile gallery at 720px and below. A legacy mobile `display:flex` override was taking precedence over the shared grid rule, making full-width screenshots overflow side by side. The scoped mobile reveal now explicitly preserves grid display for phone galleries. Images retain their complete natural proportions with 14px outer padding and 10px gaps. The Pedal Path icon is centered in its first cell. Desktop expansion and Story Builder composition stay unchanged. Regression coverage checks all three apps at 320/390/430 on both pages, including containment, aspect ratio, no overflow and tap-to-close.
