@@ -76,7 +76,7 @@ test('Pedal Path and Story Builder expand on desktop hover and collapse on exit'
       await card.locator('img').evaluateAll((images) => Promise.all(images.map((image) => image.decode())));
       const open = (await card.boundingBox())!;
       assert.ok(open.height > closed.height + 100, `${id} should expand for graphics: ${closed.height} -> ${open.height}`);
-      assert.equal(open.width, closed.width, 'Expansion should preserve card width');
+      assert.ok(open.width > closed.width * 1.9, 'Expansion should occupy both desktop columns');
       assert.equal(await card.locator('.build-card__shot').evaluate((shot) => getComputedStyle(shot).position), 'relative', 'Graphics should determine the expanded height');
       assert.ok(await card.locator('img').evaluateAll((images) => images.every((image) => {
         const card = image.closest('.build-card')!.getBoundingClientRect();
@@ -117,15 +117,19 @@ test('All galleries ease between compact and fitted sizes; Rome traces its brain
       const card = page.locator('#build-' + id);
       await card.scrollIntoViewIfNeeded();
       const closed = (await card.boundingBox())!.height;
-      assert.ok(closed <= 322, `${id} starts compact: ${closed}`);
+      assert.equal(closed, await page.locator('#build-production-intelligence').evaluate((card) => card.getBoundingClientRect().height), `${id} shares the compact card height`);
+      assert.equal((await card.boundingBox())!.width, await page.locator('#build-production-intelligence').evaluate((card) => card.getBoundingClientRect().width), `${id} shares the compact card width`);
       await card.hover({ position: { x: 24, y: 24 } });
       const opening = await card.evaluate((element) => {
         const animation = element.getAnimations().find((a) => (a.effect as KeyframeEffect).getKeyframes().some((frame) => frame.height));
         if (!animation) return null;
         animation.pause(); animation.currentTime = 240;
-        return { easing: animation.effect!.getTiming().easing, height: element.getBoundingClientRect().height, end: parseFloat(String((animation.effect as KeyframeEffect).getKeyframes().at(-1)!.height)) };
+        return { width: element.getBoundingClientRect().width, endWidth: parseFloat(String((animation.effect as KeyframeEffect).getKeyframes().at(-1)!.width)), easing: animation.effect!.getTiming().easing, height: element.getBoundingClientRect().height, end: parseFloat(String((animation.effect as KeyframeEffect).getKeyframes().at(-1)!.height)) };
       });
       assert.ok(opening, 'Opening must animate height');
+      assert.ok(opening.endWidth > opening.width, 'Width eases toward the full row');
+      const expectedHeight = await card.evaluate((card) => parseFloat(getComputedStyle(card.parentElement!).getPropertyValue('--expanded-height')));
+      assert.ok(Math.abs(opening.end - expectedHeight) < 1, `${id} shares the large preview height`);
       assert.equal(opening.easing, 'cubic-bezier(0.65, 0, 0.35, 1)');
       assert.ok(opening.height > closed && opening.height < opening.end, 'Opening has an intermediate size');
       await card.evaluate((element) => { for (const animation of element.getAnimations()) if ((animation.effect as KeyframeEffect).getKeyframes().some((frame) => frame.height)) animation.finish(); });

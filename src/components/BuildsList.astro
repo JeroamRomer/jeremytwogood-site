@@ -14,9 +14,9 @@ const statusClass = (status: string) => status === 'live' ? 'build-card__status 
 <div class="builds-grid">
   {aiBuilds.map((build, index) => {
     const hasShot = Boolean(build.shot_images?.length);
-    const spanStyle = build.span === 2 ? 'grid-column:span 2' : undefined;
+
     return (
-      <article class="build-card" style={spanStyle} id={`build-${build.id}`}>
+      <article class="build-card" id={`build-${build.id}`}>
         {hasShot && (
           <div class={`build-card__shot ${build.shot_class ?? ''}`} aria-hidden="true">
             {build.id === 'production-intelligence' ? <RomeBrain /> : build.shot_images.map((src, shotIndex) => (
@@ -79,9 +79,7 @@ const statusClass = (status: string) => status === 'live' ? 'build-card__status 
   .build-card__shot--board img:nth-child(3){ grid-area:script; padding:18px; object-position:center; }
   .build-card__shot--board img:nth-child(4){ grid-area:board; padding:18px; object-fit:cover; object-position:left top; }
   .build-card__shot--board img:nth-child(5){ grid-area:strip; padding:18px; object-fit:cover; object-position:center top; }
-  .build-card:has(.build-card__shot--board){ min-height:320px; }
   @media (max-width:720px){
-    .build-card:has(.build-card__shot--board){ min-height:280px; }
     .build-card.is-active:has(.build-card__shot--board){ padding:0; }
     .build-card.is-active:has(.build-card__shot--board) > :not(.build-card__shot){ display:none; }
     .build-card__shot--board{ position:relative; inset:auto; grid-template-columns:.95fr 1.05fr; grid-template-rows:auto auto auto; grid-template-areas:"icon script" "transcript board" "transcript strip"; gap:10px; padding:14px; align-items:start; align-content:start; }
