@@ -1,0 +1,25 @@
+---
+import brain from '../../public/assets/rome-brone.svg?raw';
+const outline = brain.match(/<path fill="#3C3B3B" d="([^"]+)"/)?.[1];
+const artwork = brain.replace(/^.*?<svg[^>]*>/s, '').replace(/<\/svg>\s*$/, '').replace(/<path fill="white" d="M0 0[^"]+"\/>/, '');
+---
+<svg class="rome-brain" viewBox="290 280 450 450" aria-hidden="true">
+  <defs>
+    <linearGradient id="brain-color" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#64b5ff" /><stop offset="1" stop-color="#ac78ff" />
+    </linearGradient>
+    <filter id="brain-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" /></filter>
+  </defs>
+  <g set:html={artwork} />
+  <g class="rome-brain__runner" fill="none" stroke="url(#brain-color)" stroke-linecap="round" stroke-dasharray="8 92">
+    <path d={outline} pathLength="100" stroke-width="23" filter="url(#brain-glow)" />
+    <path d={outline} pathLength="100" stroke-width="10" />
+  </g>
+</svg>
+<style>
+ .rome-brain{display:block;width:100%;height:100%;overflow:visible}
+ .rome-brain__runner{opacity:0;transition:opacity .25s ease}
+ :global(.build-card:hover) .rome-brain__runner,:global(.build-card.is-active) .rome-brain__runner{opacity:1;animation:brain-trace 3.5s linear infinite}
+ @keyframes brain-trace{from{stroke-dashoffset:0}to{stroke-dashoffset:-100}}
+ @media(prefers-reduced-motion:reduce){.rome-brain__runner{transition:none}:global(.build-card:hover) .rome-brain__runner,:global(.build-card.is-active) .rome-brain__runner{animation:none;stroke-dashoffset:-18}}
+</style>

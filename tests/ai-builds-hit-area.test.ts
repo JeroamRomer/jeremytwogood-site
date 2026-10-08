@@ -101,3 +101,56 @@ test('Pedal Path and Story Builder expand on desktop hover and collapse on exit'
     await page.close();
   }
 });
+
+test('All galleries ease between compact and fitted sizes; Rome traces its brain', async (t) => {
+  const { chromium } = await import('playwright');
+  const { startDistServer } = await import('./helpers/dist-server.ts');
+  const { server, url } = await startDistServer();
+  const browser = await chromium.launch();
+  t.after(async () => { await browser.close(); server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())); });
+  for (const route of ['/', '/ai-builds/index.html']) {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'no-preference' });
+    await page.route(/\.(mp4|webm)(\?|$)/, (route) => route.abort());
+    await page.goto(url + route, { waitUntil: 'load' });
+    for (const id of ['bike-app', 'story-builder', 'unbusy-scanner', 'gibbon-knight', 'ultimate-ppl']) {
+      await page.mouse.move(0, 0);
+      const card = page.locator('#build-' + id);
+      await card.scrollIntoViewIfNeeded();
+      const closed = (await card.boundingBox())!.height;
+      assert.ok(closed <= 322, `${id} starts compact: ${closed}`);
+      await card.hover({ position: { x: 24, y: 24 } });
+      const opening = await card.evaluate((element) => {
+        const animation = element.getAnimations().find((a) => (a.effect as KeyframeEffect).getKeyframes().some((frame) => frame.height));
+        if (!animation) return null;
+        animation.pause(); animation.currentTime = 240;
+        return { easing: animation.effect!.getTiming().easing, height: element.getBoundingClientRect().height, end: parseFloat(String((animation.effect as KeyframeEffect).getKeyframes().at(-1)!.height)) };
+      });
+      assert.ok(opening, 'Opening must animate height');
+      assert.equal(opening.easing, 'cubic-bezier(0.65, 0, 0.35, 1)');
+      assert.ok(opening.height > closed && opening.height < opening.end, 'Opening has an intermediate size');
+      await card.evaluate((element) => { for (const animation of element.getAnimations()) if ((animation.effect as KeyframeEffect).getKeyframes().some((frame) => frame.height)) animation.finish(); });
+      await page.mouse.move(0, 0);
+      const closing = await card.evaluate((element) => {
+        const animation = element.getAnimations().find((a) => (a.effect as KeyframeEffect).getKeyframes().some((frame) => frame.height));
+        if (!animation) return null;
+        animation.pause(); animation.currentTime = 240;
+        const height = element.getBoundingClientRect().height;
+        animation.finish();
+        return { height, final: element.getBoundingClientRect().height };
+      });
+      assert.ok(closing && closing.height > closed && closing.height < opening.end, 'Closing has an intermediate size');
+      assert.equal(closing.final, closed);
+    }
+    const brain = page.locator('#build-production-intelligence');
+    await brain.scrollIntoViewIfNeeded();
+    const size = (await brain.boundingBox())!.height;
+    await brain.hover({ position: { x: 24, y: 24 } });
+    const runner = brain.locator('.rome-brain__runner');
+    assert.equal(await runner.evaluate((element) => getComputedStyle(element).animationIterationCount), 'infinite');
+    assert.equal((await brain.boundingBox())!.height, size, 'Rome stays compact');
+    assert.equal(await brain.locator('.build-card__desc').isVisible(), true);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    assert.equal(await runner.evaluate((element) => getComputedStyle(element).animationName), 'none');
+    await page.close();
+  }
+});

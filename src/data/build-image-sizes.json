@@ -1,0 +1,78 @@
+{
+  "/assets/pedal-path-icon.png": {
+    "width": 1024,
+    "height": 1024
+  },
+  "/assets/pedal-path-1.jpg": {
+    "width": 924,
+    "height": 2000
+  },
+  "/assets/pedal-path-2.jpg": {
+    "width": 924,
+    "height": 2000
+  },
+  "/assets/pedal-path-3.jpg": {
+    "width": 924,
+    "height": 2000
+  },
+  "/assets/story-builder-icon.png": {
+    "width": 1024,
+    "height": 1024
+  },
+  "/assets/story-builder-feature-transcript.png": {
+    "width": 730,
+    "height": 1067
+  },
+  "/assets/story-builder-feature-script.png": {
+    "width": 760,
+    "height": 800
+  },
+  "/assets/story-builder-feature-board.png": {
+    "width": 1160,
+    "height": 980
+  },
+  "/assets/story-builder-feature-strip.png": {
+    "width": 1160,
+    "height": 530
+  },
+  "/assets/unbusy.jpg": {
+    "width": 1035,
+    "height": 548
+  },
+  "/assets/rome-brone.svg": {
+    "width": 1024,
+    "height": 1024
+  },
+  "/assets/gibbon-1.jpg": {
+    "width": 322,
+    "height": 700
+  },
+  "/assets/gibbon-2.jpg": {
+    "width": 322,
+    "height": 700
+  },
+  "/assets/gibbon-3.jpg": {
+    "width": 322,
+    "height": 700
+  },
+  "/assets/gibbon-4.jpg": {
+    "width": 322,
+    "height": 700
+  },
+  "/assets/ppl-1.jpg": {
+    "width": 924,
+    "height": 2000
+  },
+  "/assets/ppl-2.jpg": {
+    "width": 924,
+    "height": 2000
+  },
+  "/assets/ppl-3.jpg": {
+    "width": 924,
+    "height": 2000
+  },
+  "/assets/ppl-4.jpg": {
+    "width": 924,
+    "height": 2000
+  }
+}
