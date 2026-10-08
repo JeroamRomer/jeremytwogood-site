@@ -102,3 +102,7 @@ Every build now starts at the same one-column footprint. The compact height is m
 ### Mobile phone galleries — October 8
 
 Pedal Path, Gibbon Knight and Ultimate PPL use a two-column mobile gallery at 720px and below. A legacy mobile `display:flex` override was taking precedence over the shared grid rule, making full-width screenshots overflow side by side. The scoped mobile reveal now explicitly preserves grid display for phone galleries. Images retain their complete natural proportions with 14px outer padding and 10px gaps. The Pedal Path icon is centered in its first cell. Desktop expansion and Story Builder composition stay unchanged. Regression coverage checks all three apps at 320/390/430 on both pages, including containment, aspect ratio, no overflow and tap-to-close.
+
+### Unbusy Scanner image refresh — October 8
+
+Replaced the older 1035×548 JPEG preview with Jeremy's supplied 2560×1293 PNG, copied unchanged from `Screenshot 2026-10-08 at 7.41.06 PM.png`. The gallery references `/assets/unbusy.png`; the intrinsic image size manifest matches the new capture. This release includes the previously committed mobile phone-gallery fix (`8beace9`).

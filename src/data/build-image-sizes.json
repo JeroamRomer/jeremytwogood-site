@@ -35,10 +35,6 @@
     "width": 1160,
     "height": 530
   },
-  "/assets/unbusy.jpg": {
-    "width": 1035,
-    "height": 548
-  },
   "/assets/rome-brone.svg": {
     "width": 1024,
     "height": 1024
@@ -74,5 +70,9 @@
   "/assets/ppl-4.jpg": {
     "width": 924,
     "height": 2000
+  },
+  "/assets/unbusy.png": {
+    "width": 2560,
+    "height": 1293
   }
 }

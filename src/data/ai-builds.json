@@ -39,7 +39,7 @@
     "github_url": null,
     "live_url": "https://unbusyscanner.vercel.app",
     "shot_class": "build-card__shot--web",
-    "shot_images": ["/assets/unbusy.jpg"],
+    "shot_images": ["/assets/unbusy.png"],
     "shot_alts": ["Unbusy Scanner home screen"],
     "featured": true
   },
