@@ -26,7 +26,8 @@ const clients = profile.clients as string[];
       <dl class="props about__props">
         <dt>Based in</dt><dd>Toronto, Ontario</dd>
         <dt>Producing since</dt><dd><span class="readout">2006</span></dd>
-        <dt>Open to</dt><dd>Contract, freelance and full-time work. Remote-first.</dd>
+        <dt>Currently</dt><dd>Editor on {profile.currentRole.show}, {profile.currentRole.company}</dd>
+        <dt>Open to</dt><dd>Freelance and select projects. Remote-first.</dd>
         <dt>Skills</dt><dd>{profile.skills.join(', ')}</dd>
         <dt id="clients">Clients</dt>
         <dd><ul class="about__clients">{clients.map((c) => <li>{c}</li>)}</ul></dd>

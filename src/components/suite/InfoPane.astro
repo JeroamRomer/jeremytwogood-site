@@ -24,8 +24,10 @@ const sizzleEmbed = `https://www.youtube-nocookie.com/embed/${reel.reel_youtube_
     <dl class="props info__props">
       <dt>Clients</dt>
       <dd>{shown.join(', ')}{more > 0 && <> and <a href="#clients">{more} more</a></>}</dd>
+      <dt>Currently</dt>
+      <dd>Editor on {profile.currentRole.show}, {profile.currentRole.company}</dd>
       <dt>Open to</dt>
-      <dd>Contract, freelance and full-time work. Remote-first.</dd>
+      <dd>Freelance and select projects. Remote-first.</dd>
       <dt>Also</dt>
       <dd>Ships software: {liveBuilds.join(', ')}</dd>
     </dl>

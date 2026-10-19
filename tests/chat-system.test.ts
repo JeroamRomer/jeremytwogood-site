@@ -20,6 +20,12 @@ test('chat-system: identifies Mathew Welsh collaborations', () => {
   }
 });
 
+test('chat-system: knows the current editor role without private contract terms', () => {
+  assert.match(SYSTEM, /Construction Disruption/);
+  assert.match(SYSTEM, /Kris Potts Productions Inc\./);
+  assert.doesNotMatch(SYSTEM, /65,000|75,000|probation|Docusign/i, 'contract terms must never reach the chatbot');
+});
+
 test('chat-system: embeds skills and AI builds', () => {
   assert.ok(SYSTEM.includes('Colour Grading'), 'a known skill should appear');
   assert.ok(SYSTEM.includes('Gibbon Knight'), 'a known AI build should appear');
