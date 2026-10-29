@@ -24,6 +24,7 @@
       "LLM-Assisted Scripting and Captioning",
       "Automated Post-Production Pipelines",
       "Remotion (React-based motion graphics)",
+      "HyperFrames (HTML-based video rendering)",
       "Prompt Engineering"
     ],
     "generative_ai": [
@@ -40,6 +41,7 @@
     ],
     "software": [
       "Final Cut Pro X",
+      "DaVinci Resolve",
       "Adobe Premiere Pro",
       "Apple Motion",
       "Adobe After Effects",
@@ -47,6 +49,7 @@
       "Adobe Photoshop",
       "Affinity Photo",
       "Photopea",
+      "Craft Suite (FilmCraft, EffectCraft, VectorCraft)",
       "React",
       "Swift and SwiftUI",
       "PostgreSQL",

@@ -3,7 +3,7 @@ import test from 'node:test';
 import { chromium } from 'playwright';
 import { startDistServer } from './helpers/dist-server.ts';
 
-test('hero reel separates project identity from role credits and shows all 38 stills once', { timeout: 30000 }, async (t) => {
+test('hero reel separates project identity from role credits and shows all 39 stills once', { timeout: 30000 }, async (t) => {
   const { server, url } = await startDistServer();
   t.after(() => new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve())));
   const browser = await chromium.launch();
@@ -61,13 +61,13 @@ test('hero reel separates project identity from role credits and shows all 38 st
     `desktop reel underline should stop at the wordmark period: ${JSON.stringify(desktopBrandGeometry)}`);
 
   const frames = page.locator('.introduction__frame');
-  assert.equal(await frames.count(), 39);
+  assert.equal(await frames.count(), 40);
   const sources = await frames.locator('img').evaluateAll(images => images.map(image => (image as HTMLImageElement).getAttribute('src')));
-  assert.equal(new Set(sources).size, 38, 'each still should appear exactly once before the reel loops');
+  assert.equal(new Set(sources).size, 39, 'each still should appear exactly once before the reel loops');
   assert.equal(await frames.locator('video').count(), 1, 'the production clip should appear once in the full cycle');
   const mediaSources = await frames.evaluateAll(elements => elements.map(element =>
     element.querySelector('video')?.getAttribute('src') ?? element.querySelector('img')?.getAttribute('src')));
-  assert.equal(new Set(mediaSources).size, 39, 'each still or video should appear exactly once before the reel loops');
+  assert.equal(new Set(mediaSources).size, 40, 'each still or video should appear exactly once before the reel loops');
   assert.equal(sources.filter(source => source === '/assets/hero-strip/francesco-yates.jpg').length, 1,
     'the Francesco Yates still should appear once in the full cycle');
   const yatesFrame = frames.filter({ has: page.locator('img[src="/assets/hero-strip/francesco-yates.jpg"]') });
@@ -94,6 +94,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
     '/assets/hero-strip/new-dark-edit-suite.webp',
     '/assets/hero-strip/new-studio-session.webp',
     '/assets/hero-strip/new-production-move.mp4',
+    '/assets/hero-strip/new-resolve-timeline.webp',
   ];
   for (const src of untitledSources) {
     const frame = frames.filter({ has: page.locator(`img[src="${src}"]`) }).or(frames.filter({ has: page.locator(`video[src="${src}"]`) }));
@@ -175,7 +176,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
   assert.ok(Math.abs(initialChromeGeometry.rail[0] + initialChromeGeometry.rail[2] - (centerX + centerWidth)) < 1, 'progress rail should end at the center image');
   assert.ok(Math.abs(initialChromeGeometry.playhead[0] - initialChromeGeometry.rail[0]) < 1, 'orange playhead should start at the left edge for the first still');
   assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '1');
-  assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuemax'), '39');
+  assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuemax'), '40');
   const readCaption = () => page.locator('.introduction__work figcaption > span').allTextContents();
   assert.deepEqual(await readCaption(), ['Shell × John Williams', 'Editor · Colour Grade']);
   const captionHeight = await page.locator('.introduction__work figcaption').evaluate(element => element.getBoundingClientRect().height);
@@ -230,7 +231,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
   await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   assert.equal(await page.locator('.introduction__frame.is-center img').getAttribute('src'), '/assets/hero-strip/francesco-yates.jpg');
   assert.deepEqual(await readCaption(), ['YouTube Creator Series · Francesco Yates', 'Camera Operator']);
-  for (let index = 7; index < 38; index += 1) {
+  for (let index = 7; index < 39; index += 1) {
     await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   }
   await page.waitForTimeout(900);
@@ -238,12 +239,12 @@ test('hero reel separates project identity from role credits and shows all 38 st
     const frame = document.querySelector('.introduction__frame.is-center');
     return { index: frame?.getAttribute('data-index'), source: frame?.querySelector('img')?.getAttribute('src') };
   });
-  assert.equal(lastFrame.index, '38', 'the last distinct still should remain centered for its full interval');
+  assert.equal(lastFrame.index, '39', 'the last distinct still should remain centered for its full interval');
   assert.equal(lastFrame.source, '/assets/hero-strip/chac-mool-cenote.jpg');
   const lastFrameGeometry = await readChromeGeometry();
   assert.ok(Math.abs(lastFrameGeometry.playhead[0] + lastFrameGeometry.playhead[2] - (lastFrameGeometry.rail[0] + lastFrameGeometry.rail[2])) < 0.5,
     'orange playhead should reach the right edge for the last still');
-  assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '39');
+  assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '40');
 
   await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   const wrappedState = await page.evaluate(() => ({
@@ -353,7 +354,7 @@ test('hero reel separates project identity from role credits and shows all 38 st
     'tablet-width reel should keep the mobile frame geometry');
   assert.equal(await page.locator('.introduction__image').evaluate(element => getComputedStyle(element).display), 'none',
     'tablet-width reel should not fall back to the desktop filmstrip');
-  for (let index = 0; index < 34; index += 1) {
+  for (let index = 0; index < 35; index += 1) {
     await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   }
   await page.waitForTimeout(950);
@@ -382,7 +383,7 @@ test('hero reel plays the full untitled production video before advancing', { ti
     }) as typeof window.setTimeout;
   });
   await page.goto(url, { waitUntil: 'domcontentloaded' });
-  for (let index = 0; index < 37; index += 1) {
+  for (let index = 0; index < 38; index += 1) {
     await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   }
   const productionVideo = page.locator('video[src="/assets/hero-strip/new-production-move.mp4"]');
@@ -403,7 +404,7 @@ test('hero reel plays the full untitled production video before advancing', { ti
   assert.match(await page.locator('.introduction__frame[data-kind="video"]').getAttribute('style') ?? '',
     /new-production-move-final-poster\.webp/,
     'the desktop outgoing frame should swap to the final poster before moving out');
-  assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '39');
+  assert.equal(await page.locator('.introduction__progress').getAttribute('aria-valuenow'), '40');
 });
 
 test('hero reel moves the ended video out with the mobile transition', { timeout: 30000 }, async (t) => {
@@ -425,7 +426,7 @@ test('hero reel moves the ended video out with the mobile transition', { timeout
     }) as typeof window.setTimeout;
   });
   await page.goto(url, { waitUntil: 'domcontentloaded' });
-  for (let index = 0; index < 37; index += 1) {
+  for (let index = 0; index < 38; index += 1) {
     await page.evaluate(() => (window as Window & { __heroReelTick: () => void }).__heroReelTick());
   }
   await page.waitForTimeout(1000);
